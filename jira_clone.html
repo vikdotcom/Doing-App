@@ -1,0 +1,2865 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mein Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --side:#f4f4f5; --surface:#f4f4f5; --card:#ffffff; --card-hover:#fafafa; --card-border:transparent;
+  --border:#e4e4e7; --text:#09090b; --muted:#71717a; --subtle:#a1a1aa; --dot:#d4d4d8; --seg-active:#e4e4e7;
+  --accent:#2563eb; --accent-hover:#1d4ed8; --accent-soft:#eff6ff;
+  --danger:#ef4444; --danger-soft:#fef2f2; --ok:#10b981; --ok-soft:#ecfdf5;
+  --warn:#d97706; --warn-soft:#fffbeb; --show:#f97316;
+  --s-backlog:#ec4899; --s-todo:#ef4444; --s-doing:#ca8a04; --s-done:#10b981; --s-waiting:#8b5cf6; --s-paused:#a1a1aa; --s-cancelled:#71717a;
+  --shadow:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --shadow-lg:0 12px 32px rgba(0,0,0,.14);
+  --chip:#f4f4f5;
+  --radius:8px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#09090b; --side:#111113; --surface:#141417; --card:#1c1c20; --card-hover:#232328; --card-border:#27272a;
+    --border:#27272a; --text:#fafafa; --muted:#a1a1aa; --subtle:#71717a; --dot:#3f3f46; --seg-active:#27272a;
+    --accent:#3b82f6; --accent-hover:#60a5fa; --accent-soft:#172554;
+    --danger:#f87171; --danger-soft:#2a1215; --ok:#34d399; --ok-soft:#0d2a20;
+    --warn:#fbbf24; --warn-soft:#2a210b; --show:#fb923c;
+    --s-backlog:#db2777; --s-todo:#dc2626; --s-doing:#ca8a04; --s-done:#059669; --s-waiting:#7c3aed; --s-paused:#52525b; --s-cancelled:#3f3f46;
+    --shadow:0 1px 2px rgba(0,0,0,.5);
+    --shadow-lg:0 12px 32px rgba(0,0,0,.6);
+    --chip:#27272a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#09090b; --side:#111113; --surface:#141417; --card:#1c1c20; --card-hover:#232328; --card-border:#27272a;
+  --border:#27272a; --text:#fafafa; --muted:#a1a1aa; --subtle:#71717a; --dot:#3f3f46; --seg-active:#27272a;
+  --accent:#3b82f6; --accent-hover:#60a5fa; --accent-soft:#172554;
+  --danger:#f87171; --danger-soft:#2a1215; --ok:#34d399; --ok-soft:#0d2a20;
+  --warn:#fbbf24; --warn-soft:#2a210b; --show:#fb923c;
+  --s-backlog:#db2777; --s-todo:#dc2626; --s-doing:#ca8a04; --s-done:#059669; --s-waiting:#7c3aed; --s-paused:#52525b; --s-cancelled:#3f3f46;
+  --shadow:0 1px 2px rgba(0,0,0,.5);
+  --shadow-lg:0 12px 32px rgba(0,0,0,.6);
+  --chip:#27272a;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--text);font:14px/1.45 Inter,"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;display:flex;overflow:hidden;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+option{background:var(--bg);color:var(--text)}
+[hidden]{display:none!important}
+body.show-mode .priv-only{display:none!important}
+.ico{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.spacer{flex:1}
+.muted{color:var(--muted)}
+.ok-msg{color:var(--ok);font-weight:600}
+.err-msg{color:var(--danger);font-weight:600}
+.sep{height:2px;flex:none;margin:12px 0;background-image:radial-gradient(circle,var(--dot) 1px,transparent 1.4px);background-size:8px 2px;background-repeat:repeat-x}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--dot);border-radius:10px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-track{background:transparent}
+
+/* Sidebar */
+.sidebar{width:252px;flex:none;background:var(--side);display:flex;flex-direction:column;padding:16px 14px;overflow-y:auto;z-index:90}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;padding:2px 4px;letter-spacing:-.01em}
+.logo span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logo-mark{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;flex:none}
+.logo-mark .ico{width:18px;height:18px;stroke-width:2.6}
+.side-nav{display:flex;flex-direction:column;gap:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:0;background:none;color:var(--muted);font-weight:500;font-size:15px;width:100%;text-align:left}
+.nav-item:hover{color:var(--text)}
+.nav-item.active{background:var(--bg);color:var(--text);box-shadow:var(--shadow)}
+.side-label{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:2px 4px 6px}
+.side-add{width:20px;height:20px;border-radius:50%;border:0;background:var(--muted);color:var(--side);display:grid;place-items:center;font-size:15px;line-height:1;padding:0;font-weight:700}
+.side-add:hover{background:var(--text)}
+.side-goal{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;cursor:pointer;color:var(--muted);font-size:14px;font-weight:500;border:0;background:none;width:100%;text-align:left}
+.side-goal:hover{color:var(--text)}
+.side-goal.active{background:var(--bg);color:var(--text);box-shadow:var(--shadow)}
+.side-goal .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side-goal small{color:var(--subtle);font-size:12px}
+.side-del{display:none;color:var(--subtle);font-size:12px;width:20px;height:20px;border-radius:4px;place-items:center;flex:none}
+.side-goal:hover .side-del{display:grid}
+.side-goal:hover small{display:none}
+.side-del:hover{color:var(--danger);background:var(--danger-soft)}
+.goal-av{width:22px;height:22px;border-radius:6px;display:inline-grid;place-items:center;color:#fff;font-size:12px;font-weight:700;flex:none;background:var(--g)}
+.goal-av.sm{width:20px;height:20px;font-size:11px;border-radius:5px}
+.side-empty{font-size:13px;color:var(--subtle);padding:4px 10px}
+.side-bottom{margin-top:auto;display:flex;flex-direction:column;gap:8px;padding-top:16px}
+.side-row{display:flex;align-items:center;gap:4px}
+.save-state{font-size:12px;color:var(--subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.scrim{display:none}
+
+/* Main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;padding:20px 28px 24px}
+.page-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+.page-head h1{margin:0;font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.page-head p{margin:2px 0 0;font-size:15px}
+.hamburger{display:none!important}
+.panel{flex:1;min-height:0;border:1px solid var(--border);border-radius:12px;background:var(--bg);display:flex;flex-direction:column;padding:16px 20px 18px}
+.seg-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.seg{border:0;background:var(--surface);color:var(--muted);padding:7px 16px;border-radius:6px;font-weight:500}
+.seg:hover{color:var(--text)}
+.seg.active{background:var(--seg-active);color:var(--text)}
+body.show-mode .panel{border-color:var(--show);box-shadow:0 0 0 1px var(--show)}
+
+/* Buttons */
+.btn{height:36px;border:1px solid var(--border);background:var(--bg);padding:0 14px;border-radius:6px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{background:var(--surface)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.danger{background:none;border-color:transparent;color:var(--danger)}
+.btn.danger:hover{background:var(--danger-soft)}
+.btn.ghost{background:none;border-color:transparent}
+.btn.ghost:hover{background:var(--surface)}
+.btn.small{height:28px;padding:0 10px;font-size:12px}
+.mode-btn{width:100%;justify-content:flex-start}
+body.show-mode .mode-btn{background:var(--show);color:#fff;border-color:var(--show)}
+.icon-btn{background:none;border:0;width:32px;height:32px;border-radius:6px;display:grid;place-items:center;color:var(--muted);font-size:16px;flex:none}
+.icon-btn:hover{background:var(--seg-active);color:var(--text)}
+.menu-wrap{position:relative}
+.menu{position:fixed;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);min-width:270px;padding:6px;z-index:150}
+.menu button{display:block;width:100%;text-align:left;background:none;border:0;padding:8px 10px;border-radius:5px}
+.menu button:hover{background:var(--surface)}
+.menu hr{border:0;border-top:1px solid var(--border);margin:6px 0}
+.menu .hint{padding:4px 10px 8px;font-size:12px;color:var(--subtle)}
+.banner{background:var(--warn-soft);padding:10px 14px;font-size:13px;display:flex;gap:12px;align-items:center;border:1px solid var(--border);border-radius:8px;margin-bottom:12px;flex-wrap:wrap}
+
+/* Toolbar */
+.view{flex:1;min-height:0;display:flex;flex-direction:column}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.search{position:relative}
+.search input{height:36px;padding:0 10px 0 32px;border:1px solid var(--border);border-radius:6px;background:var(--bg);width:220px}
+.search::before{content:"";position:absolute;left:10px;top:50%;width:14px;height:14px;transform:translateY(-50%);background:var(--subtle);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center/contain no-repeat}
+.toolbar select,.field select,.field input,.inline-input{height:36px;padding:0 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg)}
+.toolbar select:hover{background:var(--surface)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.check-field{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:14px;white-space:nowrap}
+.check-field input{width:auto!important;margin:0}
+
+/* Board */
+.board{flex:1;display:flex;gap:12px;overflow:auto;align-items:flex-start;min-height:0;padding-bottom:6px}
+.col{background:var(--surface);border-radius:10px;min-width:215px;flex:1 0 215px;display:flex;flex-direction:column;max-height:100%}
+.col-head{display:flex;align-items:center;gap:8px;padding:12px 10px 8px 14px;font-size:15px;font-weight:600}
+.col-head svg{width:18px;height:18px;flex:none}
+.col-count{font-size:12px;font-weight:600;background:var(--seg-active);color:var(--muted);border-radius:5px;padding:1px 7px}
+.col-add{margin-left:auto;width:28px;height:28px}
+.col-list{padding:2px 8px 4px;overflow-y:auto;min-height:40px;flex:1;display:flex;flex-direction:column;gap:8px}
+.col.drop-target{outline:2px dashed var(--accent);outline-offset:-2px}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:8px;box-shadow:var(--shadow);padding:12px 12px 10px;cursor:pointer;user-select:none}
+.card:hover{background:var(--card-hover);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card.dragging{opacity:.4}
+.card.due-soft{box-shadow:inset 3px 0 var(--warn),var(--shadow)}
+.card.due-late{box-shadow:inset 3px 0 var(--danger),var(--shadow)}
+.card-title{font-size:15px;line-height:1.35;word-wrap:break-word}
+.col[data-status="done"] .card-title{color:var(--muted)}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.card .sep{margin:10px 0}
+.label{font-size:11px;font-weight:600;background:var(--chip);padding:1px 7px;border-radius:5px;color:var(--muted)}
+.imp{font-size:11px;font-weight:600;padding:1px 7px;border-radius:5px;white-space:nowrap}
+.imp-must{background:var(--danger-soft);color:var(--danger)}
+.imp-worth{background:var(--ok-soft);color:var(--ok)}
+.imp-nice{background:var(--chip);color:var(--muted)}
+.goal-chip{font-size:11px;font-weight:600;padding:1px 7px 1px 5px;border-radius:5px;background:var(--chip);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.goal-chip::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--g);flex:none}
+.card-foot{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.card-key{font-weight:500;font-size:12px}
+.col[data-status="done"] .card-key{text-decoration:line-through}
+.card-meta{margin-left:auto;display:flex;gap:8px;align-items:center}
+.card-goal{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;margin-top:8px;min-width:0}
+.card-goal span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.date{white-space:nowrap}
+.date.soft{color:var(--warn);font-weight:600}
+.date.late{color:var(--danger);font-weight:600}
+.type-icon{width:16px;height:16px;border-radius:4px;display:inline-grid;place-items:center;color:#fff;font-size:10px;flex:none}
+.placeholder{height:48px;border-radius:8px;background:var(--accent-soft);border:2px dashed var(--accent);flex:none}
+.quick-add{padding:2px 8px 8px}
+.quick-add button{width:100%;text-align:left;background:none;border:0;padding:8px;border-radius:6px;color:var(--subtle);font-weight:500}
+.quick-add button:hover{background:var(--seg-active);color:var(--text)}
+.quick-add textarea{width:100%;resize:none;border:2px solid var(--accent);border-radius:8px;padding:10px;background:var(--card);min-height:64px;outline:none}
+.quick-add .qa-hint{font-size:11px;color:var(--subtle);padding:4px 2px 0}
+
+/* Status-Pills */
+.st,.status-pill{display:inline-block;font-size:12px;font-weight:600;color:#fff;padding:2px 8px;border-radius:6px;white-space:nowrap;background:var(--s-todo);line-height:1.5}
+.st-backlog,.status-pill.s-backlog{background:var(--s-backlog)}
+.st-todo,.status-pill.s-todo{background:var(--s-todo)}
+.st-doing,.status-pill.s-doing{background:var(--s-doing)}
+.st-done,.status-pill.s-done{background:var(--s-done)}
+.st-waiting,.status-pill.s-waiting{background:var(--s-waiting)}
+.st-paused,.status-pill.s-paused{background:var(--s-paused)}
+.st-cancelled,.status-pill.s-cancelled{background:var(--s-cancelled)}
+select.status-pill{border:0;-webkit-appearance:none;appearance:none;cursor:pointer;padding:2px 10px;max-width:none}
+select.status-pill:hover{filter:brightness(1.08)}
+
+/* Kalender */
+.cal-nav{display:flex;align-items:center;gap:6px}
+.cal-nav .icon-btn{border:1px solid var(--border);width:36px;height:36px}
+.cal-title{height:36px;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:6px;padding:0 14px;font-weight:500;min-width:170px;justify-content:center}
+.cal-legend{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.cal-legend .cal-chip{display:inline-block;cursor:default}
+.cal-wrap{flex:1;display:flex;flex-direction:column;min-height:0}
+.cal-head,.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.cal-head div{font-size:13px;color:var(--muted);padding:6px 8px;text-align:center}
+.cal-grid{flex:1;grid-auto-rows:minmax(104px,1fr);border:1px solid var(--border);border-radius:10px;overflow:auto;min-height:0}
+.cal-cell{border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:6px;display:flex;flex-direction:column;gap:4px;min-width:0;min-height:0}
+.cal-cell:nth-child(7n){border-right:0}
+.cal-cell.other{background:var(--surface)}
+.cal-cell.other .cal-day{color:var(--subtle)}
+.cal-day{font-size:12px;color:var(--muted);align-self:flex-end;min-width:24px;height:22px;display:grid;place-items:center;border-radius:11px;padding:0 4px;flex:none}
+.cal-cell.today .cal-day{background:var(--accent);color:#fff;font-weight:600}
+.cal-items{display:flex;flex-direction:column;gap:4px;overflow-y:auto;min-height:0}
+.cal-chip{--k:var(--subtle);font-size:12px;padding:4px 7px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;background:var(--card);border:1px solid var(--border);box-shadow:inset 3px 0 var(--k);flex:none}
+.cal-chip.soft{--k:var(--warn)}
+.cal-chip.hard{--k:var(--danger)}
+.cal-chip.done{opacity:.5;text-decoration:line-through}
+.cal-chip.ghost{border-style:dashed;color:var(--subtle);cursor:default;box-shadow:none;background:none}
+.cal-chip:not(.ghost):hover{background:var(--card-hover)}
+
+/* Ziele */
+.goals-wrap{flex:1;overflow:auto;padding-bottom:16px}
+.goal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.goal{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;box-shadow:inset 0 4px var(--g);display:flex;flex-direction:column;gap:10px}
+.goal-head{display:flex;align-items:center;gap:6px}
+.goal-head input[type=color]{width:26px;height:26px;border:0;padding:0;background:none;cursor:pointer;flex:none;border-radius:6px}
+.goal-head .title-input{font-size:17px}
+.goal-meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.goal-meta input{height:30px;font-size:12px}
+.progress{height:6px;background:var(--chip);border-radius:3px;overflow:hidden;flex:1;max-width:160px}
+.progress.big{max-width:none;height:8px}
+.progress > div{height:100%;background:var(--ok);transition:width .2s}
+.goal textarea{width:100%;min-height:44px;border:1px solid transparent;border-radius:6px;padding:6px 8px;background:transparent;resize:vertical;color:var(--muted)}
+.goal textarea:hover{border-color:var(--border)}
+.goal-issues{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.goal-issues li{display:flex;gap:8px;align-items:center;padding:7px 10px;border-radius:8px;cursor:pointer;background:var(--surface);font-size:13px}
+.goal-issues li:hover{background:var(--seg-active)}
+.goal-issues li .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.goal-issues li.done .t{text-decoration:line-through;color:var(--subtle)}
+.section-title{font-size:17px;font-weight:600;margin:28px 0 12px;display:flex;align-items:center;gap:12px}
+.rec-list{display:flex;flex-direction:column;gap:8px;max-width:960px}
+.rec-row{display:flex;align-items:center;gap:10px;border:1px solid var(--border);padding:8px 12px;border-radius:8px;flex-wrap:wrap}
+.rec-row b{flex:1;min-width:140px;font-weight:500}
+.rec-row.paused{opacity:.6}
+.rec-row select{height:30px;padding:0 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg)}
+.rec-row .info{font-size:12px;color:var(--muted)}
+
+/* Liste / Tabelle */
+.table-wrap{flex:1;overflow:auto;border:1px solid var(--border);border-radius:10px;min-height:0}
+table.grid{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}
+.grid th{position:sticky;top:0;background:var(--bg);text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:0;border-bottom:1px solid var(--border);white-space:nowrap;z-index:1}
+.th-inner{display:flex;align-items:center;gap:4px;padding:10px 6px 10px 12px}
+.th-sort{cursor:pointer;flex:1;user-select:none}
+.th-sort:hover{color:var(--text)}
+.th-sort::after{content:" ⇅";color:var(--subtle);font-size:12px}
+.th-sort.sorted::after{content:""}
+.th-filter{border:1px solid transparent;background:none;color:var(--subtle);border-radius:5px;padding:0;width:22px;height:22px;display:grid;place-items:center}
+.th-filter svg{width:13px;height:13px}
+.th-filter:hover{border-color:var(--border);color:var(--text)}
+.th-filter.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.grid td{padding:6px 12px;border-bottom:1px solid var(--border);white-space:nowrap;max-width:320px;overflow:hidden;text-overflow:ellipsis;height:48px}
+.grid tbody tr:last-child td{border-bottom:0}
+.grid tbody tr:hover td{background:var(--card-hover)}
+.grid td.title{white-space:normal;min-width:240px;cursor:pointer}
+.grid td.title:hover{color:var(--accent)}
+.grid td.mono{color:var(--muted);font-size:13px}
+.cell-in{border:1px solid transparent;background:transparent;padding:3px 6px;border-radius:6px;max-width:180px}
+.cell-in:hover{border-color:var(--border);background:var(--bg)}
+input.cell-in.empty{color:transparent}
+input.cell-in.empty::-webkit-calendar-picker-indicator{opacity:.25}
+input.cell-in.empty:hover,input.cell-in.empty:focus{color:var(--subtle)}
+input.cell-in.late{color:var(--danger);font-weight:600}
+input.cell-in.soft{color:var(--warn);font-weight:600}
+.grid tr.due-late td:first-child{box-shadow:inset 3px 0 var(--danger)}
+.grid tr.due-soft td:first-child{box-shadow:inset 3px 0 var(--warn)}
+.grid tr.done td.title{text-decoration:line-through;color:var(--subtle)}
+.pop{position:fixed;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-lg);padding:8px;z-index:160;width:250px;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.pop input[type=text]{height:32px;padding:0 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg)}
+.pop-list{overflow:auto;max-height:240px;display:flex;flex-direction:column}
+.pop-list label{display:flex;gap:8px;align-items:center;padding:5px 6px;border-radius:5px;cursor:pointer}
+.pop-list label:hover{background:var(--surface)}
+.pop-list small{margin-left:auto;color:var(--subtle)}
+.pop-row{display:flex;gap:6px;justify-content:space-between}
+
+/* Prompts */
+.prompts{flex:1;display:grid;grid-template-columns:250px 1fr;min-height:0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.prompt-main{overflow:auto;padding:16px 20px 28px;display:flex;flex-direction:column;gap:14px}
+.step{border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;max-width:1000px}
+.step h3{margin:0;font-size:15px;font-weight:600;display:flex;align-items:center;gap:10px}
+.step-no{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:12px}
+.ta{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;background:var(--bg);resize:vertical;font-family:ui-monospace,Consolas,Menlo,monospace;font-size:12.5px;line-height:1.55}
+.ph-chips{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.ph-chips button[data-ph]{font-family:ui-monospace,Consolas,Menlo,monospace;font-size:11px;border:1px solid var(--border);background:var(--bg);border-radius:5px;padding:2px 7px}
+.ph-chips button[data-ph]:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Notizen */
+.notes{flex:1;display:grid;grid-template-columns:280px 1fr;min-height:0;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.notes-list{border-right:1px solid var(--border);overflow-y:auto;background:var(--surface)}
+.notes-list-head{padding:10px;display:flex;gap:8px;position:sticky;top:0;background:var(--surface);z-index:1}
+.notes-list-head .search input{width:100%}
+.note-item{padding:10px 14px;cursor:pointer;margin:2px 6px;border-radius:8px}
+.note-item:hover{background:var(--seg-active)}
+.note-item.active{background:var(--bg);box-shadow:var(--shadow)}
+.note-item b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.note-item small{color:var(--subtle);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note-editor{display:flex;flex-direction:column;padding:18px 24px;min-height:0;overflow:auto}
+.note-editor .title-input{margin-bottom:8px}
+.note-editor textarea{flex:1;min-height:300px;border:0;background:transparent;resize:none;line-height:1.65;font-size:15px;padding:4px 0}
+.note-editor textarea:focus{outline:none}
+.note-foot{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--subtle);border-top:1px solid var(--border);padding-top:8px}
+.empty{color:var(--subtle);text-align:center;padding:48px 16px}
+
+/* Modal */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-start;justify-content:center;padding:48px 16px;z-index:100;overflow:auto}
+.modal{background:var(--bg);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-lg);width:100%;max-width:1000px}
+.modal-head{display:flex;align-items:center;gap:8px;padding:14px 16px 0 24px;color:var(--muted);font-size:13px}
+.modal-head .grow{flex:1}
+.modal-body{display:grid;grid-template-columns:1fr 280px;gap:28px;padding:8px 24px 24px}
+.title-input{width:100%;font-size:22px;font-weight:600;letter-spacing:-.01em;border:1px solid transparent;border-radius:6px;padding:4px 6px;margin-left:-6px;background:transparent}
+.title-input:hover{background:var(--surface)}
+.sec-label{font-weight:600;margin:22px 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}
+.sec-label small{font-weight:400;color:var(--subtle)}
+textarea.desc{width:100%;min-height:90px;border:1px solid var(--border);border-radius:6px;padding:10px 12px;background:var(--bg);resize:vertical;line-height:1.55}
+.checklist{list-style:none;margin:0;padding:0}
+.checklist li{display:flex;align-items:center;gap:8px;padding:3px 6px;border-radius:6px}
+.checklist li:hover{background:var(--surface)}
+.checklist li input[type=text]{flex:1;border:0;background:transparent;padding:3px 4px;border-radius:4px}
+.checklist li.done input[type=text]{text-decoration:line-through;color:var(--subtle)}
+.checklist li .x{visibility:hidden}
+.checklist li:hover .x{visibility:visible}
+.check-new{width:100%;border:1px dashed var(--border);border-radius:6px;padding:8px 10px;background:transparent;margin-top:4px}
+.x{background:none;border:0;color:var(--subtle);font-size:14px;padding:0 5px;border-radius:4px}
+.x:hover{color:var(--danger);background:var(--danger-soft)}
+.comment-new{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.comment-new textarea{width:100%;min-height:64px;border:1px solid var(--border);border-radius:6px;padding:10px 12px;background:var(--bg);resize:vertical}
+.comments{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+.comment{display:flex;gap:10px}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--seg-active);color:var(--muted);display:grid;place-items:center;font-size:11px;font-weight:700;flex:none}
+.comment-body{flex:1;min-width:0}
+.comment-meta{font-size:12px;color:var(--subtle);display:flex;gap:8px;align-items:center}
+.comment-text{white-space:pre-wrap;word-wrap:break-word;margin-top:2px}
+.side{display:flex;flex-direction:column;gap:12px;padding-top:6px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field > span{font-size:12px;font-weight:500;color:var(--muted)}
+.field select,.field input{width:100%}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.side .check-field{flex-direction:row;height:auto;padding:8px 10px;white-space:normal;font-size:13px}
+.status-select{font-weight:600;color:#fff!important;border:0!important;background:var(--s-todo)!important}
+.status-select.s-backlog{background:var(--s-backlog)!important}
+.status-select.s-doing{background:var(--s-doing)!important}
+.status-select.s-done{background:var(--s-done)!important}
+.status-select.s-waiting{background:var(--s-waiting)!important}
+.status-select.s-paused{background:var(--s-paused)!important}
+.status-select.s-cancelled{background:var(--s-cancelled)!important}
+.recur-opts{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted);border:1px solid var(--border);padding:10px;border-radius:6px}
+.wd-row{display:flex;gap:4px;flex-wrap:wrap}
+.wd{border:1px solid var(--border);background:var(--bg);border-radius:5px;height:26px;width:34px;font-size:12px;font-weight:500;padding:0}
+.wd:hover{border-color:var(--accent)}
+.wd.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.recur-opts input{width:54px;height:28px;padding:0 6px;border:1px solid var(--border);border-radius:5px;background:var(--bg)}
+.meta-dates{font-size:12px;color:var(--subtle);border-top:1px solid var(--border);padding-top:10px;line-height:1.8}
+
+/* Warten / Pausiert / Gestrichen, Quelle, Unteraufgaben auf der Karte */
+.card.due-follow{box-shadow:inset 3px 0 var(--s-waiting),var(--shadow)}
+.card-state{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.4}
+.card-state b{color:var(--text);font-weight:600}
+.card-state.follow{color:var(--s-waiting);font-weight:500}
+.card-src{font-size:12px;color:var(--subtle);margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meet-chip{font-size:11px;font-weight:600;padding:1px 7px;border-radius:5px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.sub-toggle{border:0;background:none;color:inherit;padding:1px 5px;border-radius:4px;font:inherit;cursor:pointer}
+.sub-toggle:hover{background:var(--seg-active);color:var(--text)}
+.sub-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:1px}
+.sub-list label{display:flex;gap:8px;align-items:flex-start;font-size:13px;padding:3px 4px;border-radius:4px;cursor:pointer}
+.sub-list label:hover{background:var(--surface)}
+.sub-list li.done span{text-decoration:line-through;color:var(--subtle)}
+.sub-list input{margin:3px 0 0}
+.col[data-status="cancelled"] .card-title{text-decoration:line-through;color:var(--muted)}
+.state-box{display:flex;flex-direction:column;gap:8px;border:1px solid var(--border);border-radius:6px;padding:10px}
+.state-box.s-waiting{border-color:var(--s-waiting)}
+.field small.hint{font-weight:400;color:var(--subtle)}
+.link-row{display:flex;gap:6px}
+.link-row input{flex:1;min-width:0;height:36px;padding:0 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg)}
+.src-row{display:grid;grid-template-columns:1fr 128px;gap:6px}
+.src-row input{min-width:0}
+input.bad{outline:2px solid var(--danger)!important}
+.cal-cell{position:relative}
+.cal-kw{position:absolute;left:7px;top:8px;font-size:10px;font-weight:700;color:var(--subtle)}
+.cal-chip.follow{--k:var(--s-waiting)}
+.cal-chip.meet{--k:var(--accent);background:var(--accent-soft);border-color:transparent;font-weight:500}
+/* Meetings */
+.m-ok{margin-left:auto;flex:none}
+[data-mid] .goal-issues li{flex-wrap:wrap;row-gap:4px}
+[data-mid] .goal-issues li .t{white-space:normal;flex:1 1 160px}
+.goal-av .ico{width:13px;height:13px;stroke-width:2.4}
+.field input,.field select{min-width:0}
+.goal details summary{cursor:pointer;font-size:13px;color:var(--muted)}
+/* Wochenrückblick */
+.review-wrap{flex:1;display:grid;grid-template-columns:260px 1fr;gap:20px;min-height:0}
+.review-opts{display:flex;flex-direction:column;gap:8px;overflow:auto}
+.review-opts label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.review-out{width:100%;height:100%;min-height:360px;font:14px/1.65 inherit;font-family:inherit;border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg);resize:none}
+/* Liste einfügen + Datensicherheit */
+.bulk-grid{grid-template-columns:1fr 290px}
+.bulk-hint{font-size:12px;line-height:1.7;color:var(--muted);margin:8px 0}
+.bulk-hint code{font-family:ui-monospace,Consolas,monospace;background:var(--chip);padding:0 4px;border-radius:4px;color:var(--text)}
+.tok{font-size:11px;padding:1px 6px;border-radius:4px;background:var(--chip);color:var(--muted);margin-left:4px;white-space:nowrap}
+.bulk-sub{display:block;color:var(--muted);font-size:12px;padding-left:14px}
+.check-row{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border)}
+.check-row:last-child{border-bottom:0}
+.check-ico{font-size:20px;width:26px;flex:none;text-align:center}
+.check-row > div > b{display:block;margin-bottom:2px}
+.check-row p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.check-row .btn{margin-top:8px}
+.check-row code{font-family:ui-monospace,Consolas,monospace;background:var(--chip);padding:1px 5px;border-radius:4px;color:var(--text);user-select:all}
+
+@media (max-width:860px){
+  .review-wrap,.bulk-grid{grid-template-columns:1fr}
+  .sidebar{position:fixed;inset:0 auto 0 0;transform:translateX(-100%);visibility:hidden;transition:transform .2s,visibility .2s;box-shadow:var(--shadow-lg)}
+  body.side-open .sidebar{visibility:visible}
+  body.side-open .sidebar{transform:none}
+  body.side-open .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:80}
+  .hamburger{display:grid!important}
+  .main{padding:12px 12px 12px}
+  .page-head{margin-bottom:12px}
+  .page-head h1{font-size:21px}
+  .page-head p{font-size:13px}
+  .panel{padding:12px}
+  .search input{width:160px}
+  .modal-body{grid-template-columns:1fr}
+  .backdrop{padding:12px 8px}
+  .notes,.prompts{grid-template-columns:1fr;grid-template-rows:180px 1fr}
+  .notes-list{border-right:0;border-bottom:1px solid var(--border)}
+  .col{flex-basis:80vw;min-width:80vw}
+  .cal-grid{grid-auto-rows:minmax(72px,1fr)}
+  .cal-chip{font-size:10px;padding:1px 4px}
+  .goal-grid{grid-template-columns:1fr}
+  .prompt-main{padding:12px}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><div class="logo-mark"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span id="boardName">Mein Board</span></div>
+  <div class="sep"></div>
+  <nav class="side-nav">
+    <button class="nav-item tab" data-view="tasks"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>Meine Aufgaben</button>
+    <button class="nav-item tab" data-view="meetings"><svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.3M15.5 4.7a3.5 3.5 0 0 1 0 6.6"/></svg>Meetings</button>
+    <button class="nav-item tab" data-view="goals"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></svg>Ziele</button>
+    <button class="nav-item tab" data-view="review"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17M8.5 15l2 2 4-4"/></svg>Wochenrückblick</button>
+    <button class="nav-item tab priv-only" data-view="notes"><svg class="ico" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h4.5"/></svg>Notizen</button>
+    <button class="nav-item tab priv-only" data-view="prompts"><svg class="ico" viewBox="0 0 24 24"><path d="M11 3.5l1.8 4.9 4.9 1.8-4.9 1.8L11 16.9l-1.8-4.9-4.9-1.8 4.9-1.8z"/><path d="M18.5 14.5v5M16 17h5"/></svg>Prompts</button>
+  </nav>
+  <div class="sep"></div>
+  <div class="side-label"><span>Ziele</span><button class="side-add" id="sideAddGoal" title="Neues Ziel">+</button></div>
+  <div id="sideGoals"></div>
+  <div class="side-bottom">
+    <button class="btn mode-btn" id="modeBtn" title="Privat-/Show-Modus umschalten">🔒 Privat</button>
+    <div class="side-row">
+      <span class="save-state" id="saveState">Lokal gespeichert</span>
+      <span class="spacer"></span>
+      <button class="icon-btn" id="themeBtn" title="Hell/Dunkel"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+      <div class="menu-wrap">
+        <button class="icon-btn" id="menuBtn" title="Daten &amp; Einstellungen"><svg class="ico" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
+        <div class="menu" id="menu" hidden>
+          <div class="hint">Alles wird automatisch im Browser gespeichert.</div>
+          <button data-act="safety">🛡 Datensicherheit prüfen</button>
+          <hr>
+          <button data-act="file-new" class="fs-only">💾 Auto-Sync in neue Datei…</button>
+          <button data-act="file-open" class="fs-only">📂 Sync-Datei öffnen…</button>
+          <button data-act="file-off" class="fs-only" id="fileOffBtn" hidden>⛔ Datei-Sync trennen</button>
+          <hr class="fs-only">
+          <button data-act="export">⬇ Backup exportieren (JSON)</button>
+          <button data-act="import">⬆ Backup importieren…</button>
+          <button data-act="csv-all">📊 Alle Tickets als CSV (Excel)</button>
+          <hr>
+          <button data-act="rename">✎ Board umbenennen</button>
+          <button data-act="clear-done">🧹 Erledigte Tickets löschen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <input type="file" id="importInput" accept=".json,application/json" hidden>
+</aside>
+<div class="scrim" id="scrim"></div>
+
+<div class="main">
+  <header class="page-head">
+    <button class="icon-btn hamburger" id="hamburger" title="Menü"><svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div><h1 id="pageTitle">Meine Aufgaben</h1><p id="pageSub" class="muted"></p></div>
+    <span class="spacer"></span>
+    <button class="btn" id="bulkBtn" title="Mehrere Tickets aus einer Liste anlegen (z. B. Aktionspunkte aus OneNote)">⇣ Liste einfügen</button>
+    <button class="btn primary" id="newIssueBtn" title="Neues Ticket (C)"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Neu</button>
+  </header>
+  <div class="banner" id="backupBanner" hidden>
+    <span>⚠ Deine Daten liegen bisher nur im Browser. Richte den Auto-Sync in eine Datei ein oder exportiere ein Backup.</span>
+    <button class="btn primary small" id="backupBannerBtn">Datensicherheit prüfen</button>
+    <button class="btn ghost small" id="backupBannerClose">Später</button>
+  </div>
+  <div class="banner" id="fileBanner" hidden>
+    <span>Datei-Sync mit <b id="fileBannerName"></b> ist pausiert (Edge braucht nach einem Neustart einmal deine Erlaubnis).</span>
+    <button class="btn primary small" id="fileResumeBtn">Fortsetzen</button>
+    <button class="btn ghost small" id="fileBannerClose">Später</button>
+  </div>
+
+  <div class="panel">
+  <div id="segWrap">
+    <div class="seg-row">
+      <button class="seg tab" data-view="board">Board</button>
+      <button class="seg tab" data-view="list">Liste</button>
+      <button class="seg tab" data-view="cal">Kalender</button>
+    </div>
+    <div class="sep"></div>
+  </div>
+
+<!-- Board -->
+<section class="view" id="view-board">
+  <div class="toolbar">
+    <label class="search"><input id="q" placeholder="Suchen…  ( / )" aria-label="Suchen"></label>
+    <select id="fGoal" aria-label="Ziel"></select>
+    <select id="fImp" aria-label="Wichtigkeit"></select>
+    <select id="fType" aria-label="Typ"></select>
+    <select id="fLabel" aria-label="Label"></select>
+    <select id="fMeet" aria-label="Meeting"></select>
+    <label class="check-field" title="Spalten „Pausiert“ und „Gestrichen“ einblenden"><input type="checkbox" id="fArchive"> Pausiert & Gestrichen</label>
+    <button class="btn ghost" id="fReset" hidden>Filter zurücksetzen</button>
+  </div>
+  <div class="sep"></div>
+  <div class="board" id="board"></div>
+</section>
+
+<!-- Liste / Tabelle -->
+<section class="view" id="view-list" hidden>
+  <div class="toolbar">
+    <label class="search"><input id="lq" placeholder="Suchen…" aria-label="Tabelle durchsuchen"></label>
+    <label class="check-field"><input type="checkbox" id="lHideDone"> Erledigte & Gestrichene ausblenden</label>
+    <button class="btn" id="lColsBtn">Spalten ▾</button>
+    <button class="btn ghost" id="lReset" hidden>Alle Filter löschen</button>
+    <div class="spacer"></div>
+    <span class="save-state" id="lCount"></span>
+    <button class="btn" id="lCsv" title="Aktuelle Ansicht als CSV (öffnet in Excel)">⬇ CSV</button>
+    <button class="btn" id="lNew">+ Zeile</button>
+  </div>
+  <div class="sep"></div>
+  <div class="table-wrap"><table class="grid" id="lTable"></table></div>
+</section>
+
+<!-- Prompts -->
+<section class="view" id="view-prompts" hidden>
+  <div class="prompts">
+    <div class="notes-list">
+      <div class="notes-list-head"><b style="flex:1;align-self:center">KI-Vorlagen</b><button class="btn primary" id="newPromptBtn" title="Neue Vorlage">+</button></div>
+      <div id="promptList"></div>
+    </div>
+    <div class="prompt-main">
+      <div class="step">
+        <h3><span class="step-no">1</span> Vorlage</h3>
+        <input class="title-input" id="pName" placeholder="Name der Vorlage" style="font-size:17px">
+        <textarea class="ta" id="pText" rows="12" spellcheck="false"></textarea>
+        <div class="ph-chips">Platzhalter einfügen:
+          <button data-ph="{{NOTIZ}}" title="Der Text aus Schritt 2">{{NOTIZ}}</button>
+          <button data-ph="{{HEUTE}}" title="Heutiges Datum">{{HEUTE}}</button>
+          <button data-ph="{{ZIELE}}" title="Namen deiner Ziele">{{ZIELE}}</button>
+          <button data-ph="{{LABELS}}" title="Vorhandene Labels">{{LABELS}}</button>
+          <button data-ph="{{OFFENE_TICKETS}}" title="Alle nicht erledigten Tickets als JSON">{{OFFENE_TICKETS}}</button>
+          <span class="spacer"></span><button class="btn danger small" id="pDel">Vorlage löschen</button>
+        </div>
+      </div>
+      <div class="step">
+        <h3><span class="step-no">2</span> Notizen einfügen</h3>
+        <select id="pNote" class="inline-input"></select>
+        <textarea class="ta" id="pInput" rows="7" placeholder="Notiz oben auswählen oder Text z. B. aus OneNote hier einfügen…"></textarea>
+        <div class="ph-chips"><button class="btn primary" id="pCopy">📋 Fertigen Prompt kopieren</button><span id="pCopyMsg"></span></div>
+        <small class="muted">Dann in ChatGPT, Copilot, Claude o. ä. einfügen und die Antwort in Schritt 3 kopieren.</small>
+      </div>
+      <div class="step">
+        <h3><span class="step-no">3</span> KI-Antwort übernehmen</h3>
+        <textarea class="ta" id="pAnswer" rows="7" placeholder="Komplette Antwort der KI hier einfügen – das JSON wird automatisch herausgesucht. Eine einfache Stichpunktliste geht auch."></textarea>
+        <div><button class="btn" id="pParse">Vorschau anzeigen</button></div>
+        <div id="pPreview"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Kalender -->
+<section class="view" id="view-cal" hidden>
+  <div class="toolbar">
+    <div class="cal-nav">
+      <button class="icon-btn" id="calPrev" title="Vorheriger Monat"><svg class="ico" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <span class="cal-title"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg><span id="calTitle"></span></span>
+      <button class="icon-btn" id="calNext" title="Nächster Monat"><svg class="ico" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="btn small" id="calToday">Heute</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="cal-legend">
+      <span><span class="cal-chip soft" style="display:inline-block">◎ Ziel (soft)</span></span>
+      <span><span class="cal-chip hard" style="display:inline-block">⚑ Deadline (hard)</span></span>
+      <span><span class="cal-chip ghost" style="display:inline-block">🔁 geplant</span></span>
+    </div>
+  </div>
+  <div class="sep"></div>
+  <div class="cal-wrap">
+    <div class="cal-head"><div>Mo</div><div>Di</div><div>Mi</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div></div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+</section>
+
+<!-- Ziele -->
+<section class="view" id="view-goals" hidden>
+  <div class="toolbar">
+    <button class="btn" id="newGoalBtn">+ Neues Ziel</button>
+  </div>
+  <div class="sep"></div>
+  <div class="goals-wrap">
+    <div class="goal-grid" id="goalGrid"></div>
+    <h2 class="section-title">🔁 Wiederkehrende Aufgaben</h2>
+    <div class="rec-list" id="recList"></div>
+  </div>
+</section>
+
+<!-- Meetings -->
+<section class="view" id="view-meetings" hidden>
+  <div class="toolbar">
+    <button class="btn" id="newMeetBtn">+ Neues Meeting</button>
+    <span class="muted" style="font-size:13px">Im Ticket unter „🗣 Auf Agenda für“ ein Meeting wählen – dann taucht der Punkt hier beim nächsten Termin auf.</span>
+  </div>
+  <div class="sep"></div>
+  <div class="goals-wrap"><div class="goal-grid" id="meetGrid"></div></div>
+</section>
+
+<!-- Wochenrückblick -->
+<section class="view" id="view-review" hidden>
+  <div class="toolbar">
+    <div class="cal-nav">
+      <button class="icon-btn" id="revPrev" title="Vorherige Woche"><svg class="ico" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <span class="cal-title" id="revTitle"></span>
+      <button class="icon-btn" id="revNext" title="Nächste Woche"><svg class="ico" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="btn small" id="revNow">Diese Woche</button>
+    </div>
+    <div class="spacer"></div>
+    <span id="revMsg"></span>
+    <button class="btn primary" id="revCopy">📋 Text kopieren</button>
+  </div>
+  <div class="sep"></div>
+  <div class="review-wrap">
+    <div class="review-opts">
+      <b>Abschnitte</b>
+      <label><input type="checkbox" data-sec="done"> ✅ Erledigt</label>
+      <label><input type="checkbox" data-sec="doing"> 🔄 In Arbeit</label>
+      <label><input type="checkbox" data-sec="waiting"> ⏳ Warten auf</label>
+      <label><input type="checkbox" data-sec="late"> ⚠ Überfällig</label>
+      <label><input type="checkbox" data-sec="next"> 📅 Nächste Woche</label>
+      <label><input type="checkbox" data-sec="cancelled"> ✖ Gestrichen</label>
+      <label><input type="checkbox" data-sec="paused"> ⏸ Pausiert</label>
+      <b style="margin-top:10px">Optionen</b>
+      <label><input type="checkbox" data-opt="keys"> Ticket-Nummern zeigen</label>
+      <label><input type="checkbox" data-opt="goals"> Ziel in Klammern</label>
+      <label><input type="checkbox" data-opt="subs"> Offene Unteraufgaben zeigen</label>
+      <label class="priv-only"><input type="checkbox" data-opt="priv"> 🔒 Private Tickets einbeziehen</label>
+      <p class="muted" style="font-size:12px;line-height:1.5;margin-top:10px">Der Text lässt sich direkt in Teams oder Outlook einfügen. Du kannst ihn rechts vor dem Kopieren noch anpassen.</p>
+    </div>
+    <textarea class="review-out" id="revOut" spellcheck="false"></textarea>
+  </div>
+</section>
+
+<!-- Notizen -->
+<section class="view" id="view-notes" hidden>
+  <div class="notes">
+    <div class="notes-list">
+      <div class="notes-list-head">
+        <label class="search" style="flex:1"><input id="nq" placeholder="Notizen suchen…" style="width:100%"></label>
+        <button class="btn primary" id="newNoteBtn" title="Neue Notiz">+</button>
+      </div>
+      <div id="notesList"></div>
+    </div>
+    <div class="note-editor" id="noteEditor"></div>
+  </div>
+</section>
+
+  </div><!-- /panel -->
+</div><!-- /main -->
+
+<!-- Ticket-Detail -->
+<div class="backdrop" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <span class="type-icon" id="mTypeIcon"></span>
+      <span id="mKey"></span>
+      <span id="mRecurBadge"></span>
+      <span class="grow"></span>
+      <button class="icon-btn" id="mClose" title="Schließen (Esc)">✕</button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <input class="title-input" id="mTitle" placeholder="Was ist zu tun?">
+        <div class="sec-label">Beschreibung</div>
+        <textarea class="desc" id="mDesc" placeholder="Details, Links, Gedanken…"></textarea>
+
+        <div class="sec-label">Unteraufgaben <small id="mCheckCount"></small><div class="progress" id="mProgress"><div></div></div></div>
+        <ul class="checklist" id="mChecklist"></ul>
+        <input class="check-new" id="mCheckNew" placeholder="+ Unteraufgabe hinzufügen (Enter)">
+
+        <div class="priv-only">
+          <div class="sec-label">Updates <small>Verlauf / Notizen zu diesem Ticket</small></div>
+          <div class="comment-new">
+            <textarea id="mComment" placeholder="Update hinzufügen… (Strg + Enter)"></textarea>
+            <button class="btn primary" id="mCommentBtn">Speichern</button>
+          </div>
+          <ul class="comments" id="mComments"></ul>
+        </div>
+      </div>
+      <aside class="side">
+        <label class="field"><span>Status</span><select id="mStatus" class="status-select"></select></label>
+        <div class="state-box" id="mStateBox" hidden>
+          <label class="field" id="mWaitWrap"><span>⏳ Wartet auf</span><input id="mWaitFor" list="personList" placeholder="Person oder Sache"></label>
+          <label class="field" id="mFollowWrap"><span id="mFollowLabel">Nachfassen am</span><input type="date" id="mFollowUp"></label>
+          <label class="field" id="mReasonWrap"><span>✖ Grund fürs Streichen</span><input id="mReason" placeholder="z. B. Anforderung entfallen"></label>
+        </div>
+        <datalist id="personList"></datalist>
+        <label class="field"><span>Ziel</span><select id="mGoal"></select></label>
+        <div class="field-row">
+          <label class="field"><span>Wichtigkeit</span><select id="mImp"></select></label>
+          <label class="field"><span>Typ</span><select id="mType"></select></label>
+        </div>
+        <div class="field-row">
+          <label class="field"><span>◎ Ziel (soft)</span><input type="date" id="mTarget"></label>
+          <label class="field"><span>⚑ Deadline (hard)</span><input type="date" id="mDeadline"></label>
+        </div>
+        <label class="field"><span>⚑ Deadline per KW <small class="hint">→ Freitag der Woche</small></span><input id="mKW" inputmode="numeric" placeholder="z. B. 43 oder 43/2027"></label>
+        <label class="field"><span>🔁 Wiederholung</span>
+          <select id="mRecur">
+            <option value="">Keine</option>
+            <option value="weekly">Wöchentlich</option>
+            <option value="biweekly">Alle 2 Wochen</option>
+            <option value="monthly">Monatlich (gleiches Datum)</option>
+            <option value="nthweekday">Monatlich: z. B. 1. Montag</option>
+            <option value="lastworkday">Monatlich: letzter Werktag</option>
+            <option value="nthworkday">Monatlich: n-ter Werktag</option>
+            <option value="quarterly">Quartalsweise</option>
+            <option value="weekdays">Wochentage (z. B. 2× pro Woche)</option>
+          </select>
+        </label>
+        <div class="recur-opts" id="mRecurOpts" hidden>
+          <label>Deadline <input type="number" min="0" max="60" id="mBuffer"> Tag(e) nach Ziel-Datum</label>
+          <label>Erscheint <input type="number" min="0" max="60" id="mLead"> Tag(e) vorher auf dem Board</label>
+          <div class="wd-row" id="mDays" hidden></div>
+          <div class="wd-row" id="mNthRow" hidden>
+            <select id="mNth" class="inline-input" style="height:28px"><option value="1">1.</option><option value="2">2.</option><option value="3">3.</option><option value="4">4.</option><option value="-1">letzter</option></select>
+            <select id="mNthWd" class="inline-input" style="height:28px"></select> <span style="align-self:center">im Monat</span>
+          </div>
+          <div class="wd-row" id="mWorkRow" hidden>
+            <select id="mWorkN" class="inline-input" style="height:28px"></select> <span style="align-self:center">Werktag im Monat (Mo–Fr)</span>
+          </div>
+          <div id="mRecurInfo"></div>
+        </div>
+        <label class="field"><span>🗣 Auf Agenda für</span><select id="mMeet"></select></label>
+        <div class="field"><span>📍 Quelle <small class="hint">wo ist die Aufgabe entstanden?</small></span>
+          <div class="src-row"><input id="mSource" list="sourceList" placeholder="z. B. Jour fixe" class="inline-input"><input type="date" id="mSourceDate" class="inline-input"></div>
+          <div class="link-row"><input id="mSourceLink" placeholder="Link, z. B. zur OneNote-Seite"><button type="button" class="btn small" id="mSourceOpen" title="Link öffnen" style="height:36px">↗</button></div>
+        </div>
+        <datalist id="sourceList"></datalist>
+        <label class="field"><span>Labels <small style="font-weight:400">(Komma-getrennt)</small></span><input id="mLabels" list="labelList" placeholder="z. B. arbeit, privat"></label>
+        <datalist id="labelList"></datalist>
+        <label class="field check-field priv-only"><input type="checkbox" id="mPrivate"> 🔒 Privat – im Show-Modus ausgeblendet</label>
+        <div class="meta-dates" id="mDates"></div>
+        <button class="btn danger" id="mDelete">Ticket löschen</button>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- Liste einfügen -->
+<div class="backdrop" id="bulkModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head"><b style="color:var(--text);font-size:15px">⇣ Liste einfügen – mehrere Tickets auf einmal</b><span class="grow"></span><button class="icon-btn" data-close="bulkModal" title="Schließen (Esc)">✕</button></div>
+    <div class="modal-body bulk-grid">
+      <div>
+        <textarea class="ta" id="bulkText" rows="11" placeholder="Eine Zeile = ein Ticket, z. B. Aktionspunkte aus OneNote:&#10;&#10;- Angebot an Müller schicken KW43 #vertrieb !&#10;    - Preise prüfen&#10;    - PDF erstellen&#10;- Rückmeldung zum Budget @Schmidt&#10;- Testdaten anfragen bis 24.10."></textarea>
+        <div class="bulk-hint">Erkannt wird: eingerückte Zeilen → <b>Unteraufgaben</b> · <code>#label</code> · <code>KW43</code> oder <code>24.10.</code> → Deadline · <code>!</code> → Pflicht · <code>@Name</code> → Status „Warten“ auf Name · Zeilen mit „:“ am Ende gelten als Überschrift und werden übersprungen.</div>
+        <div id="bulkPreview"></div>
+      </div>
+      <aside class="side">
+        <label class="field"><span>Status</span><select id="bulkStatus"></select></label>
+        <label class="field"><span>Ziel</span><select id="bulkGoal"></select></label>
+        <label class="field"><span>📍 Quelle (Meeting)</span><input id="bulkSource" list="sourceList" placeholder="z. B. Jour fixe"></label>
+        <label class="field"><span>Quelle am</span><input type="date" id="bulkSourceDate"></label>
+        <label class="field"><span>🗣 Auf Agenda für</span><select id="bulkMeet"></select></label>
+        <label class="field"><span>Labels für alle</span><input id="bulkLabels" placeholder="z. B. projekt-x"></label>
+        <label class="field check-field priv-only"><input type="checkbox" id="bulkPriv"> 🔒 Alle als privat</label>
+        <button class="btn primary" id="bulkCreate" disabled>Tickets anlegen</button>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- Sync-Vorbereitung -->
+<div class="backdrop" id="prepModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" style="max-width:820px">
+    <div class="modal-head"><b style="color:var(--text);font-size:15px" id="prepTitle">📝 Sync-Vorbereitung</b><span class="grow"></span><button class="icon-btn" data-close="prepModal" title="Schließen (Esc)">✕</button></div>
+    <div style="padding:8px 24px 20px;display:flex;flex-direction:column;gap:10px">
+      <div class="ph-chips">
+        <label class="check-field" style="height:32px;font-size:13px"><input type="checkbox" id="prepKeys"> Ticket-Nummern</label>
+        <label class="check-field" style="height:32px;font-size:13px"><input type="checkbox" id="prepSubs"> Offene Unteraufgaben</label>
+        <span class="muted">Zeitraum: seit <input type="date" id="prepSince" class="inline-input" style="height:32px"></span>
+        <span id="prepMsg"></span>
+        <span class="spacer"></span>
+        <button class="btn" id="prepDownload">⬇ Als Datei</button>
+        <button class="btn primary" id="prepCopy">📋 Kopieren</button>
+      </div>
+      <textarea class="review-out" id="prepOut" spellcheck="false" style="min-height:440px"></textarea>
+      <small class="muted">🔒 Private Tickets sind hier immer ausgeschlossen. Den Text kannst du vor dem Kopieren anpassen.</small>
+    </div>
+  </div>
+</div>
+
+<!-- Datensicherheit -->
+<div class="backdrop" id="safeModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" style="max-width:720px">
+    <div class="modal-head"><b style="color:var(--text);font-size:15px">🛡 Datensicherheit prüfen</b><span class="grow"></span><button class="icon-btn" data-close="safeModal" title="Schließen (Esc)">✕</button></div>
+    <div style="padding:4px 24px 20px" id="safeBody"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ================= Konstanten ================= */
+const STORE_KEY = 'jiratype.data.v1';
+const THEME_KEY = 'jiratype.theme';
+const MODE_KEY = 'jiratype.mode';
+const VIEW_KEY = 'jiratype.view';
+const COLS = [
+  { id: 'backlog', name: 'Backlog' },
+  { id: 'todo',    name: 'To Do' },
+  { id: 'doing',   name: 'In Arbeit' },
+  { id: 'waiting', name: 'Warten' },
+  { id: 'done',    name: 'Erledigt' },
+  { id: 'paused',  name: 'Pausiert', archive: true },
+  { id: 'cancelled', name: 'Gestrichen', archive: true },
+];
+const isClosed = i => i.status === 'done' || i.status === 'cancelled';
+const isActive = i => !isClosed(i) && i.status !== 'paused';
+const TYPES = {
+  task: { n: 'Aufgabe', c: '#4bade8', i: '✓' },
+  bug:  { n: 'Problem', c: '#e5493a', i: '!' },
+  idea: { n: 'Idee',    c: '#63ba3c', i: '★' },
+};
+const IMPS = {
+  must:  { n: 'Pflicht' },
+  worth: { n: 'Lohnt sich' },
+  nice:  { n: 'Nice-to-have' },
+};
+const STATUS_ICONS = {
+  backlog: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-backlog)" stroke-width="2" stroke-dasharray="3 2.6"/></svg>',
+  todo: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-todo)" stroke-width="2"/></svg>',
+  doing: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-doing)" stroke-width="2" stroke-dasharray="1 3.2" stroke-linecap="round"/><circle cx="10" cy="10" r="2" fill="var(--s-doing)"/></svg>',
+  done: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-done)" stroke-width="2"/><path d="m6.8 10.2 2.2 2.2 4.2-4.6" fill="none" stroke="var(--s-done)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  waiting: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-waiting)" stroke-width="2"/><path d="M10 6v4.2l2.6 1.6" fill="none" stroke="var(--s-waiting)" stroke-width="2" stroke-linecap="round"/></svg>',
+  paused: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-paused)" stroke-width="2"/><path d="M8.3 7v6M11.7 7v6" stroke="var(--s-paused)" stroke-width="2" stroke-linecap="round"/></svg>',
+  cancelled: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-cancelled)" stroke-width="2"/><path d="m7.5 7.5 5 5m0-5-5 5" stroke="var(--s-cancelled)" stroke-width="2" stroke-linecap="round"/></svg>',
+};
+const FREQS = { weekly: 'wöchentlich', biweekly: 'alle 2 Wochen', monthly: 'monatlich', weekdays: 'an Wochentagen', nthweekday: 'monatlich: n-ter Wochentag', lastworkday: 'monatlich: letzter Werktag', nthworkday: 'monatlich: n-ter Werktag', quarterly: 'quartalsweise' };
+const WD = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const WD_LONG = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+const MEET_FREQS = { none: 'einmalig', weekly: 'wöchentlich', biweekly: 'alle 2 Wochen', monthly: 'monatlich' };
+const GOAL_COLORS = ['#0c66e4', '#22a06b', '#e56910', '#8f7ee7', '#e2b203', '#c9372c', '#1d7f8c', '#cd519d'];
+
+const JSON_FORMAT = `Antwortformat – ein JSON-Array, ein Objekt pro Aufgabe. Erlaubte Felder:
+- "title": kurze Aufgabe, beginnt mit einem Verb (Pflicht)
+- "desc": Details/Kontext (optional)
+- "status": "backlog" | "todo" | "doing" | "waiting" (wartet auf andere) | "done"
+- "waitingFor": auf wen/was ich warte (nur bei "waiting")
+- "importance": "must" (Pflicht) | "worth" (lohnt sich / erfolgversprechend) | "nice" (nice-to-have) | ""
+- "target": Wunschtermin / Soft-Deadline als "YYYY-MM-DD" oder ""
+- "deadline": harte Frist als "YYYY-MM-DD" oder ""
+- "goal": Name eines Ziels (exakt wie unten) oder ""
+- "labels": ["…"]
+- "checklist": ["Teilschritt 1", "Teilschritt 2"]
+- "repeat": "weekly" | "biweekly" (alle 2 Wochen) | "monthly" | "weekdays" | "" – nur bei wiederkehrenden Aufgaben; Start = "target"
+- "days": ["Mo", "Do"] – nur bei "weekdays", z. B. für 2× pro Woche
+
+Beispiel:
+\`\`\`json
+[{"title":"Angebot an Firma X schicken","desc":"Preise aus Meeting vom Montag","status":"todo","importance":"must","target":"2026-10-20","deadline":"2026-10-22","goal":"","labels":["arbeit"],"checklist":["Preise prüfen","PDF erstellen"]}]
+\`\`\``;
+const DEFAULT_PROMPTS = [
+  { name: 'Notizen → Tickets', text:
+`Du bist mein Assistent für Aufgabenplanung. Wandle meine Notizen unten in konkrete, umsetzbare To-dos um.
+
+Regeln:
+- Ein To-do = eine klar formulierte Aufgabe, die mit einem Verb beginnt.
+- Doppeltes zusammenfassen. Reine Infos ohne Handlung weglassen oder als "desc" an die passende Aufgabe hängen.
+- Wichtigkeit nur setzen, wenn es aus den Notizen erkennbar ist.
+- Heute ist {{HEUTE}}. Termine nur setzen, wenn sie sich aus den Notizen ergeben ("morgen", "bis Freitag" usw. in echte Daten umrechnen).
+- Meine Ziele: {{ZIELE}}
+- Vorhandene Labels (bevorzugt verwenden): {{LABELS}}
+- Größere Aufgaben bekommen Teilschritte als "checklist".
+
+${JSON_FORMAT}
+
+Antworte NUR mit dem JSON-Codeblock, ohne weiteren Text.
+
+Meine Notizen:
+"""
+{{NOTIZ}}
+"""` },
+  { name: 'Meeting → Aufgaben + Zusammenfassung', text:
+`Hier sind meine Notizen aus einem Meeting. Heute ist {{HEUTE}}.
+
+1. Schreib zuerst eine kurze Zusammenfassung (max. 5 Stichpunkte): Entscheidungen, wichtige Infos, offene Fragen.
+2. Erstelle danach To-dos – nur Aufgaben, die ICH erledigen muss. Aufgaben, bei denen ich auf andere warte, bekommen das Label "warten" und in "desc" steht, auf wen/was ich warte.
+
+Meine Ziele: {{ZIELE}}
+Vorhandene Labels: {{LABELS}}
+
+${JSON_FORMAT}
+
+Setze das JSON ans Ende deiner Antwort in einen eigenen Codeblock.
+
+Meeting-Notizen:
+"""
+{{NOTIZ}}
+"""` },
+  { name: 'Wochenplanung (offene Tickets)', text:
+`Hilf mir, meine Woche zu planen. Heute ist {{HEUTE}}.
+
+Ich arbeite mit Soft-Deadlines ("target" = wann ich es gerne fertig hätte) und Hard-Deadlines ("deadline" = muss spätestens fertig sein). Wichtigkeit: "must" = Pflicht, "worth" = lohnt sich, "nice" = nice-to-have.
+
+Meine Ziele: {{ZIELE}}
+
+Meine offenen Tickets (JSON):
+{{OFFENE_TICKETS}}
+
+Zusätzliche Gedanken von mir (optional):
+"""
+{{NOTIZ}}
+"""
+
+Aufgabe:
+1. Schlag in 3–5 Sätzen vor, worauf ich mich diese Woche konzentrieren sollte und was warten kann.
+2. Gib danach NUR die Tickets zurück, die du ändern würdest – mit ihrem "key" und nur den geänderten Feldern (z. B. "target", "importance", "status"). Realistisch planen: nicht mehr als ~3 Pflicht-Aufgaben pro Tag.
+3. Neue Aufgaben, die dir fehlen, ohne "key".
+
+Format: ein JSON-Array im Codeblock am Ende, z. B.
+\`\`\`json
+[{"key":"TASK-12","target":"2026-10-21","importance":"must"},{"title":"Neue Aufgabe","status":"todo"}]
+\`\`\`` },
+  { name: 'Notiz aufräumen (ohne Import)', text:
+`Räum diese Notiz auf und strukturiere sie, ohne Inhalte zu erfinden. Gliederung:
+
+## Aufgaben
+(als Checkliste "- [ ] …")
+## Entscheidungen
+## Infos
+## Offene Fragen
+
+Kurz und stichpunktartig. Heute ist {{HEUTE}}.
+
+"""
+{{NOTIZ}}
+"""` },
+];
+
+/* ================= Helfer ================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const now = () => Date.now();
+const pad = n => String(n).padStart(2, '0');
+const isoOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseISO = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (s, n) => { const d = parseISO(s); d.setDate(d.getDate() + n); return isoOf(d); };
+const diffDays = (a, b) => Math.round((parseISO(b) - parseISO(a)) / 86400000);
+const today = () => isoOf(new Date());
+const fmtShort = s => { const d = parseISO(s); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.` + (d.getFullYear() !== new Date().getFullYear() ? String(d.getFullYear()).slice(2) : ''); };
+const fmtDate = s => { const d = parseISO(s); return d.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' }); };
+const fmtDateTime = t => new Date(t).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+function relTime(t) {
+  const s = (now() - t) / 1000;
+  if (s < 60) return 'gerade eben';
+  if (s < 3600) return `vor ${Math.floor(s / 60)} Min.`;
+  if (s < 86400) return `vor ${Math.floor(s / 3600)} Std.`;
+  if (s < 86400 * 7) return `vor ${Math.floor(s / 86400)} Tag${s < 86400 * 2 ? '' : 'en'}`;
+  return new Date(t).toLocaleDateString('de-DE');
+}
+// ISO-Kalenderwoche [KW, Jahr]
+function isoWeek(iso) {
+  const d = parseISO(iso), t = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 3 - ((d.getDay() + 6) % 7));
+  const jan4 = new Date(t.getFullYear(), 0, 4);
+  return [1 + Math.round(((t - jan4) / 86400000 - 3 + ((jan4.getDay() + 6) % 7)) / 7), t.getFullYear()];
+}
+const kwDay = (w, y, off) => { const jan4 = new Date(y, 0, 4); return isoOf(new Date(y, 0, 4 - ((jan4.getDay() + 6) % 7) + (w - 1) * 7 + off)); };
+// Freitag einer KW; ohne Jahr: die nächste passende KW (nicht weit in der Vergangenheit)
+function kwFriday(w, y) {
+  if (!(w >= 1 && w <= 53)) return '';
+  if (y) return kwDay(w, y, 4);
+  const cy = isoWeek(today())[1];
+  const d = kwDay(w, cy, 4);
+  return d < addDays(today(), -30) ? kwDay(w, cy + 1, 4) : d;
+}
+function parseKW(str) {
+  const m = String(str).match(/^\s*(?:kw|cw|wk|week)?\s*(\d{1,2})(?:\s*[\/.]\s*(\d{4}))?\s*$/i);
+  return m ? kwFriday(+m[1], m[2] ? +m[2] : 0) : '';
+}
+function addWorkdays(iso, n) { const d = parseISO(iso); while (n > 0) { d.setDate(d.getDate() + 1); if (d.getDay() % 6 !== 0) n--; } return isoOf(d); }
+function sinceText(ts) {
+  const days = Math.round((parseISO(today()) - parseISO(isoOf(new Date(ts)))) / 86400000);
+  return days <= 0 ? 'seit heute' : days === 1 ? 'seit 1 Tag' : `seit ${days} Tagen`;
+}
+function safeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+function safeSet(k, v) { try { localStorage.setItem(k, v); return true; } catch { return false; } }
+
+/* ================= Daten ================= */
+function seed() {
+  const t = now(), d = today();
+  const g1 = { id: uid(), name: 'Q4: Kundenportal live bringen', color: GOAL_COLORS[0], desc: 'Beispiel-Ziel – bündelt alle Tickets fürs Projekt und zeigt den Fortschritt.', target: addDays(d, 60), created: t };
+  const nextDow = wd => addDays(d, (wd - (parseISO(d).getDay() + 6) % 7 + 7) % 7);
+  const m1 = { id: uid(), name: 'Jour fixe mit Teamlead', freq: 'weekly', next: nextDow(1), created: t };
+  const m2 = { id: uid(), name: 'Projekt-Weekly Kundenportal', freq: 'weekly', next: nextDow(3), created: t };
+  const mk = (n, title, status, extra = {}) => ({
+    id: uid(), key: 'TASK-' + n, title, desc: '', status, type: 'task', importance: '', goalId: null, recurId: null, meetingId: null,
+    private: false, labels: [], target: '', deadline: '', waitingFor: '', followUp: '', source: '', sourceDate: '', sourceLink: '', cancelReason: '',
+    checklist: [], comments: [], order: n, created: t, updated: t, statusAt: t, ...extra,
+  });
+  const sub = (text, done = false) => ({ id: uid(), text, done });
+  const nextFri = nextDow(4);
+  const weekly = mk(6, 'Wöchentliches Status-Update an Teamlead', 'todo', { importance: 'must', labels: ['reporting'], target: nextFri, deadline: nextFri,
+    checklist: [sub('Wochenrückblick kopieren'), sub('Blocker & Risiken ergänzen'), sub('Plan für nächste Woche')] });
+  const rule = { id: uid(), freq: 'weekly', anchor: nextFri, lastDate: nextFri, buffer: 0, lead: 2, active: true, tpl: null, private: false };
+  weekly.recurId = rule.id; rule.tpl = snapshot(weekly);
+  return {
+    version: 2, name: 'Mein Board', prefix: 'TASK', nextNum: 10, updatedAt: t,
+    goals: [g1], recurrences: [rule], meetings: [m1, m2],
+    issues: [
+      mk(1, 'Willkommen 👋 – klick mich an', 'todo', {
+        importance: 'must', labels: ['start'], target: d, deadline: addDays(d, 2),
+        desc: 'Kurzanleitung:\n\n• „+ Neu“ oder Taste C → neues Ticket · „⇣ Liste einfügen“ → mehrere Tickets aus einer Aktionsliste (z. B. aus OneNote)\n• Karten per Drag & Drop verschieben · Unteraufgaben direkt auf der Karte aufklappen (☑) und abhaken\n• Status „Warten“: auf wen + Nachfass-Datum · „Pausiert“ / „Gestrichen (mit Grund)“ über „Pausiert & Gestrichen“ einblenden\n• Wichtigkeit: Pflicht / Lohnt sich / Nice-to-have\n• ◎ Ziel-Datum (soft) und ⚑ Deadline (hard) – Deadline auch per KW eingeben\n• 📍 Quelle: aus welchem Meeting stammt die Aufgabe (+ Link zur OneNote-Seite)\n• 🗣 Meetings: Punkte auf die Agenda setzen, im Meeting abhaken, Agenda kopieren\n• Wochenrückblick: fertiger Text fürs Status-Update\n• 🔒 Privat-Haken: im 👁 Show-Modus unsichtbar (Schalter unten in der Sidebar)\n\nDie Beispiel-Tickets kannst du einfach löschen. Bitte einmal ⋯ → „Datensicherheit prüfen“ durchgehen.',
+        checklist: [sub('Dieses Ticket öffnen', true), sub('⋯ → Datensicherheit prüfen & Auto-Sync einrichten'), sub('Beispiele löschen und eigene Tickets anlegen')],
+      }),
+      mk(2, 'Anforderungen mit Fachbereich abstimmen', 'done', { importance: 'must', goalId: g1.id, labels: ['abstimmung'], doneAt: t, source: m2.name, sourceDate: addDays(d, -7) }),
+      mk(3, 'Testkonzept fürs Kundenportal schreiben', 'doing', { importance: 'must', goalId: g1.id, labels: ['doku'], target: addDays(d, 3), deadline: kwFriday(isoWeek(addDays(d, 7))[0]),
+        meetingId: m2.id, source: m2.name, sourceDate: addDays(d, -7),
+        checklist: [sub('Testfälle sammeln', true), sub('Testdaten klären'), sub('Review mit QA')] }),
+      mk(4, 'Freigabe fürs Testbudget', 'waiting', { importance: 'must', goalId: g1.id, waitingFor: 'Controlling (Fr. Weber)', followUp: addWorkdays(d, 2), statusAt: t - 3 * 86400000,
+        meetingId: m1.id, source: m1.name, sourceDate: addDays(d, -3) }),
+      mk(5, 'Onboarding-Doku für neue Kollegin aktualisieren', 'backlog', { importance: 'worth', labels: ['doku'] }),
+      weekly,
+      mk(7, 'Mitarbeitergespräch vorbereiten', 'todo', { importance: 'must', labels: ['persönlich'], private: true, deadline: addDays(d, 10) }),
+      mk(8, 'Idee: Meeting-Protokolle per KI zusammenfassen', 'paused', { importance: 'nice', type: 'idea', labels: ['idee'], followUp: addDays(d, 30) }),
+      mk(9, 'Alt-System-Export nachbauen', 'cancelled', { goalId: g1.id, cancelReason: 'Entfällt – Daten werden direkt migriert', cancelledAt: t }),
+    ].map((i, k) => ({ ...i, order: k + 1 })),
+    notes: [{ id: uid(), title: 'Notizen', body: 'Hier kannst du frei schreiben – wird automatisch gespeichert.\n\nMeeting-Notizen bleiben in OneNote: Aktionspunkte von dort einfach über „⇣ Liste einfügen“ als Tickets übernehmen.', created: t, updated: t }],
+  };
+}
+function normalize(d) {
+  if (!d || typeof d !== 'object' || !Array.isArray(d.issues)) throw new Error('Ungültiges Format');
+  d.name ??= 'Mein Board'; d.prefix ??= 'TASK';
+  d.notes = Array.isArray(d.notes) ? d.notes : [];
+  d.goals = Array.isArray(d.goals) ? d.goals : [];
+  d.recurrences = Array.isArray(d.recurrences) ? d.recurrences : [];
+  d.meetings = Array.isArray(d.meetings) ? d.meetings : [];
+  if (!Array.isArray(d.prompts)) d.prompts = DEFAULT_PROMPTS.map(p => ({ id: uid(), ...p }));
+  d.issues.forEach(i => {
+    // Migration v1 → v2
+    if (i.importance === undefined) i.importance = { highest: 'must', high: 'must', low: 'nice' }[i.priority] || '';
+    if (i.deadline === undefined) i.deadline = i.due || '';
+    delete i.priority; delete i.due;
+    i.labels ??= []; i.checklist ??= []; i.comments ??= []; i.desc ??= ''; i.target ??= '';
+    i.goalId ??= null; i.recurId ??= null; i.meetingId ??= null; i.private = !!i.private;
+    i.waitingFor ??= ''; i.followUp ??= ''; i.source ??= ''; i.sourceDate ??= ''; i.sourceLink ??= ''; i.cancelReason ??= '';
+    i.statusAt ??= i.updated;
+    if (i.status === 'done' && !i.doneAt) i.doneAt = i.comments.find(c => c.system && /→ Erledigt/.test(c.text))?.at || i.updated;
+    i.type = TYPES[i.type] ? i.type : 'task';
+    if (!IMPS[i.importance]) i.importance = '';
+    i.status = COLS.some(c => c.id === i.status) ? i.status : 'todo';
+  });
+  const maxNum = Math.max(0, ...d.issues.map(i => parseInt(String(i.key).split('-').pop(), 10) || 0));
+  d.nextNum = Math.max(d.nextNum || 1, maxNum + 1);
+  d.version = 2;
+  d.updatedAt ??= now();
+  return d;
+}
+function loadLocal() {
+  const raw = safeGet(STORE_KEY);
+  if (!raw) return null;
+  try { return normalize(JSON.parse(raw)); } catch { return null; }
+}
+let state = loadLocal() || normalize(seed());
+
+/* ================= Modus (Privat / Show) ================= */
+let showMode = safeGet(MODE_KEY) === 'show';
+const visible = i => !showMode || !i.private;
+const visIssues = () => state.issues.filter(visible);
+function applyMode() {
+  document.body.classList.toggle('show-mode', showMode);
+  $('#modeBtn').textContent = showMode ? '👁 Show-Modus' : '🔒 Privat';
+  $('#modeBtn').title = showMode ? 'Show-Modus aktiv: private Tickets, Notizen und Updates sind ausgeblendet. Klick = zurück zu Privat.' : 'Privat-Modus: alles sichtbar. Klick = Show-Modus (z. B. für den Manager).';
+}
+$('#modeBtn').onclick = () => {
+  showMode = !showMode; safeSet(MODE_KEY, showMode ? 'show' : 'private'); applyMode();
+  if (showMode) {
+    if (curId && cur()?.private) closeModal(true);
+    if (currentView === 'notes' || currentView === 'prompts') showView('board');
+  }
+  renderAll(); if (curId) fillModal();
+};
+
+/* ================= Speichern ================= */
+const saveEl = $('#saveState');
+let saveTimer = null;
+function saveNow() {
+  clearTimeout(saveTimer); saveTimer = null;
+  state.updatedAt = now();
+  const ok = safeSet(STORE_KEY, JSON.stringify(state));
+  if (!ok) { saveEl.textContent = '⚠ Speichern im Browser fehlgeschlagen – bitte Backup exportieren'; saveEl.style.color = 'var(--danger)'; }
+  else { saveEl.style.color = ''; saveEl.textContent = fileHandle ? `Gespeichert → ${fileHandle.name}` : 'Gespeichert ✓'; }
+  queueFileWrite();
+}
+function save() {
+  saveEl.textContent = 'Speichert…';
+  clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 300);
+}
+window.addEventListener('beforeunload', () => { if (saveTimer) saveNow(); });
+window.addEventListener('storage', e => {
+  if (e.key !== STORE_KEY || !e.newValue) return;
+  try { state = normalize(JSON.parse(e.newValue)); } catch { return; }
+  renderAll(); if (curId) { if (getIssue(curId)) fillModal(); else closeModal(true); }
+});
+
+/* ================= Datei-Sync (Edge/Chrome) ================= */
+const fsSupported = 'showSaveFilePicker' in window && 'indexedDB' in window;
+let fileHandle = null, pendingHandle = null, fileWriteTimer = null;
+function idb() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open('jiratype', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('kv');
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  });
+}
+async function idbSet(k, v) { const db = await idb(); return new Promise((res, rej) => { const tx = db.transaction('kv', 'readwrite'); v === undefined ? tx.objectStore('kv').delete(k) : tx.objectStore('kv').put(v, k); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); }
+async function idbGet(k) { const db = await idb(); return new Promise((res, rej) => { const r = db.transaction('kv').objectStore('kv').get(k); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+function queueFileWrite() {
+  if (!fileHandle) return;
+  clearTimeout(fileWriteTimer);
+  fileWriteTimer = setTimeout(writeFile, 400);
+}
+async function writeFile() {
+  if (!fileHandle) return;
+  try {
+    const w = await fileHandle.createWritable();
+    await w.write(JSON.stringify(state, null, 2));
+    await w.close();
+    safeSet('jiratype.lastSync', String(now()));
+  } catch (err) {
+    console.error(err);
+    saveEl.textContent = '⚠ Datei-Sync fehlgeschlagen (Browser-Speicher ok)';
+  }
+}
+async function readHandle(h) { const f = await h.getFile(); const txt = await f.text(); return txt.trim() ? normalize(JSON.parse(txt)) : null; }
+async function attachHandle(h, { preferFile }) {
+  const data = await readHandle(h).catch(() => null);
+  if (data && (preferFile || data.updatedAt > state.updatedAt)) {
+    state = data; safeSet(STORE_KEY, JSON.stringify(state)); renderAll();
+  }
+  fileHandle = h;
+  await idbSet('fileHandle', h);
+  updateFileUI();
+  await writeFile();
+  saveEl.textContent = `Gespeichert → ${h.name}`;
+}
+function updateFileUI() {
+  $('#fileOffBtn').hidden = !fileHandle;
+  $('#fileBanner').hidden = !pendingHandle;
+  if (pendingHandle) $('#fileBannerName').textContent = pendingHandle.name;
+}
+async function initFileSync() {
+  $$('.fs-only').forEach(el => el.hidden = !fsSupported);
+  if (!fsSupported) return;
+  updateFileUI();
+  try {
+    const h = await idbGet('fileHandle');
+    if (!h) return;
+    const p = await h.queryPermission({ mode: 'readwrite' });
+    if (p === 'granted') await attachHandle(h, { preferFile: false });
+    else { pendingHandle = h; updateFileUI(); }
+  } catch (e) { console.warn('Datei-Sync nicht verfügbar', e); }
+}
+$('#fileResumeBtn').onclick = async () => {
+  const h = pendingHandle; if (!h) return;
+  try {
+    if (await h.requestPermission({ mode: 'readwrite' }) === 'granted') { pendingHandle = null; await attachHandle(h, { preferFile: false }); }
+  } catch (e) { alert('Konnte Datei nicht öffnen: ' + e.message); }
+  updateFileUI();
+};
+$('#fileBannerClose').onclick = () => { $('#fileBanner').hidden = true; };
+
+/* ================= Ziele & Wiederholungen: Logik ================= */
+const getIssue = id => state.issues.find(i => i.id === id);
+const getGoal = id => state.goals.find(g => g.id === id);
+const getRule = id => state.recurrences.find(r => r.id === id);
+const getMeet = id => state.meetings.find(m => m.id === id);
+const statusName = s => COLS.find(c => c.id === s)?.name || s;
+
+function createGoal(name) {
+  const g = { id: uid(), name, color: GOAL_COLORS[state.goals.length % GOAL_COLORS.length], desc: '', target: '', created: now() };
+  state.goals.push(g); save();
+  return g;
+}
+function deleteGoal(id) {
+  state.goals = state.goals.filter(g => g.id !== id);
+  state.issues.forEach(i => { if (i.goalId === id) i.goalId = null; });
+  save();
+}
+
+const defaultDays = anchor => { const wd = (parseISO(anchor).getDay() + 6) % 7; return [wd, (wd + 3) % 7].sort((a, b) => a - b); };
+function freqText(r) {
+  if (r.freq === 'weekdays') return `${(r.days || []).length}× pro Woche (${(r.days || []).map(d => WD[d]).join(', ')})`;
+  if (r.freq === 'nthweekday') return `jeden ${r.nth === -1 ? 'letzten' : (r.nth || 1) + '.'} ${WD_LONG[r.wday ?? 0]} im Monat`;
+  if (r.freq === 'lastworkday') return 'letzter Werktag im Monat';
+  if (r.freq === 'nthworkday') return `${r.nth || 1}. Werktag im Monat`;
+  return FREQS[r.freq];
+}
+// Fehlende Einstellungen eines Rhythmus aus dem Startdatum ableiten
+function ruleDefaults(r) {
+  const a = parseISO(r.anchor), wd = (a.getDay() + 6) % 7;
+  if (r.freq === 'weekdays' && !r.days?.length) r.days = defaultDays(r.anchor);
+  if (r.freq === 'nthweekday') { r.wday ??= wd; r.nth ??= Math.ceil(a.getDate() / 7) > 4 ? -1 : Math.ceil(a.getDate() / 7); }
+  if (r.freq === 'nthworkday' && !r.nth) {
+    let n = 0; for (let k = 1; k <= a.getDate(); k++) if (new Date(a.getFullYear(), a.getMonth(), k).getDay() % 6 !== 0) n++;
+    r.nth = Math.max(1, Math.min(10, n || 1));
+  }
+  return r;
+}
+function nthWeekdayOf(y, m, nth, wday) {
+  if (nth === -1) { const last = new Date(y, m + 1, 0); return new Date(last.getFullYear(), last.getMonth(), last.getDate() - (((last.getDay() + 6) % 7) - wday + 7) % 7); }
+  const first = new Date(y, m, 1);
+  return new Date(first.getFullYear(), first.getMonth(), 1 + (wday - ((first.getDay() + 6) % 7) + 7) % 7 + (nth - 1) * 7);
+}
+// Macht aus einem Ticket eine Serie (Startdatum = Ziel-Datum)
+function makeRule(i, freq, days) {
+  const anchor = i.target || i.deadline || today();
+  const buffer = i.target && i.deadline ? Math.max(0, diffDays(i.target, i.deadline)) : 1;
+  if (!i.target) i.target = anchor;
+  if (!i.deadline) i.deadline = addDays(anchor, buffer);
+  const lead = { weekdays: 1, weekly: 2, biweekly: 2, quarterly: 10 }[freq] ?? 5;
+  const rule = { id: uid(), freq, anchor, lastDate: anchor, buffer, lead, active: true, tpl: snapshot(i), private: i.private };
+  if (freq === 'weekdays' && days?.length) rule.days = [...new Set(days)].sort((a, b) => a - b);
+  ruleDefaults(rule);
+  state.recurrences.push(rule); i.recurId = rule.id;
+  return rule;
+}
+// n-ter Termin einer Serie (fester Rhythmus ab Startdatum)
+function occ(rule, n) {
+  if (['nthweekday', 'lastworkday', 'nthworkday', 'quarterly'].includes(rule.freq)) {
+    const a = parseISO(rule.anchor), y = a.getFullYear(), m = a.getMonth() + (rule.freq === 'quarterly' ? 3 * n : n);
+    if (rule.freq === 'quarterly') return isoOf(new Date(y, m, Math.min(a.getDate(), new Date(y, m + 1, 0).getDate())));
+    if (rule.freq === 'nthweekday') return isoOf(nthWeekdayOf(y, m, rule.nth || 1, rule.wday ?? 0));
+    if (rule.freq === 'lastworkday') { const d = new Date(y, m + 1, 0); while (d.getDay() % 6 === 0) d.setDate(d.getDate() - 1); return isoOf(d); }
+    const d = new Date(y, m, 1); let c = 0;
+    for (;;) { if (d.getDay() % 6 !== 0 && ++c === (rule.nth || 1)) return isoOf(d); d.setDate(d.getDate() + 1); }
+  }
+  if (rule.freq === 'weekdays') {
+    const days = rule.days?.length ? [...rule.days].sort((a, b) => a - b) : [0];
+    const a = parseISO(rule.anchor);
+    const monday = new Date(a.getFullYear(), a.getMonth(), a.getDate() - ((a.getDay() + 6) % 7));
+    return isoOf(new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + Math.floor(n / days.length) * 7 + days[n % days.length]));
+  }
+  if (rule.freq === 'monthly') {
+    const a = parseISO(rule.anchor);
+    const y = a.getFullYear(), m = a.getMonth() + n;
+    const last = new Date(y, m + 1, 0).getDate();
+    return isoOf(new Date(y, m, Math.min(a.getDate(), last)));
+  }
+  return addDays(rule.anchor, n * (rule.freq === 'weekly' ? 7 : 14));
+}
+function nextIdx(rule, after = rule.lastDate) {
+  for (let n = 0; n < 5000; n++) if (!after || occ(rule, n) > after) return n;
+  return -1;
+}
+const nextOcc = rule => { const n = nextIdx(rule); return n < 0 ? null : occ(rule, n); };
+function snapshot(i) {
+  return { title: i.title, desc: i.desc, type: i.type, importance: i.importance, labels: [...i.labels], goalId: i.goalId, private: i.private, checklist: i.checklist.map(c => c.text) };
+}
+function latestInstance(ruleId) {
+  return state.issues.filter(i => i.recurId === ruleId).sort((a, b) => (b.target || '').localeCompare(a.target || '') || b.created - a.created)[0];
+}
+function syncRuleTemplate(i) {
+  const r = i && getRule(i.recurId);
+  if (r && latestInstance(r.id) === i) { r.tpl = snapshot(i); r.private = i.private; }
+}
+function createFromRule(rule, date) {
+  const src = latestInstance(rule.id);
+  const tpl = src ? snapshot(src) : rule.tpl;
+  createIssue({
+    title: tpl.title, desc: tpl.desc, type: tpl.type, importance: tpl.importance, labels: [...tpl.labels],
+    goalId: tpl.goalId && getGoal(tpl.goalId) ? tpl.goalId : null, private: tpl.private,
+    checklist: tpl.checklist.map(text => ({ id: uid(), text, done: false })),
+    recurId: rule.id, target: date, deadline: addDays(date, rule.buffer || 0), status: 'todo',
+  });
+}
+// Fällige Serientermine als Tickets anlegen (beim Öffnen + regelmäßig)
+function generateRecurring() {
+  const t = today(); let created = 0;
+  for (const rule of state.recurrences) {
+    if (!rule.active) continue;
+    let n = nextIdx(rule); const due = [];
+    while (n >= 0 && n < 5000) { const d = occ(rule, n); if (addDays(d, -(rule.lead || 0)) > t) break; due.push(d); n++; }
+    if (!due.length) continue;
+    // Lange nicht geöffnet? Nur noch offene Termine + höchstens einen verpassten anlegen
+    let pick = due.filter(d => addDays(d, rule.buffer || 0) >= t);
+    if (!pick.length) pick = [due[due.length - 1]];
+    pick.forEach(d => { createFromRule(rule, d); created++; });
+    rule.lastDate = due[due.length - 1];
+  }
+  if (created) { save(); renderAll(); }
+}
+
+/* ================= Board ================= */
+const boardEl = $('#board');
+const filters = { q: '', type: '', imp: '', label: '', goal: '', meet: '' };
+let showArchive = safeGet('jiratype.archive') === '1';
+const expanded = new Set(); // aufgeklappte Unteraufgaben auf Karten
+function matches(i) {
+  if (!visible(i)) return false;
+  if (filters.type && i.type !== filters.type) return false;
+  if (filters.imp && i.importance !== filters.imp) return false;
+  if (filters.label && !i.labels.includes(filters.label)) return false;
+  if (filters.goal && (filters.goal === '__none' ? i.goalId : i.goalId !== filters.goal)) return false;
+  if (filters.meet && i.meetingId !== filters.meet) return false;
+  if (filters.q) {
+    const q = filters.q.toLowerCase();
+    const parts = [i.key, i.title, i.desc, i.labels.join(' '), getGoal(i.goalId)?.name || '', i.waitingFor, i.source, i.cancelReason, ...i.checklist.map(c => c.text)];
+    if (!showMode) parts.push(...i.comments.map(c => c.text));
+    if (!parts.join(' ').toLowerCase().includes(q)) return false;
+  }
+  return true;
+}
+function allLabels() { return [...new Set(visIssues().flatMap(i => i.labels))].sort((a, b) => a.localeCompare(b, 'de')); }
+function dueState(i) {
+  if (isClosed(i)) return '';
+  const t = today();
+  if ((i.status === 'waiting' || i.status === 'paused') && i.followUp && i.followUp <= t) return 'follow';
+  if (i.status === 'paused') return '';
+  if (i.deadline && i.deadline < t) return 'late';
+  if ((i.target && i.target < t) || i.deadline === t) return 'soft';
+  return '';
+}
+function stateHTML(i) {
+  const due = i.followUp && i.followUp <= today();
+  if (i.status === 'waiting') return `<div class="card-state ${due ? 'follow' : ''}">⏳ wartet auf <b>${esc(i.waitingFor || '?')}</b> · ${sinceText(i.statusAt || i.updated)}${i.followUp ? ` · ${due ? '⏰ ' : ''}nachfassen ${fmtShort(i.followUp)}` : ''}</div>`;
+  if (i.status === 'paused') return `<div class="card-state ${due ? 'follow' : ''}">⏸ pausiert${i.followUp ? ` · wieder ab ${fmtShort(i.followUp)}` : ''}</div>`;
+  if (i.status === 'cancelled') return `<div class="card-state">✖ ${esc(i.cancelReason || 'gestrichen')}</div>`;
+  return '';
+}
+function goalChip(g) { return g ? `<span class="goal-chip" style="--g:${esc(g.color)}" title="Ziel">${esc(g.name)}</span>` : ''; }
+function impChip(imp) { return imp ? `<span class="imp imp-${imp}">${IMPS[imp].n}</span>` : ''; }
+function dateHTML(i) {
+  const t = today(), done = !isActive(i), out = [];
+  if (i.target) out.push(`<span class="date ${!done && i.target < t ? 'soft' : ''}" title="Ziel (soft): ${fmtDate(i.target)}">◎ ${fmtShort(i.target)}</span>`);
+  if (i.deadline) out.push(`<span class="date ${!done && i.deadline < t ? 'late' : (!done && i.deadline === t ? 'soft' : '')}" title="Deadline (hard): ${fmtDate(i.deadline)} · KW ${isoWeek(i.deadline)[0]}">⚑ ${fmtShort(i.deadline)}</span>`);
+  return out.join('');
+}
+const goalAv = (g, cls = '') => `<span class="goal-av ${cls}" style="--g:${esc(g.color)}">${esc((g.name.trim()[0] || '•').toUpperCase())}</span>`;
+function cardHTML(i) {
+  const t = TYPES[i.type];
+  const checkDone = i.checklist.filter(c => c.done).length;
+  const ds = dueState(i);
+  const g = getGoal(i.goalId);
+  const m = getMeet(i.meetingId);
+  const tags = [impChip(i.importance), m ? `<span class="meet-chip" title="Auf der Agenda">🗣 ${esc(m.name)}</span>` : '', ...i.labels.map(l => `<span class="label">${esc(l)}</span>`)].join('');
+  return `<div class="card ${ds ? 'due-' + ds : ''}" draggable="true" data-id="${i.id}">
+    <div class="card-title">${esc(i.title) || '<i style="color:var(--subtle)">(ohne Titel)</i>'}</div>
+    ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+    ${stateHTML(i)}
+    ${i.source ? `<div class="card-src" title="Quelle">📍 ${esc(i.source)}${i.sourceDate ? ' · ' + fmtShort(i.sourceDate) : ''}</div>` : ''}
+    <div class="sep"></div>
+    <div class="card-foot">
+      <span class="type-icon" style="background:${t.c}" title="${t.n}">${t.i}</span>
+      <span class="card-key">${esc(i.key)}</span>
+      ${i.recurId && getRule(i.recurId) ? '<span title="Wiederkehrend">🔁</span>' : ''}
+      ${i.private && !showMode ? '<span title="Privat – im Show-Modus unsichtbar">🔒</span>' : ''}
+      <span class="card-meta">
+        ${dateHTML(i)}
+        ${i.checklist.length ? `<button class="sub-toggle" data-sub title="Unteraufgaben auf-/zuklappen">☑ ${checkDone}/${i.checklist.length}</button>` : ''}
+        ${!showMode && i.comments.some(c => !c.system) ? `<span title="Updates">💬 ${i.comments.filter(c => !c.system).length}</span>` : ''}
+      </span>
+    </div>
+    ${expanded.has(i.id) && i.checklist.length ? `<ul class="sub-list">${i.checklist.map(c => `<li class="${c.done ? 'done' : ''}"><label><input type="checkbox" data-subid="${c.id}" ${c.done ? 'checked' : ''}><span>${esc(c.text)}</span></label></li>`).join('')}</ul>` : ''}
+    ${g ? `<div class="card-goal">${goalAv(g, 'sm')}<span>${esc(g.name)}</span></div>` : ''}
+  </div>`;
+}
+function renderBoard() {
+  const active = Object.values(filters).some(Boolean);
+  $('#fReset').hidden = !active;
+  $('#fArchive').checked = showArchive;
+  boardEl.innerHTML = COLS.filter(c => !c.archive || showArchive).map(c => {
+    const items = state.issues.filter(i => i.status === c.id && visible(i)).sort((a, b) => a.order - b.order);
+    const shown = items.filter(matches);
+    return `<div class="col" data-status="${c.id}">
+      <div class="col-head">${STATUS_ICONS[c.id]}<span>${c.name}</span><span class="col-count">${active ? shown.length + '/' : ''}${items.length}</span>
+        <button class="icon-btn col-add" data-qa-top="${c.id}" title="Ticket in „${c.name}“ anlegen"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <div class="col-list">${shown.map(cardHTML).join('')}</div>
+      <div class="quick-add"><button data-qa="${c.id}">+ Erstellen</button></div>
+    </div>`;
+  }).join('');
+}
+function setOptions(el, opts, first) {
+  const v = el.value;
+  el.innerHTML = (first ? `<option value="">${first}</option>` : '') + opts.map(([k, n]) => `<option value="${esc(k)}">${esc(n)}</option>`).join('');
+  el.value = opts.some(o => o[0] === v) ? v : (first ? '' : opts[0]?.[0] ?? '');
+}
+function renderFilterOptions() {
+  setOptions($('#fType'), Object.entries(TYPES).map(([k, t]) => [k, t.n]), 'Alle Typen');
+  setOptions($('#fImp'), Object.entries(IMPS).map(([k, p]) => [k, p.n]), 'Jede Wichtigkeit');
+  setOptions($('#fGoal'), [...state.goals.map(g => [g.id, g.name]), ['__none', '— ohne Ziel —']], 'Alle Ziele');
+  setOptions($('#fMeet'), state.meetings.map(m => [m.id, 'Agenda: ' + m.name]), 'Alle Meetings');
+  filters.meet = $('#fMeet').value;
+  const uniq = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
+  $('#personList').innerHTML = uniq(state.issues.map(i => i.waitingFor)).map(v => `<option value="${esc(v)}">`).join('');
+  $('#sourceList').innerHTML = uniq([...state.meetings.map(m => m.name), ...state.issues.map(i => i.source)]).map(v => `<option value="${esc(v)}">`).join('');
+  const labels = allLabels();
+  setOptions($('#fLabel'), labels.map(l => [l, l]), 'Alle Labels');
+  filters.label = $('#fLabel').value; filters.goal = $('#fGoal').value;
+  $('#labelList').innerHTML = labels.map(l => `<option value="${esc(l)}">`).join('');
+}
+function renderSidebar() {
+  const active = TASK_VIEWS.includes(currentView) ? filters.goal : '';
+  $('#sideGoals').innerHTML = state.goals.map(g => {
+    const open = visIssues().filter(i => i.goalId === g.id && !isClosed(i)).length;
+    return `<button class="side-goal ${active === g.id ? 'active' : ''}" data-gid="${g.id}" title="Board nach diesem Ziel filtern">${goalAv(g)}<span class="n">${esc(g.name || 'Neues Ziel')}</span>${open ? `<small>${open}</small>` : ''}<span class="side-del" role="button" title="Ziel löschen">✕</span></button>`;
+  }).join('') || '<div class="side-empty">Noch keine Ziele</div>';
+}
+$('#sideGoals').addEventListener('click', e => {
+  const b = e.target.closest('[data-gid]'); if (!b) return;
+  const id = b.dataset.gid;
+  if (e.target.closest('.side-del')) {
+    const g = getGoal(id);
+    if (!confirm(`Ziel „${g.name}“ löschen? Die Tickets bleiben erhalten, nur die Zuordnung wird entfernt.`)) return;
+    if (filters.goal === id) { filters.goal = ''; $('#fGoal').value = ''; }
+    deleteGoal(id); renderAll(); return;
+  }
+  filters.goal = filters.goal === id && TASK_VIEWS.includes(currentView) ? '' : id;
+  $('#fGoal').value = filters.goal;
+  showView(currentView === 'list' || currentView === 'cal' ? 'board' : TASK_VIEWS.includes(currentView) ? currentView : 'board');
+});
+$('#sideAddGoal').onclick = () => { showView('goals'); $('#newGoalBtn').click(); };
+$('#hamburger').onclick = () => document.body.classList.add('side-open');
+$('#scrim').onclick = () => document.body.classList.remove('side-open');
+
+function renderAll() {
+  $('#boardName').textContent = state.name;
+  renderSidebar();
+  document.title = state.name;
+  renderFilterOptions(); renderBoard();
+  if (currentView === 'cal') renderCal();
+  if (currentView === 'goals') renderGoals();
+  if (currentView === 'notes') renderNotes();
+  if (currentView === 'list') renderList();
+  if (currentView === 'prompts') renderPrompts();
+  if (currentView === 'meetings') renderMeetings();
+  if (currentView === 'review') renderReview();
+}
+
+boardEl.addEventListener('click', e => {
+  // Unteraufgaben auf der Karte auf-/zuklappen und abhaken
+  const tg = e.target.closest('[data-sub]');
+  if (tg) { const id = tg.closest('.card').dataset.id; expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderBoard(); return; }
+  const cb = e.target.closest('[data-subid]');
+  if (cb) {
+    const i = getIssue(cb.closest('.card').dataset.id), c = i?.checklist.find(x => x.id === cb.dataset.subid);
+    if (c) { c.done = cb.checked; i.updated = now(); save(); renderBoard(); }
+    return;
+  }
+  if (e.target.closest('.sub-list')) return; // Klick aufs Label löst den Checkbox-Klick aus
+  const card = e.target.closest('.card');
+  if (card) return openIssue(card.dataset.id);
+  const qa = e.target.closest('[data-qa]');
+  if (qa) return openQuickAdd(qa.parentElement, qa.dataset.qa);
+  const top = e.target.closest('[data-qa-top]');
+  if (top) openQuickAdd($('.quick-add', top.closest('.col')), top.dataset.qaTop);
+});
+function openQuickAdd(wrap, status) {
+  wrap.innerHTML = `<textarea placeholder="Was ist zu tun?"></textarea><div class="qa-hint">Enter = anlegen · Esc = abbrechen</div>`;
+  const ta = $('textarea', wrap); ta.focus();
+  const close = () => { wrap.innerHTML = `<button data-qa="${status}">+ Erstellen</button>`; };
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const title = ta.value.trim();
+      if (!title) return close();
+      // Aktive Ziel-Filter übernehmen
+      createIssue({ title, status, goalId: filters.goal && filters.goal !== '__none' ? filters.goal : null });
+      renderAll();
+      const w = boardEl.querySelector(`.col[data-status="${status}"] .quick-add`);
+      openQuickAdd(w, status);
+      const list = w.previousElementSibling; list.scrollTop = list.scrollHeight;
+    } else if (e.key === 'Escape') { e.stopPropagation(); close(); }
+  });
+  ta.addEventListener('blur', () => setTimeout(() => { if (wrap.isConnected && !ta.value.trim()) close(); }, 150));
+}
+function createIssue(fields) {
+  const status = fields.status || 'todo';
+  const maxOrder = Math.max(0, ...state.issues.filter(i => i.status === status).map(i => i.order));
+  const t = now();
+  const issue = {
+    id: uid(), key: `${state.prefix}-${state.nextNum++}`, title: '', desc: '', status, type: 'task', importance: '',
+    goalId: null, recurId: null, meetingId: null, private: false, labels: [], target: '', deadline: '',
+    waitingFor: '', followUp: '', source: '', sourceDate: '', sourceLink: '', cancelReason: '', checklist: [], comments: [],
+    order: maxOrder + 1, created: t, updated: t, statusAt: t, ...fields,
+  };
+  state.issues.push(issue); save();
+  return issue;
+}
+
+/* Drag & Drop */
+let dragId = null;
+const ph = document.createElement('div'); ph.className = 'placeholder';
+boardEl.addEventListener('dragstart', e => {
+  const card = e.target.closest('.card'); if (!card) return;
+  dragId = card.dataset.id;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', dragId);
+  requestAnimationFrame(() => card.classList.add('dragging'));
+});
+boardEl.addEventListener('dragend', () => {
+  dragId = null; ph.remove();
+  $$('.dragging', boardEl).forEach(c => c.classList.remove('dragging'));
+  $$('.drop-target', boardEl).forEach(c => c.classList.remove('drop-target'));
+});
+boardEl.addEventListener('dragover', e => {
+  if (!dragId) return;
+  const col = e.target.closest('.col'); if (!col) return;
+  e.preventDefault();
+  $$('.drop-target', boardEl).forEach(c => c !== col && c.classList.remove('drop-target'));
+  col.classList.add('drop-target');
+  const list = $('.col-list', col);
+  const cards = [...list.querySelectorAll('.card:not(.dragging)')];
+  const after = cards.find(c => { const r = c.getBoundingClientRect(); return e.clientY < r.top + r.height / 2; });
+  if (after) { if (ph.nextSibling !== after) list.insertBefore(ph, after); }
+  else if (ph.parentElement !== list || ph.nextSibling) list.appendChild(ph);
+});
+boardEl.addEventListener('drop', e => {
+  if (!dragId) return;
+  const col = e.target.closest('.col'); if (!col) return;
+  e.preventDefault();
+  const list = $('.col-list', col);
+  let next = ph.parentElement === list ? ph.nextElementSibling : null;
+  while (next && (!next.classList.contains('card') || next.dataset.id === dragId)) next = next.nextElementSibling;
+  moveIssue(dragId, col.dataset.status, next ? next.dataset.id : null);
+  ph.remove(); renderBoard();
+});
+function moveIssue(id, status, beforeId) {
+  const issue = getIssue(id); if (!issue) return;
+  if (!setStatus(issue, status)) return;
+  const siblings = state.issues.filter(i => i.status === status && i.id !== id).sort((a, b) => a.order - b.order);
+  let idx = beforeId ? siblings.findIndex(i => i.id === beforeId) : -1;
+  if (idx < 0) idx = siblings.length;
+  siblings.splice(idx, 0, issue);
+  siblings.forEach((i, n) => i.order = n + 1);
+  save();
+}
+// Status wechseln; fragt bei „Gestrichen“ nach dem Grund und bei „Warten“ nach der Person.
+// Gibt false zurück, wenn der Wechsel abgebrochen wurde.
+function setStatus(issue, status, opts = {}) {
+  if (issue.status === status) return true;
+  if (status === 'cancelled') {
+    let reason = opts.reason;
+    if (reason === undefined) { reason = prompt('Warum wird das Ticket gestrichen?', issue.cancelReason || ''); if (reason === null) return false; }
+    issue.cancelReason = reason.trim(); issue.cancelledAt = now();
+  }
+  if (status === 'waiting' && !issue.waitingFor && opts.ask !== false) {
+    const who = prompt('Auf wen oder was wartest du? (optional)', '');
+    if (who === null) return false;
+    issue.waitingFor = who.trim();
+  }
+  if ((status === 'waiting') && !issue.followUp) issue.followUp = addWorkdays(today(), 3);
+  const from = statusName(issue.status), to = statusName(status);
+  issue.status = status; issue.updated = issue.statusAt = now();
+  if (status === 'done') issue.doneAt = now();
+  const extra = status === 'cancelled' && issue.cancelReason ? ` (Grund: ${issue.cancelReason})` : status === 'waiting' && issue.waitingFor ? ` (wartet auf ${issue.waitingFor})` : '';
+  issue.comments.unshift({ id: uid(), text: `Status: ${from} → ${to}${extra}`, at: now(), system: true });
+  return true;
+}
+
+/* Filter */
+$('#q').addEventListener('input', e => { filters.q = e.target.value.trim(); renderBoard(); });
+$('#fArchive').addEventListener('change', e => { showArchive = e.target.checked; safeSet('jiratype.archive', showArchive ? '1' : '0'); renderBoard(); });
+[['#fType', 'type'], ['#fImp', 'imp'], ['#fLabel', 'label'], ['#fGoal', 'goal'], ['#fMeet', 'meet']].forEach(([s, k]) => $(s).addEventListener('change', e => { filters[k] = e.target.value; renderBoard(); renderSidebar(); }));
+$('#fReset').onclick = () => { Object.keys(filters).forEach(k => filters[k] = ''); $('#q').value = ''; ['#fType', '#fImp', '#fLabel', '#fGoal', '#fMeet'].forEach(s => $(s).value = ''); renderBoard(); renderSidebar(); };
+
+/* ================= Kalender ================= */
+let calY = new Date().getFullYear(), calM = new Date().getMonth();
+const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+function renderCal() {
+  $('#calTitle').textContent = `${MONTHS[calM]} ${calY}`;
+  const first = new Date(calY, calM, 1);
+  const start = new Date(calY, calM, 1 - ((first.getDay() + 6) % 7));
+  const startISO = isoOf(start), endISO = addDays(startISO, 41), t = today();
+  const byDay = {};
+  const push = (d, item) => { if (d >= startISO && d <= endISO) (byDay[d] ||= []).push(item); };
+  visIssues().forEach(i => {
+    if (i.target && i.target !== i.deadline) push(i.target, { kind: 'soft', i });
+    if (i.deadline) push(i.deadline, { kind: 'hard', i });
+    if (i.followUp && (i.status === 'waiting' || i.status === 'paused')) push(i.followUp, { kind: 'follow', i });
+  });
+  state.meetings.forEach(m => meetDates(m, startISO, endISO).forEach(d => push(d, { kind: 'meet', m })));
+  state.recurrences.forEach(r => {
+    if (!r.active || (showMode && r.private)) return;
+    for (let n = nextIdx(r), k = 0; n >= 0 && k < 80; n++, k++) {
+      const d = occ(r, n); if (d > endISO) break;
+      push(d, { kind: 'ghost', r });
+    }
+  });
+  let html = '';
+  for (let k = 0; k < 42; k++) {
+    const d = addDays(startISO, k), dt = parseISO(d);
+    const rank = { meet: 0, hard: 1, follow: 2, soft: 3, ghost: 4 };
+    const items = (byDay[d] || []).sort((a, b) => rank[a.kind] - rank[b.kind]);
+    html += `<div class="cal-cell ${dt.getMonth() !== calM ? 'other' : ''} ${d === t ? 'today' : ''}">
+      ${k % 7 === 0 ? `<span class="cal-kw">KW ${isoWeek(d)[0]}</span>` : ''}<span class="cal-day">${dt.getDate()}</span>
+      <div class="cal-items">${items.map(it => {
+        if (it.kind === 'ghost') { const g = getGoal(it.r.tpl?.goalId); return `<div class="cal-chip ghost" ${g ? `style="--g:${esc(g.color)}"` : ''} title="Geplant (${freqText(it.r)}) – wird ${it.r.lead || 0} Tag(e) vorher als Ticket angelegt">🔁 ${esc(it.r.tpl?.title || 'Serie')}</div>`; }
+        if (it.kind === 'meet') { const n = agendaItems(it.m).length; return `<div class="cal-chip meet" data-meet="${it.m.id}" title="Meeting${n ? ` – ${n} offene Agenda-Punkte` : ''}">🗣 ${esc(it.m.name)}${n ? ` · ${n}` : ''}</div>`; }
+        if (it.kind === 'follow') { const i = it.i; return `<div class="cal-chip follow" data-id="${i.id}" title="${i.status === 'waiting' ? 'Nachfassen' : 'Wieder aufnehmen'}: ${esc(i.key)} ${esc(i.title)}">${i.status === 'waiting' ? '⏳' : '⏸'} ${esc(i.title || i.key)}</div>`; }
+        const i = it.i, g = getGoal(i.goalId);
+        return `<div class="cal-chip ${it.kind} ${isClosed(i) ? 'done' : ''}" data-id="${i.id}" ${g ? `style="--g:${esc(g.color)}"` : ''} title="${it.kind === 'hard' ? 'Deadline' : 'Ziel'}: ${esc(i.key)} ${esc(i.title)}">${it.kind === 'hard' ? '⚑' : '◎'} ${esc(i.title || i.key)}</div>`;
+      }).join('')}</div></div>`;
+  }
+  $('#calGrid').innerHTML = html;
+}
+$('#calGrid').addEventListener('click', e => {
+  if (e.target.closest('[data-meet]')) return showView('meetings');
+  const c = e.target.closest('.cal-chip[data-id]'); if (c) openIssue(c.dataset.id);
+});
+$('#calPrev').onclick = () => { if (--calM < 0) { calM = 11; calY--; } renderCal(); };
+$('#calNext').onclick = () => { if (++calM > 11) { calM = 0; calY++; } renderCal(); };
+$('#calToday').onclick = () => { calY = new Date().getFullYear(); calM = new Date().getMonth(); renderCal(); };
+
+/* ================= Ziele-Ansicht ================= */
+
+function renderGoals() {
+  const wrap = $('#view-goals');
+  if (wrap.contains(document.activeElement) && document.activeElement.matches('input:not([type=color]),textarea')) return;
+  const t = today();
+  $('#goalGrid').innerHTML = state.goals.length ? state.goals.map(g => {
+    const items = visIssues().filter(i => i.goalId === g.id).sort((a, b) => COLS.findIndex(c => c.id === a.status) - COLS.findIndex(c => c.id === b.status) || a.order - b.order);
+    const counted = items.filter(i => i.status !== 'cancelled');
+    const done = counted.filter(i => i.status === 'done').length;
+    const pct = counted.length ? Math.round(done / counted.length * 100) : 0;
+    return `<div class="goal" data-gid="${g.id}" style="--g:${esc(g.color)}">
+      <div class="goal-head">
+        <input type="color" class="g-color" value="${esc(g.color)}" title="Farbe">
+        <input class="title-input g-name" value="${esc(g.name)}" placeholder="Name des Ziels">
+        <button class="btn danger small g-del" title="Ziel löschen (Tickets bleiben erhalten)">Löschen</button>
+      </div>
+      <div class="goal-meta">
+        <label>Bis <input type="date" class="inline-input g-target" value="${esc(g.target || '')}"></label>
+        ${g.target && g.target < t && pct < 100 ? '<span class="date late">überfällig</span>' : ''}
+        <span style="margin-left:auto"><b>${done}/${counted.length}</b> erledigt · ${pct} %</span>
+      </div>
+      <div class="progress big"><div style="width:${pct}%"></div></div>
+      <textarea class="g-desc" placeholder="Warum? Wann ist das Ziel erreicht?">${esc(g.desc || '')}</textarea>
+      <ul class="goal-issues">${items.map(i => `<li data-id="${i.id}" class="${isClosed(i) ? 'done' : ''}">
+        <span class="st st-${i.status}">${statusName(i.status)}</span><span class="t">${esc(i.title || '(ohne Titel)')}</span>${impChip(i.importance)}${dateHTML(i)}</li>`).join('')}</ul>
+      <button class="btn ghost small g-add" style="align-self:flex-start">+ Ticket zu diesem Ziel</button>
+    </div>`;
+  }).join('') : `<div class="empty" style="grid-column:1/-1">Noch keine Ziele. Ein Ziel bündelt mehrere Tickets, z. B. „Umzug“ oder „Fit werden Q4“.</div>`;
+  renderRecurrences();
+}
+function renderRecurrences() {
+  const rules = state.recurrences.filter(r => !showMode || !r.private);
+  $('#recList').innerHTML = rules.length ? rules.map(r => {
+    const nx = nextOcc(r);
+    return `<div class="rec-row ${r.active ? '' : 'paused'}" data-rid="${r.id}">
+      <b>🔁 ${esc(r.tpl?.title || '(ohne Titel)')}</b>
+      <select class="r-freq">${Object.entries(FREQS).map(([k, n]) => `<option value="${k}" ${k === r.freq ? 'selected' : ''}>${n}</option>`).join('')}</select>
+      <span class="info">${!['weekly', 'biweekly', 'monthly', 'quarterly'].includes(r.freq) ? esc(freqText(r)) + ' · ' : ''}${r.active && nx ? `nächstes: ◎ ${fmtDate(nx)} · ⚑ +${r.buffer || 0} Tag(e)` : 'pausiert'}</span>
+      <button class="btn ghost small r-pause">${r.active ? '⏸ Pausieren' : '▶ Fortsetzen'}</button>
+      <button class="x r-del" title="Serie löschen">✕</button>
+    </div>`;
+  }).join('') : `<div class="empty" style="padding:16px;text-align:left">Noch keine. Öffne ein Ticket und wähle rechts unter „🔁 Wiederholung“ einen Rhythmus.</div>`;
+}
+$('#newGoalBtn').onclick = () => {
+  const g = createGoal('');
+  renderGoals(); renderFilterOptions();
+  $(`.goal[data-gid="${g.id}"] .g-name`)?.focus();
+};
+$('#view-goals').addEventListener('input', e => {
+  const gEl = e.target.closest('.goal'); if (!gEl) return;
+  const g = getGoal(gEl.dataset.gid); if (!g) return;
+  if (e.target.matches('.g-name')) { g.name = e.target.value; save(); renderSidebar(); }
+  else if (e.target.matches('.g-desc')) { g.desc = e.target.value; save(); }
+  else if (e.target.matches('.g-color')) { g.color = e.target.value; gEl.style.setProperty('--g', g.color); save(); renderSidebar(); }
+});
+$('#view-goals').addEventListener('change', e => {
+  const gEl = e.target.closest('.goal');
+  if (gEl) {
+    const g = getGoal(gEl.dataset.gid); if (!g) return;
+    if (e.target.matches('.g-target')) { g.target = e.target.value; save(); e.target.blur(); renderGoals(); }
+    if (e.target.matches('.g-name, .g-color')) { renderFilterOptions(); renderBoard(); }
+    return;
+  }
+  const rEl = e.target.closest('.rec-row');
+  if (rEl && e.target.matches('.r-freq')) {
+    const r = getRule(rEl.dataset.rid); r.freq = e.target.value;
+    ruleDefaults(r);
+    save(); e.target.blur(); renderRecurrences();
+  }
+});
+$('#view-goals').addEventListener('focusout', e => {
+  if (e.target.matches('.g-name') && !e.target.value.trim()) {
+    const g = getGoal(e.target.closest('.goal').dataset.gid);
+    if (g) { g.name = 'Neues Ziel'; save(); }
+  }
+  if (e.target.matches('.g-name, .g-desc')) setTimeout(() => { renderFilterOptions(); renderBoard(); renderGoals(); }, 0);
+});
+$('#view-goals').addEventListener('click', e => {
+  const gEl = e.target.closest('.goal');
+  if (gEl) {
+    const g = getGoal(gEl.dataset.gid);
+    if (e.target.closest('.g-del')) {
+      if (!confirm(`Ziel „${g.name}“ löschen? Die Tickets bleiben erhalten, nur die Zuordnung wird entfernt.`)) return;
+      deleteGoal(g.id); renderAll(); return;
+    }
+    if (e.target.closest('.g-add')) { const i = createIssue({ goalId: g.id, status: 'todo' }); openIssue(i.id, true); return; }
+    const li = e.target.closest('li[data-id]'); if (li) openIssue(li.dataset.id);
+    return;
+  }
+  const rEl = e.target.closest('.rec-row'); if (!rEl) return;
+  const r = getRule(rEl.dataset.rid);
+  if (e.target.closest('.r-pause')) {
+    r.active = !r.active;
+    if (r.active) {
+      // Beim Fortsetzen keine verpassten Termine nachholen
+      for (let n = nextIdx(r); n >= 0 && n < 5000 && occ(r, n) < today(); n++) r.lastDate = occ(r, n);
+      generateRecurring();
+    }
+    save(); renderAll();
+  } else if (e.target.closest('.r-del')) {
+    if (!confirm(`Serie „${r.tpl?.title || ''}“ löschen? Bereits angelegte Tickets bleiben erhalten.`)) return;
+    deleteRule(r.id); renderAll();
+  }
+});
+function deleteRule(id) {
+  state.recurrences = state.recurrences.filter(r => r.id !== id);
+  state.issues.forEach(i => { if (i.recurId === id) i.recurId = null; });
+  save();
+}
+
+/* ================= Ticket-Detail ================= */
+const modal = $('#modal');
+let curId = null;
+const cur = () => getIssue(curId);
+$('#mStatus').innerHTML = COLS.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+$('#mType').innerHTML = Object.entries(TYPES).map(([k, t]) => `<option value="${k}">${t.i}  ${t.n}</option>`).join('');
+$('#mImp').innerHTML = `<option value="">—</option>` + Object.entries(IMPS).map(([k, p]) => `<option value="${k}">${p.n}</option>`).join('');
+
+function openIssue(id, focusTitle) {
+  curId = id; fillModal(); modal.hidden = false;
+  (focusTitle ? $('#mTitle') : $('#mClose')).focus();
+}
+function fillModal() {
+  const i = cur(); if (!i) return;
+  const t = TYPES[i.type];
+  $('#mTypeIcon').style.background = t.c; $('#mTypeIcon').textContent = t.i;
+  $('#mKey').textContent = i.key;
+  const act = document.activeElement;
+  if (act !== $('#mTitle')) $('#mTitle').value = i.title;
+  if (act !== $('#mDesc')) { $('#mDesc').value = i.desc; autosize($('#mDesc')); }
+  $('#mStatus').value = i.status; $('#mStatus').className = 'status-select s-' + i.status;
+  $('#mType').value = i.type; $('#mImp').value = i.importance;
+  $('#mGoal').innerHTML = `<option value="">— kein Ziel —</option>` + state.goals.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('') + `<option value="__new">+ Neues Ziel…</option>`;
+  $('#mGoal').value = i.goalId || '';
+  $('#mTarget').value = i.target || ''; $('#mDeadline').value = i.deadline || '';
+  if (act !== $('#mLabels')) $('#mLabels').value = i.labels.join(', ');
+  $('#mPrivate').checked = i.private;
+  fillState(i);
+  if (act !== $('#mKW')) { $('#mKW').value = i.deadline ? isoWeek(i.deadline)[0] : ''; $('#mKW').classList.remove('bad'); }
+  $('#mMeet').innerHTML = `<option value="">— keins —</option>` + state.meetings.map(m => `<option value="${m.id}">${esc(m.name)}</option>`).join('') + `<option value="__new">+ Neues Meeting…</option>`;
+  $('#mMeet').value = i.meetingId || '';
+  if (act !== $('#mSource')) $('#mSource').value = i.source;
+  $('#mSourceDate').value = i.sourceDate || '';
+  if (act !== $('#mSourceLink')) $('#mSourceLink').value = i.sourceLink;
+  fillRecur();
+  $('#mDates').innerHTML = `Erstellt: ${fmtDateTime(i.created)}<br>Aktualisiert: ${fmtDateTime(i.updated)}`;
+  renderChecklist(); renderComments();
+}
+function fillState(i) {
+  const st = i.status, box = $('#mStateBox');
+  box.hidden = !['waiting', 'paused', 'cancelled'].includes(st);
+  box.className = 'state-box s-' + st;
+  $('#mWaitWrap').hidden = st !== 'waiting';
+  $('#mFollowWrap').hidden = st !== 'waiting' && st !== 'paused';
+  $('#mFollowLabel').textContent = st === 'paused' ? '⏸ Wieder aufnehmen am' : '⏰ Nachfassen am';
+  $('#mReasonWrap').hidden = st !== 'cancelled';
+  const act = document.activeElement;
+  if (act !== $('#mWaitFor')) $('#mWaitFor').value = i.waitingFor;
+  $('#mFollowUp').value = i.followUp || '';
+  if (act !== $('#mReason')) $('#mReason').value = i.cancelReason;
+}
+function fillRecur() {
+  const i = cur(); const r = getRule(i.recurId);
+  $('#mRecur').value = r ? r.freq : '';
+  $('#mRecurOpts').hidden = !r;
+  $('#mRecurBadge').textContent = r ? `· 🔁 ${freqText(r)}${r.active ? '' : ' (pausiert)'}` : '';
+  $('#mDays').hidden = !r || r.freq !== 'weekdays';
+  $('#mNthRow').hidden = !r || r.freq !== 'nthweekday';
+  $('#mWorkRow').hidden = !r || r.freq !== 'nthworkday';
+  if (r?.freq === 'nthweekday') { $('#mNth').value = r.nth || 1; $('#mNthWd').value = r.wday ?? 0; }
+  if (r?.freq === 'nthworkday') $('#mWorkN').value = r.nth || 1;
+  if (!r) return;
+  if (r.freq === 'weekdays') $('#mDays').innerHTML = WD.map((n, k) => `<button type="button" class="wd ${r.days?.includes(k) ? 'on' : ''}" data-d="${k}">${n}</button>`).join('');
+  if (document.activeElement !== $('#mBuffer')) $('#mBuffer').value = r.buffer ?? 0;
+  if (document.activeElement !== $('#mLead')) $('#mLead').value = r.lead ?? 0;
+  const nx = nextOcc(r);
+  $('#mRecurInfo').innerHTML = r.active && nx
+    ? `Nächstes Ticket: <b>◎ ${fmtDate(nx)}</b>, ⚑ ${fmtDate(addDays(nx, r.buffer || 0))}<br>erscheint am ${fmtDate(addDays(nx, -(r.lead || 0)))}`
+    : 'Serie pausiert (unter „Ziele“ fortsetzen)';
+}
+function renderChecklist() {
+  const i = cur(); const done = i.checklist.filter(c => c.done).length;
+  $('#mCheckCount').textContent = i.checklist.length ? `${done}/${i.checklist.length}` : '';
+  $('#mProgress').hidden = !i.checklist.length;
+  $('#mProgress').firstElementChild.style.width = i.checklist.length ? (done / i.checklist.length * 100) + '%' : '0';
+  $('#mChecklist').innerHTML = i.checklist.map(c => `<li class="${c.done ? 'done' : ''}" data-cid="${c.id}">
+    <input type="checkbox" ${c.done ? 'checked' : ''} aria-label="erledigt">
+    <input type="text" value="${esc(c.text)}">
+    <button class="x" title="Entfernen">✕</button></li>`).join('');
+}
+function renderComments() {
+  const i = cur(); if (!i) return;
+  $('#mComments').innerHTML = i.comments.map(c => c.system
+    ? `<li class="comment" style="font-size:12px;color:var(--subtle);align-items:center"><span class="avatar" style="background:var(--chip);color:var(--muted);width:20px;height:20px;font-size:10px;margin:0 4px">↻</span><span>${esc(c.text)} · ${relTime(c.at)}</span></li>`
+    : `<li class="comment" data-cid="${c.id}"><div class="avatar">Ich</div><div class="comment-body">
+        <div class="comment-meta"><b style="color:var(--text)">Ich</b><span title="${fmtDateTime(c.at)}">${relTime(c.at)}</span><button class="x" title="Löschen">✕</button></div>
+        <div class="comment-text">${esc(c.text)}</div></div></li>`).join('');
+}
+function touch() { const i = cur(); if (i) { i.updated = now(); save(); } }
+function autosize(el) { el.style.height = 'auto'; el.style.height = Math.max(90, el.scrollHeight + 2) + 'px'; }
+
+$('#mTitle').addEventListener('input', e => { cur().title = e.target.value; touch(); });
+$('#mTitle').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#mDesc').focus(); } });
+$('#mDesc').addEventListener('input', e => { cur().desc = e.target.value; autosize(e.target); touch(); });
+$('#mStatus').addEventListener('change', e => {
+  const i = cur(); const maxOrder = Math.max(0, ...state.issues.filter(x => x.status === e.target.value).map(x => x.order));
+  if (!setStatus(i, e.target.value)) { e.target.value = i.status; return; }
+  i.order = maxOrder + 1; save(); fillModal(); renderBoard();
+});
+$('#mWaitFor').addEventListener('input', e => { cur().waitingFor = e.target.value.trim(); touch(); });
+$('#mWaitFor').addEventListener('change', () => { renderFilterOptions(); renderBoard(); });
+$('#mFollowUp').addEventListener('change', e => { cur().followUp = e.target.value; touch(); renderBoard(); });
+$('#mReason').addEventListener('input', e => { cur().cancelReason = e.target.value.trim(); touch(); });
+$('#mKW').addEventListener('change', e => {
+  const v = e.target.value.trim();
+  if (!v) return;
+  const d = parseKW(v);
+  e.target.classList.toggle('bad', !d);
+  if (!d) return;
+  cur().deadline = d; touch(); e.target.blur(); fillModal(); renderBoard();
+});
+$('#mMeet').addEventListener('change', e => {
+  let v = e.target.value;
+  if (v === '__new') {
+    const name = prompt('Name des Meetings (z. B. Jour fixe mit Teamlead):');
+    if (!name || !name.trim()) { e.target.value = cur().meetingId || ''; return; }
+    v = createMeeting(name.trim()).id; renderFilterOptions();
+  }
+  cur().meetingId = v || null; touch(); fillModal(); renderBoard();
+});
+$('#mSource').addEventListener('input', e => { cur().source = e.target.value.trim(); touch(); });
+$('#mSource').addEventListener('change', e => { const i = cur(); if (i.source && !i.sourceDate) { i.sourceDate = today(); $('#mSourceDate').value = i.sourceDate; } touch(); renderFilterOptions(); renderBoard(); });
+$('#mSourceDate').addEventListener('change', e => { cur().sourceDate = e.target.value; touch(); renderBoard(); });
+$('#mSourceLink').addEventListener('input', e => { cur().sourceLink = e.target.value.trim(); touch(); });
+$('#mSourceOpen').onclick = () => { const l = cur()?.sourceLink; if (l) window.open(l, '_blank'); };
+$('#mType').addEventListener('change', e => { cur().type = e.target.value; touch(); fillModal(); renderBoard(); });
+$('#mImp').addEventListener('change', e => { cur().importance = e.target.value; touch(); renderBoard(); });
+$('#mGoal').addEventListener('change', e => {
+  let v = e.target.value;
+  if (v === '__new') {
+    const name = prompt('Name des neuen Ziels:');
+    if (!name || !name.trim()) { e.target.value = cur().goalId || ''; return; }
+    v = createGoal(name.trim()).id; renderFilterOptions();
+  }
+  cur().goalId = v || null; touch(); fillModal(); renderBoard();
+});
+$('#mTarget').addEventListener('change', e => { cur().target = e.target.value; touch(); renderBoard(); });
+$('#mDeadline').addEventListener('change', e => { cur().deadline = e.target.value; touch(); renderBoard(); });
+$('#mLabels').addEventListener('input', e => {
+  cur().labels = [...new Set(e.target.value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean))]; touch();
+});
+$('#mLabels').addEventListener('change', () => { renderFilterOptions(); renderBoard(); });
+$('#mPrivate').addEventListener('change', e => { cur().private = e.target.checked; touch(); renderBoard(); });
+
+$('#mRecur').addEventListener('change', e => {
+  const i = cur(), v = e.target.value, r = getRule(i.recurId);
+  if (!v) {
+    if (r && confirm('Wiederholung beenden? Bereits angelegte Tickets bleiben erhalten.')) deleteRule(r.id);
+  } else if (r) {
+    r.freq = v; ruleDefaults(r); save();
+  } else {
+    makeRule(i, v); touch();
+  }
+  fillModal(); renderBoard();
+});
+$('#mDays').addEventListener('click', e => {
+  const b = e.target.closest('[data-d]'); if (!b) return;
+  const r = getRule(cur().recurId); if (!r) return;
+  const d = +b.dataset.d, days = new Set(r.days || []);
+  days.has(d) ? days.delete(d) : days.add(d);
+  if (!days.size) return; // mindestens ein Tag
+  r.days = [...days].sort((a, b) => a - b); save(); fillRecur(); renderBoard();
+});
+$('#mNthWd').innerHTML = WD_LONG.map((n, k) => `<option value="${k}">${n}</option>`).join('');
+$('#mWorkN').innerHTML = Array.from({ length: 10 }, (_, k) => `<option value="${k + 1}">${k + 1}.</option>`).join('');
+[['#mNth', 'nth'], ['#mNthWd', 'wday'], ['#mWorkN', 'nth']].forEach(([sel, key]) => $(sel).addEventListener('change', e => {
+  const r = getRule(cur().recurId); if (!r) return;
+  r[key] = +e.target.value; save(); fillRecur(); renderBoard();
+}));
+$('#mBuffer').addEventListener('input', e => { const r = getRule(cur().recurId); if (!r) return; r.buffer = Math.max(0, parseInt(e.target.value, 10) || 0); save(); fillRecur(); });
+$('#mLead').addEventListener('input', e => { const r = getRule(cur().recurId); if (!r) return; r.lead = Math.max(0, parseInt(e.target.value, 10) || 0); save(); fillRecur(); });
+$('#mLead').addEventListener('change', () => generateRecurring());
+
+$('#mCheckNew').addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  const text = e.target.value.trim(); if (!text) return;
+  cur().checklist.push({ id: uid(), text, done: false }); e.target.value = '';
+  touch(); renderChecklist(); renderBoard();
+});
+$('#mChecklist').addEventListener('change', e => {
+  if (e.target.type !== 'checkbox') return;
+  const item = cur().checklist.find(c => c.id === e.target.closest('li').dataset.cid);
+  item.done = e.target.checked; touch(); renderChecklist(); renderBoard();
+});
+$('#mChecklist').addEventListener('input', e => {
+  if (e.target.type !== 'text') return;
+  cur().checklist.find(c => c.id === e.target.closest('li').dataset.cid).text = e.target.value; touch();
+});
+$('#mChecklist').addEventListener('click', e => {
+  if (!e.target.classList.contains('x')) return;
+  const id = e.target.closest('li').dataset.cid;
+  cur().checklist = cur().checklist.filter(c => c.id !== id); touch(); renderChecklist(); renderBoard();
+});
+
+function addComment() {
+  const ta = $('#mComment'); const text = ta.value.trim(); if (!text) return;
+  cur().comments.unshift({ id: uid(), text, at: now() }); ta.value = '';
+  touch(); renderComments(); renderBoard();
+}
+$('#mCommentBtn').onclick = addComment;
+$('#mComment').addEventListener('keydown', e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); addComment(); } });
+$('#mComments').addEventListener('click', e => {
+  if (!e.target.classList.contains('x')) return;
+  if (!confirm('Dieses Update löschen?')) return;
+  const id = e.target.closest('li').dataset.cid;
+  cur().comments = cur().comments.filter(c => c.id !== id); touch(); renderComments(); renderBoard();
+});
+$('#mDelete').onclick = () => {
+  const i = cur();
+  if (!confirm(`${i.key} „${i.title || 'ohne Titel'}“ wirklich löschen?` + (getRule(i.recurId) ? '\n(Die Wiederholung läuft weiter – beenden kannst du sie unter „Ziele“.)' : ''))) return;
+  state.issues = state.issues.filter(x => x.id !== i.id); save(); closeModal(true);
+};
+function closeModal(skipCleanup) {
+  const i = cur();
+  if (i) syncRuleTemplate(i);
+  // Leeres, unberührtes neues Ticket wieder verwerfen
+  if (!skipCleanup && i && !i.title.trim() && !i.desc.trim() && !i.checklist.length && !i.comments.some(c => !c.system) && !getRule(i.recurId)) {
+    state.issues = state.issues.filter(x => x.id !== i.id);
+  }
+  save();
+  curId = null; modal.hidden = true;
+  renderAll();
+}
+$('#mClose').onclick = () => closeModal();
+modal.addEventListener('mousedown', e => { if (e.target === modal) closeModal(); });
+$('#newIssueBtn').onclick = () => {
+  const goalId = currentView === 'board' && filters.goal && filters.goal !== '__none' ? filters.goal : null;
+  const i = createIssue({ status: 'todo', goalId });
+  openIssue(i.id, true);
+};
+
+/* ================= Liste (Tabelle mit Excel-Filtern) ================= */
+const TABLE_KEY = 'jiratype.table';
+const tbl = (() => { try { return JSON.parse(safeGet(TABLE_KEY)) || {}; } catch { return {}; } })();
+tbl.sort ??= { col: 'key', dir: 1 }; tbl.ex ??= {}; tbl.hidden ??= ['type', 'updated', 'followUp', 'source', 'reason', 'meeting']; tbl.hideDone ??= false;
+const saveTbl = () => safeSet(TABLE_KEY, JSON.stringify(tbl));
+const IMP_ORDER = { must: 0, worth: 1, nice: 2, '': 3 };
+const dateText = s => s ? parseISO(s).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+const opts = (list, val) => list.map(([k, n]) => `<option value="${esc(k)}" ${k === val ? 'selected' : ''}>${esc(n)}</option>`).join('');
+function dateCell(i, f) {
+  const v = i[f], t = today(), done = !isActive(i) && f !== 'followUp';
+  const cls = !v || done ? '' : (f === 'deadline' ? (v < t ? 'late' : v === t ? 'soft' : '') : (v < t ? 'soft' : ''));
+  return `<input type="date" class="cell-in ${cls} ${v ? '' : 'empty'}" data-f="${f}" value="${esc(v)}">`;
+}
+const LCOLS = [
+  { id: 'key', n: 'Key', fixed: true, text: i => i.key, sortv: i => parseInt(String(i.key).split('-').pop(), 10) || 0, cell: i => `<td class="mono">${esc(i.key)}</td>` },
+  { id: 'title', n: 'Titel', fixed: true, nofilter: true, text: i => i.title, sortv: i => i.title.toLowerCase(), cell: i => `<td class="title" data-open>${esc(i.title) || '<i>(ohne Titel)</i>'}</td>` },
+  { id: 'status', n: 'Status', text: i => statusName(i.status), sortv: i => COLS.findIndex(c => c.id === i.status),
+    cell: i => `<td><select class="cell-in status-pill s-${i.status}" data-f="status">${opts(COLS.map(c => [c.id, c.name]), i.status)}</select></td>` },
+  { id: 'waitingFor', n: '⏳ Wartet auf', text: i => i.status === 'waiting' ? i.waitingFor : '', sortv: i => i.status === 'waiting' ? i.waitingFor.toLowerCase() : '',
+    cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
+  { id: 'followUp', n: '⏰ Wiedervorlage', text: i => dateText(i.followUp), sortv: i => i.followUp, cell: i => `<td>${dateCell(i, 'followUp')}</td>` },
+  { id: 'importance', n: 'Wichtigkeit', text: i => IMPS[i.importance]?.n || '', sortv: i => IMP_ORDER[i.importance],
+    cell: i => `<td><select class="cell-in" data-f="importance">${opts([['', '—'], ...Object.entries(IMPS).map(([k, p]) => [k, p.n])], i.importance)}</select></td>` },
+  { id: 'goal', n: 'Ziel', text: i => getGoal(i.goalId)?.name || '', sortv: i => (getGoal(i.goalId)?.name || '').toLowerCase(),
+    cell: i => `<td><select class="cell-in" data-f="goalId">${opts([['', '—'], ...state.goals.map(g => [g.id, g.name])], i.goalId || '')}</select></td>` },
+  { id: 'labels', n: 'Labels', text: i => i.labels.join(', '), vals: i => i.labels.length ? i.labels : ['(leer)'], sortv: i => i.labels.join(','),
+    cell: i => `<td>${i.labels.map(l => `<span class="label">${esc(l)}</span>`).join(' ')}</td>` },
+  { id: 'target', n: '◎ Ziel-Datum', text: i => dateText(i.target), sortv: i => i.target, cell: i => `<td>${dateCell(i, 'target')}</td>` },
+  { id: 'deadline', n: '⚑ Deadline', text: i => dateText(i.deadline), sortv: i => i.deadline, cell: i => `<td>${dateCell(i, 'deadline')}</td>` },
+  { id: 'kw', n: 'KW', text: i => i.deadline ? 'KW ' + String(isoWeek(i.deadline)[0]).padStart(2, '0') : '', sortv: i => i.deadline, cell: function (i) { return `<td>${this.text(i)}</td>`; } },
+  { id: 'meeting', n: '🗣 Agenda', text: i => getMeet(i.meetingId)?.name || '', sortv: i => (getMeet(i.meetingId)?.name || '').toLowerCase(),
+    cell: i => `<td><select class="cell-in" data-f="meetingId">${opts([['', '—'], ...state.meetings.map(m => [m.id, m.name])], i.meetingId || '')}</select></td>` },
+  { id: 'source', n: '📍 Quelle', text: i => i.source + (i.sourceDate ? ` (${dateText(i.sourceDate)})` : ''), vals: i => [i.source || '(leer)'], sortv: i => i.source.toLowerCase(),
+    cell: function (i) { return `<td title="${esc(this.text(i))}">${esc(this.text(i))}</td>`; } },
+  { id: 'reason', n: '✖ Grund', text: i => i.status === 'cancelled' ? i.cancelReason : '', sortv: i => i.status === 'cancelled' ? i.cancelReason.toLowerCase() : '',
+    cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
+  { id: 'type', n: 'Typ', text: i => TYPES[i.type].n, sortv: i => TYPES[i.type].n,
+    cell: i => `<td><select class="cell-in" data-f="type">${opts(Object.entries(TYPES).map(([k, t]) => [k, t.n]), i.type)}</select></td>` },
+  { id: 'recur', n: '🔁 Wiederholung', text: i => { const r = getRule(i.recurId); return r ? freqText(r) : ''; }, sortv: i => getRule(i.recurId)?.freq || '', cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
+  { id: 'check', n: '☑ Unteraufgaben', nofilter: true, text: i => i.checklist.length ? `${i.checklist.filter(c => c.done).length}/${i.checklist.length}` : '',
+    sortv: i => i.checklist.length ? i.checklist.filter(c => c.done).length / i.checklist.length : '', cell: function (i) { return `<td>${this.text(i)}</td>`; } },
+  { id: 'private', n: '🔒 Privat', privOnly: true, text: i => i.private ? 'privat' : '', sortv: i => i.private ? 0 : 1,
+    cell: i => `<td style="text-align:center"><input type="checkbox" class="cell-in" data-f="private" ${i.private ? 'checked' : ''}></td>` },
+  { id: 'updated', n: 'Aktualisiert', nofilter: true, text: i => fmtDateTime(i.updated), sortv: i => i.updated, cell: i => `<td title="${fmtDateTime(i.updated)}">${relTime(i.updated)}</td>` },
+];
+const colById = id => LCOLS.find(c => c.id === id);
+// Neue Spalten in bestehenden Tabellen-Einstellungen sinnvoll vorbelegen
+tbl.known ??= ['key', 'title', 'status', 'importance', 'goal', 'labels', 'target', 'deadline', 'type', 'recur', 'check', 'private', 'updated'];
+LCOLS.forEach(c => { if (!tbl.known.includes(c.id)) { if (['followUp', 'source', 'reason', 'meeting'].includes(c.id) && !tbl.hidden.includes(c.id)) tbl.hidden.push(c.id); tbl.known.push(c.id); } });
+saveTbl();
+const colVals = (c, i) => c.vals ? c.vals(i) : [c.text(i) || '(leer)'];
+const visCols = () => LCOLS.filter(c => !tbl.hidden.includes(c.id) && !(c.privOnly && showMode));
+function cmpVals(a, b) {
+  const ea = a === '' || a == null, eb = b === '' || b == null;
+  if (ea || eb) return ea && eb ? 0 : ea ? 1 : -1; // Leere immer ans Ende
+  return typeof a === 'number' && typeof b === 'number' ? a - b : String(a).localeCompare(String(b), 'de', { numeric: true });
+}
+function tableRows() {
+  const q = ($('#lq').value || '').trim().toLowerCase();
+  const rows = visIssues().filter(i => {
+    if (tbl.hideDone && isClosed(i)) return false;
+    if (q && ![i.key, i.title, i.desc, i.labels.join(' '), getGoal(i.goalId)?.name || '', i.waitingFor, i.source].join(' ').toLowerCase().includes(q)) return false;
+    for (const [cid, ex] of Object.entries(tbl.ex)) {
+      const c = colById(cid);
+      if (!c || !ex.length || (c.privOnly && showMode)) continue;
+      if (!colVals(c, i).some(v => !ex.includes(v))) return false;
+    }
+    return true;
+  });
+  const sc = colById(tbl.sort.col) || LCOLS[0];
+  const sortCol = sc.privOnly && showMode ? LCOLS[0] : sc;
+  return rows.sort((a, b) => {
+    const va = sortCol.sortv(a), vb = sortCol.sortv(b);
+    if (va === '' || vb === '' || va == null || vb == null) return cmpVals(va, vb);
+    return cmpVals(va, vb) * tbl.sort.dir;
+  });
+}
+function renderList() {
+  const cols = visCols(), rows = tableRows();
+  const anyFilter = Object.values(tbl.ex).some(a => a.length) || tbl.hideDone || $('#lq').value.trim();
+  $('#lReset').hidden = !anyFilter;
+  $('#lHideDone').checked = tbl.hideDone;
+  $('#lCount').textContent = `${rows.length} von ${visIssues().length} Tickets`;
+  $('#lTable').innerHTML = `<thead><tr>${cols.map(c => `<th data-col="${c.id}"><div class="th-inner">
+      <span class="th-sort ${tbl.sort.col === c.id ? 'sorted' : ''}" title="Sortieren">${c.n}${tbl.sort.col === c.id ? (tbl.sort.dir > 0 ? ' ↑' : ' ↓') : ''}</span>
+      ${c.nofilter ? '' : `<button class="th-filter ${tbl.ex[c.id]?.length ? 'on' : ''}" title="Filtern"><svg class="ico" viewBox="0 0 24 24"><path d="M3 5h18l-7 8.5V19l-4 2v-7.5z"/></svg></button>`}
+    </div></th>`).join('')}</tr></thead>
+    <tbody>${rows.map(i => { const ds = dueState(i); return `<tr data-id="${i.id}" class="${ds ? 'due-' + ds : ''} ${isClosed(i) ? 'done' : ''}">${cols.map(c => c.cell(i)).join('')}</tr>`; }).join('')
+      || `<tr><td colspan="${cols.length}" class="empty" style="height:auto">Keine Tickets für diese Filter.</td></tr>`}</tbody>`;
+}
+const lTable = $('#lTable');
+lTable.addEventListener('click', e => {
+  const th = e.target.closest('th');
+  if (th) {
+    const id = th.dataset.col;
+    if (e.target.closest('.th-filter')) return openFilterPop(id, e.target.closest('.th-filter'));
+    if (e.target.closest('.th-sort')) { tbl.sort = { col: id, dir: tbl.sort.col === id ? -tbl.sort.dir : 1 }; saveTbl(); renderList(); }
+    return;
+  }
+  if (e.target.closest('td[data-open]')) openIssue(e.target.closest('tr').dataset.id);
+});
+lTable.addEventListener('change', e => {
+  const f = e.target.dataset.f; if (!f) return;
+  const i = getIssue(e.target.closest('tr').dataset.id); if (!i) return;
+  if (f === 'status') {
+    const maxOrder = Math.max(0, ...state.issues.filter(x => x.status === e.target.value).map(x => x.order));
+    if (!setStatus(i, e.target.value)) { renderList(); return; }
+    i.order = maxOrder + 1;
+  } else if (f === 'private') i.private = e.target.checked;
+  else if (f === 'goalId' || f === 'meetingId') i[f] = e.target.value || null;
+  else i[f] = e.target.value;
+  i.updated = now(); syncRuleTemplate(i); save(); renderList();
+});
+$('#lq').addEventListener('input', renderList);
+$('#lHideDone').addEventListener('change', e => { tbl.hideDone = e.target.checked; saveTbl(); renderList(); });
+$('#lReset').onclick = () => { tbl.ex = {}; tbl.hideDone = false; $('#lq').value = ''; saveTbl(); renderList(); };
+$('#lNew').onclick = () => { const i = createIssue({ status: 'todo' }); openIssue(i.id, true); };
+$('#lCsv').onclick = () => {
+  const cols = visCols(), rows = tableRows();
+  const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const csv = [cols.map(c => cell(c.n)).join(';'), ...rows.map(i => cols.map(c => cell(c.text(i))).join(';'))].join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = `tickets-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+/* Popup (Spaltenfilter + Spaltenauswahl) */
+let pop = null;
+function closePop() { if (pop) { pop.remove(); pop = null; } }
+function placePop(el, anchor) {
+  document.body.appendChild(el); pop = el;
+  const r = anchor.getBoundingClientRect();
+  el.style.top = Math.min(r.bottom + 4, innerHeight - el.offsetHeight - 8) + 'px';
+  el.style.left = Math.max(8, Math.min(r.left, innerWidth - el.offsetWidth - 8)) + 'px';
+}
+document.addEventListener('mousedown', e => { if (pop && !pop.contains(e.target) && !e.target.closest('.th-filter, #lColsBtn')) closePop(); });
+function openFilterPop(colId, anchor) {
+  if (pop?.dataset.col === colId) return closePop();
+  closePop();
+  const c = colById(colId);
+  const counts = new Map(), sorts = new Map();
+  visIssues().forEach(i => colVals(c, i).forEach(v => { counts.set(v, (counts.get(v) || 0) + 1); if (!sorts.has(v)) sorts.set(v, c.vals ? (v === '(leer)' ? '' : v) : c.sortv(i)); }));
+  const values = [...counts.keys()].sort((a, b) => cmpVals(sorts.get(a), sorts.get(b)));
+  const ex = () => tbl.ex[colId] || [];
+  const el = document.createElement('div'); el.className = 'pop'; el.dataset.col = colId;
+  el.innerHTML = `<div class="pop-row"><button class="btn small" data-s="1">↑ A→Z</button><button class="btn small" data-s="-1">↓ Z→A</button></div>
+    <input type="text" placeholder="Werte suchen…">
+    <div class="pop-list">
+      <label><input type="checkbox" data-all> <b>(Alle auswählen)</b></label>
+      ${values.map((v, k) => `<label data-txt="${esc(v.toLowerCase())}"><input type="checkbox" data-i="${k}" ${ex().includes(v) ? '' : 'checked'}> ${esc(v)} <small>${counts.get(v)}</small></label>`).join('')}
+    </div>
+    <div class="pop-row"><button class="btn small ghost" data-clear>Filter löschen</button><button class="btn small primary" data-close>OK</button></div>`;
+  const syncAll = () => { const all = $('[data-all]', el); all.checked = !ex().length; all.indeterminate = ex().length > 0 && ex().length < values.length; };
+  const apply = list => { tbl.ex[colId] = list; if (!list.length) delete tbl.ex[colId]; saveTbl(); renderList(); syncAll(); };
+  el.addEventListener('change', e => {
+    if (e.target.matches('[data-all]')) {
+      $$('[data-i]', el).forEach(cb => cb.checked = e.target.checked);
+      apply(e.target.checked ? [] : [...values]);
+    } else if (e.target.dataset.i) {
+      apply($$('[data-i]', el).filter(cb => !cb.checked).map(cb => values[cb.dataset.i]));
+    }
+  });
+  $('input[type=text]', el).addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    $$('label[data-txt]', el).forEach(l => l.hidden = !l.dataset.txt.includes(q));
+  });
+  el.addEventListener('click', e => {
+    if (e.target.dataset.s) { tbl.sort = { col: colId, dir: +e.target.dataset.s }; saveTbl(); renderList(); closePop(); }
+    else if (e.target.matches('[data-clear]')) { apply([]); $$('[data-i]', el).forEach(cb => cb.checked = true); closePop(); }
+    else if (e.target.matches('[data-close]')) closePop();
+  });
+  placePop(el, anchor); syncAll();
+  $('input[type=text]', el).focus();
+}
+$('#lColsBtn').onclick = e => {
+  if (pop?.dataset.col === '__cols') return closePop();
+  closePop();
+  const el = document.createElement('div'); el.className = 'pop'; el.dataset.col = '__cols';
+  el.innerHTML = `<b>Sichtbare Spalten</b><div class="pop-list">${LCOLS.filter(c => !c.fixed && !(c.privOnly && showMode)).map(c =>
+    `<label><input type="checkbox" data-c="${c.id}" ${tbl.hidden.includes(c.id) ? '' : 'checked'}> ${c.n}</label>`).join('')}</div>`;
+  el.addEventListener('change', ev => {
+    const id = ev.target.dataset.c;
+    tbl.hidden = ev.target.checked ? tbl.hidden.filter(h => h !== id) : [...tbl.hidden, id];
+    saveTbl(); renderList();
+  });
+  placePop(el, e.currentTarget);
+};
+
+/* ================= Prompts (KI-Vorlagen + Import) ================= */
+const PROMPT_KEY = 'jiratype.prompt';
+let curPromptId = safeGet(PROMPT_KEY);
+let pendingImport = [];
+const curPrompt = () => state.prompts.find(p => p.id === curPromptId);
+function renderPrompts() {
+  if (!curPrompt()) curPromptId = state.prompts[0]?.id || null;
+  $('#promptList').innerHTML = state.prompts.map(p => `<div class="note-item ${p.id === curPromptId ? 'active' : ''}" data-pid="${p.id}"><b>${esc(p.name) || 'Ohne Namen'}</b><small>${esc(p.text.slice(0, 60))}</small></div>`).join('')
+    || '<div class="empty">Keine Vorlagen</div>';
+  const p = curPrompt();
+  if (document.activeElement !== $('#pName')) $('#pName').value = p?.name || '';
+  if (document.activeElement !== $('#pText')) $('#pText').value = p?.text || '';
+  $('#pName').disabled = $('#pText').disabled = $('#pDel').disabled = !p;
+  const sel = $('#pNote'), v = sel.value;
+  sel.innerHTML = `<option value="">— Notiz übernehmen (optional) —</option>` + [...state.notes].sort((a, b) => b.updated - a.updated).map(n => `<option value="${n.id}">${esc(n.title || 'Ohne Titel')}</option>`).join('');
+  sel.value = state.notes.some(n => n.id === v) ? v : '';
+}
+$('#promptList').addEventListener('click', e => {
+  const it = e.target.closest('[data-pid]'); if (!it) return;
+  curPromptId = it.dataset.pid; safeSet(PROMPT_KEY, curPromptId); renderPrompts();
+});
+$('#newPromptBtn').onclick = () => {
+  const p = { id: uid(), name: 'Neue Vorlage', text: 'Heute ist {{HEUTE}}.\n\n…\n\n' + JSON_FORMAT + '\n\n"""\n{{NOTIZ}}\n"""' };
+  state.prompts.push(p); curPromptId = p.id; safeSet(PROMPT_KEY, p.id); save(); renderPrompts(); $('#pName').select();
+};
+$('#pName').addEventListener('input', e => { const p = curPrompt(); if (!p) return; p.name = e.target.value; save(); const b = $(`[data-pid="${p.id}"] b`); if (b) b.textContent = p.name || 'Ohne Namen'; });
+$('#pText').addEventListener('input', e => { const p = curPrompt(); if (p) { p.text = e.target.value; save(); } });
+$('#pDel').onclick = () => {
+  const p = curPrompt(); if (!p || !confirm(`Vorlage „${p.name}“ löschen?`)) return;
+  state.prompts = state.prompts.filter(x => x.id !== p.id); curPromptId = null; save(); renderPrompts();
+};
+$$('.ph-chips [data-ph]').forEach(b => b.onclick = () => {
+  const ta = $('#pText'), ph = b.dataset.ph, s = ta.selectionStart, en = ta.selectionEnd;
+  ta.value = ta.value.slice(0, s) + ph + ta.value.slice(en); ta.focus(); ta.selectionStart = ta.selectionEnd = s + ph.length;
+  ta.dispatchEvent(new Event('input'));
+});
+$('#pNote').addEventListener('change', e => {
+  const n = state.notes.find(x => x.id === e.target.value); if (!n) return;
+  $('#pInput').value = (n.title ? n.title + '\n\n' : '') + n.body;
+});
+function fillPrompt(text, input) {
+  const open = state.issues.filter(i => !isClosed(i)).map(i => ({
+    key: i.key, title: i.title, status: i.status, importance: i.importance, target: i.target, deadline: i.deadline, goal: getGoal(i.goalId)?.name || '',
+    ...(i.status === 'waiting' ? { waitingFor: i.waitingFor, followUp: i.followUp } : {}),
+  }));
+  const map = {
+    '{{NOTIZ}}': input.trim() || '(keine)',
+    '{{HEUTE}}': `${today()} (${new Date().toLocaleDateString('de-DE', { weekday: 'long' })})`,
+    '{{ZIELE}}': state.goals.map(g => `"${g.name}"`).join(', ') || '(keine)',
+    '{{LABELS}}': [...new Set(state.issues.flatMap(i => i.labels))].join(', ') || '(keine)',
+    '{{OFFENE_TICKETS}}': JSON.stringify(open, null, 1),
+  };
+  return Object.entries(map).reduce((t, [k, v]) => t.split(k).join(v), text);
+}
+$('#pCopy').onclick = async () => {
+  const p = curPrompt(); if (!p) return;
+  const text = fillPrompt(p.text, $('#pInput').value);
+  await copyText(text, $('#pCopyMsg'), `✓ Kopiert (${text.length.toLocaleString('de-DE')} Zeichen)`);
+};
+
+// KI-Antwort einlesen: JSON (auch in ```-Blöcken) oder einfache Liste
+function extractItems(text) {
+  const tryParse = s => {
+    const a = s.indexOf('['), b = s.lastIndexOf(']');
+    if (a >= 0 && b > a) { try { const v = JSON.parse(s.slice(a, b + 1)); if (Array.isArray(v)) return v; } catch {} }
+    const o1 = s.indexOf('{'), o2 = s.lastIndexOf('}');
+    if (o1 >= 0 && o2 > o1) { try { const o = JSON.parse(s.slice(o1, o2 + 1)); return o.tickets || o.issues || o.tasks || o.todos || [o]; } catch {} }
+    return null;
+  };
+  const fences = [...text.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi)].map(m => m[1]).reverse();
+  for (const f of fences) { const r = tryParse(f); if (r) return r; }
+  const r = tryParse(text); if (r) return r;
+  // Fallback: jede Zeile = ein Ticket
+  return text.split(/\r?\n/).map(l => l.replace(/^\s*([-*•–]|\d+[.)]|\[[ xX]?\])\s*/, '').replace(/^\[[ xX]?\]\s*/, '').trim())
+    .filter(l => l && !/^#/.test(l) && l.length < 200).map(title => ({ title }));
+}
+function mapItem(o) {
+  if (!o || typeof o !== 'object') return null;
+  const s = v => typeof v === 'string' ? v.trim() : (typeof v === 'number' ? String(v) : '');
+  const low = v => s(v).toLowerCase();
+  const date = v => /^\d{4}-\d{2}-\d{2}$/.test(s(v)) ? s(v) : null;
+  const STATUS = { backlog: 'backlog', todo: 'todo', 'to do': 'todo', offen: 'todo', doing: 'doing', 'in arbeit': 'doing', 'in progress': 'doing', done: 'done', erledigt: 'done',
+    waiting: 'waiting', warten: 'waiting', wartet: 'waiting', paused: 'paused', pausiert: 'paused', cancelled: 'cancelled', canceled: 'cancelled', gestrichen: 'cancelled' };
+  const IMP = { must: 'must', pflicht: 'must', worth: 'worth', 'lohnt sich': 'worth', nice: 'nice', 'nice-to-have': 'nice', 'nice to have': 'nice', '': '' };
+  const TYP = { task: 'task', aufgabe: 'task', bug: 'bug', problem: 'bug', idea: 'idea', idee: 'idea' };
+  const p = {};
+  const title = s(o.title ?? o.titel ?? o.task ?? o.aufgabe); if (title) p.title = title;
+  const desc = s(o.desc ?? o.description ?? o.beschreibung); if (desc) p.desc = desc;
+  if (STATUS[low(o.status)]) p.status = STATUS[low(o.status)];
+  const imp = o.importance ?? o.wichtigkeit; if (imp !== undefined && IMP[low(imp)] !== undefined) p.importance = IMP[low(imp)];
+  if (TYP[low(o.type ?? o.typ)]) p.type = TYP[low(o.type ?? o.typ)];
+  const tg = o.target ?? o.ziel_datum; if (tg !== undefined && (date(tg) || tg === '')) p.target = date(tg) || '';
+  if (o.deadline !== undefined && (date(o.deadline) || o.deadline === '')) p.deadline = date(o.deadline) || '';
+  const goal = s(o.goal ?? o.ziel); if (goal) p.goal = goal;
+  const labels = Array.isArray(o.labels) ? o.labels.map(low) : (typeof o.labels === 'string' ? o.labels.split(',').map(x => x.trim().toLowerCase()) : null);
+  if (labels) p.labels = labels.filter(Boolean);
+  const cl = o.checklist ?? o.checkliste; if (Array.isArray(cl)) p.checklist = cl.map(x => s(typeof x === 'object' && x ? x.text : x)).filter(Boolean);
+  if (typeof o.private === 'boolean') p.private = o.private;
+  const wf = s(o.waitingFor ?? o.wartetAuf ?? o.wartet_auf); if (wf) p.waitingFor = wf;
+  const fu = o.followUp ?? o.nachfassen; if (date(fu)) p.followUp = date(fu);
+  const src = s(o.source ?? o.quelle); if (src) p.source = src;
+  const REP = { weekly: 'weekly', 'wöchentlich': 'weekly', biweekly: 'biweekly', 'alle 2 wochen': 'biweekly', monthly: 'monthly', monatlich: 'monthly', weekdays: 'weekdays', wochentage: 'weekdays',
+    quarterly: 'quarterly', quartalsweise: 'quarterly', lastworkday: 'lastworkday', 'letzter werktag': 'lastworkday' };
+  const DAY = { mo: 0, mon: 0, monday: 0, montag: 0, di: 1, tue: 1, tuesday: 1, dienstag: 1, mi: 2, wed: 2, wednesday: 2, mittwoch: 2, do: 3, thu: 3, thursday: 3, donnerstag: 3, fr: 4, fri: 4, friday: 4, freitag: 4, sa: 5, sat: 5, saturday: 5, samstag: 5, so: 6, sun: 6, sunday: 6, sonntag: 6 };
+  const days = Array.isArray(o.days ?? o.tage) ? (o.days ?? o.tage).map(d => DAY[low(d)]).filter(d => d !== undefined) : [];
+  if (REP[low(o.repeat ?? o.wiederholung)]) p.repeat = REP[low(o.repeat ?? o.wiederholung)];
+  if (days.length) { p.days = days; p.repeat ??= 'weekdays'; }
+  const key = s(o.key);
+  const existing = key ? state.issues.find(i => i.key.toLowerCase() === key.toLowerCase()) : null;
+  return { p, existing, key };
+}
+function resolveGoal(name) {
+  return (state.goals.find(g => g.name.trim().toLowerCase() === name.toLowerCase()) || createGoal(name)).id;
+}
+function applyItem({ p, existing }) {
+  const fields = { ...p }; delete fields.goal; delete fields.checklist; delete fields.status; delete fields.repeat; delete fields.days;
+  if (p.goal) fields.goalId = resolveGoal(p.goal);
+  if (existing) {
+    Object.assign(existing, fields);
+    if (p.checklist) p.checklist.forEach(text => { if (!existing.checklist.some(c => c.text === text)) existing.checklist.push({ id: uid(), text, done: false }); });
+    if (p.status) setStatus(existing, p.status, { reason: '', ask: false });
+    existing.updated = now();
+    existing.comments.unshift({ id: uid(), text: 'Per KI-Import aktualisiert', at: now(), system: true });
+    if (p.repeat && !getRule(existing.recurId)) makeRule(existing, p.repeat, p.days);
+  } else {
+    const i = createIssue({ ...fields, status: p.status || 'todo', ...(p.status === 'waiting' && !fields.followUp ? { followUp: addWorkdays(today(), 3) } : {}), checklist: (p.checklist || []).map(text => ({ id: uid(), text, done: false })) });
+    if (p.repeat) makeRule(i, p.repeat, p.days);
+  }
+}
+$('#pParse').onclick = () => {
+  const out = $('#pPreview'), text = $('#pAnswer').value.trim();
+  if (!text) { out.innerHTML = '<p class="err-msg">Bitte erst die KI-Antwort einfügen.</p>'; return; }
+  pendingImport = extractItems(text).map(mapItem).filter(Boolean).filter(x => x.existing || x.p.title);
+  if (!pendingImport.length) { out.innerHTML = '<p class="err-msg">Keine Aufgaben gefunden. Tipp: die KI um ein JSON-Array bitten (siehe Vorlage).</p>'; return; }
+  out.innerHTML = `<div class="table-wrap" style="margin:4px 0;max-height:360px"><table class="grid"><thead><tr>
+      <th><div class="th-inner"><input type="checkbox" id="pAll" checked></div></th><th><div class="th-inner">Aktion</div></th><th><div class="th-inner">Titel</div></th>
+      <th><div class="th-inner">Status</div></th><th><div class="th-inner">Wichtigkeit</div></th><th><div class="th-inner">Ziel</div></th>
+      <th><div class="th-inner">◎ / ⚑</div></th><th><div class="th-inner">Labels</div></th><th><div class="th-inner">☑</div></th></tr></thead>
+    <tbody>${pendingImport.map((x, k) => { const p = x.p; return `<tr>
+      <td><input type="checkbox" data-k="${k}" checked></td>
+      <td>${x.existing ? `<span class="st st-doing">Update ${esc(x.existing.key)}</span>` : (x.key ? `<span class="st" title="Key ${esc(x.key)} nicht gefunden">Neu</span>` : '<span class="st st-done">Neu</span>')}</td>
+      <td style="white-space:normal;min-width:200px">${esc(p.title || x.existing?.title || '')}${p.repeat ? ` <small class="muted">🔁 ${esc(freqText({ freq: p.repeat, days: p.days || [] }))}</small>` : ''}${p.desc ? `<br><small class="muted">${esc(p.desc.slice(0, 120))}</small>` : ''}</td>
+      <td>${p.status ? statusName(p.status) : (x.existing ? '' : 'To Do')}</td>
+      <td>${impChip(p.importance || '')}</td>
+      <td>${p.goal ? esc(p.goal) + (state.goals.some(g => g.name.toLowerCase() === p.goal.toLowerCase()) ? '' : ' <small class="muted">(neu)</small>') : ''}</td>
+      <td>${p.target ? '◎ ' + fmtShort(p.target) : ''} ${p.deadline ? '⚑ ' + fmtShort(p.deadline) : ''}</td>
+      <td>${(p.labels || []).map(l => `<span class="label">${esc(l)}</span>`).join(' ')}</td>
+      <td>${p.checklist?.length || ''}</td></tr>`; }).join('')}</tbody></table></div>
+    <div class="ph-chips"><button class="btn primary" id="pImport">Ausgewählte übernehmen</button><label class="check-field"><input type="checkbox" id="pPriv"> neue Tickets als 🔒 privat</label></div>`;
+  $('#pAll').onchange = e => $$('[data-k]', out).forEach(cb => cb.checked = e.target.checked);
+  $('#pImport').onclick = () => {
+    const chosen = $$('[data-k]', out).filter(cb => cb.checked).map(cb => pendingImport[cb.dataset.k]);
+    if (!chosen.length) return;
+    const priv = $('#pPriv').checked;
+    let created = 0, updated = 0;
+    chosen.forEach(x => { if (priv && !x.existing && x.p.private === undefined) x.p.private = true; applyItem(x); x.existing ? updated++ : created++; });
+    save(); renderFilterOptions(); renderBoard();
+    pendingImport = []; $('#pAnswer').value = '';
+    out.innerHTML = `<p class="ok-msg">✓ ${created} Ticket(s) angelegt${updated ? `, ${updated} aktualisiert` : ''}. <button class="btn small" id="pToBoard">Zum Board</button> <button class="btn small" id="pToList">Zur Liste</button></p>`;
+    $('#pToBoard').onclick = () => showView('board');
+    $('#pToList').onclick = () => showView('list');
+  };
+};
+
+async function copyText(text, msgEl, msg = '✓ Kopiert') {
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove();
+  }
+  if (msgEl) { msgEl.className = 'ok-msg'; msgEl.textContent = msg; setTimeout(() => { msgEl.textContent = ''; }, 3500); }
+}
+function downloadText(text, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + text.replace(/\n/g, '\r\n')], { type: 'text/plain;charset=utf-8' }));
+  a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+const short = s => s ? fmtShort(s) : '';
+// Eine Zeile für Text-Exporte (Wochenrückblick, Agenda, Sync-Vorbereitung)
+function exportLine(i, o = {}, extra = '') {
+  const g = getGoal(i.goalId);
+  let line = `• ${o.keys ? i.key + ' ' : ''}${i.title || '(ohne Titel)'}${o.goals && g ? ` [${g.name}]` : ''}${extra ? ' – ' + extra : ''}`;
+  if (o.subs) i.checklist.filter(c => !c.done).forEach(c => { line += `\n    ◦ ${c.text}`; });
+  return line;
+}
+const waitExtra = i => `wartet auf ${i.waitingFor || '?'} (${sinceText(i.statusAt || i.updated)}${i.followUp ? `, nachfassen ${short(i.followUp)}` : ''})`;
+const doingExtra = i => [i.deadline ? `Deadline ${short(i.deadline)}` : '', i.checklist.length ? `${i.checklist.filter(c => c.done).length}/${i.checklist.length} Unteraufgaben` : ''].filter(Boolean).join(', ');
+const dateExtra = i => [i.importance === 'must' ? 'Pflicht' : '', i.target ? `◎ ${short(i.target)}` : '', i.deadline ? `⚑ ${short(i.deadline)}` : ''].filter(Boolean).join(', ');
+const cancelledAtOf = i => i.cancelledAt || i.comments.find(c => c.system && /→ Gestrichen/.test(c.text))?.at || i.updated;
+const tsIn = (ts, from, to) => { if (!ts) return false; const d = isoOf(new Date(ts)); return d >= from && d <= to; };
+function section(title, items, fn) { return items.length ? `${title} (${items.length})\n${items.map(fn).join('\n')}\n\n` : ''; }
+
+/* ================= Meetings ================= */
+function createMeeting(name) {
+  const m = { id: uid(), name, freq: 'weekly', next: '', created: now() };
+  state.meetings.push(m); save();
+  return m;
+}
+function stepMeet(d, f) {
+  if (f === 'weekly') return addDays(d, 7);
+  if (f === 'biweekly') return addDays(d, 14);
+  const a = parseISO(d), last = new Date(a.getFullYear(), a.getMonth() + 2, 0).getDate();
+  return isoOf(new Date(a.getFullYear(), a.getMonth() + 1, Math.min(a.getDate(), last)));
+}
+function stepMeetBack(d, f) {
+  if (f === 'weekly') return addDays(d, -7);
+  if (f === 'biweekly') return addDays(d, -14);
+  if (f === 'monthly') { const a = parseISO(d); return isoOf(new Date(a.getFullYear(), a.getMonth() - 1, Math.min(a.getDate(), new Date(a.getFullYear(), a.getMonth(), 0).getDate()))); }
+  return addDays(d, -7);
+}
+// Vergangene Termine automatisch auf den nächsten weiterschieben
+function advanceMeetings() {
+  const t = today(); let changed = false;
+  state.meetings.forEach(m => { let k = 0; while (m.next && m.freq !== 'none' && m.next < t && k++ < 500) { m.next = stepMeet(m.next, m.freq); changed = true; } });
+  if (changed) save();
+}
+function meetDates(m, from, to) {
+  const out = []; let d = m.next, k = 0;
+  while (d && d <= to && k++ < 80) { if (d >= from) out.push(d); if (m.freq === 'none') break; d = stepMeet(d, m.freq); }
+  return out;
+}
+const agendaItems = m => visIssues().filter(i => i.meetingId === m.id && !isClosed(i))
+  .sort((a, b) => COLS.findIndex(c => c.id === a.status) - COLS.findIndex(c => c.id === b.status) || (a.deadline || '9').localeCompare(b.deadline || '9'));
+const fromMeeting = m => visIssues().filter(i => !isClosed(i) && i.source && i.source.trim().toLowerCase() === m.name.trim().toLowerCase());
+function agendaText(m) {
+  const items = agendaItems(m).filter(i => !i.private);
+  return `Agenda: ${m.name}${m.next ? ' – ' + fmtDate(m.next) : ''}\n\n` + (items.length ? items.map(i => exportLine(i, {}, i.status === 'waiting' ? waitExtra(i) : [statusName(i.status), dateExtra(i)].filter(Boolean).join(', '))).join('\n') : '(keine offenen Punkte)');
+}
+function renderMeetings() {
+  const wrap = $('#view-meetings');
+  if (wrap.contains(document.activeElement) && document.activeElement.matches('input:not([type=date]),textarea')) return;
+  advanceMeetings();
+  $('#meetGrid').innerHTML = state.meetings.length ? state.meetings.map(m => {
+    const items = agendaItems(m), src = fromMeeting(m);
+    const li = (i, ok) => `<li data-id="${i.id}" class="${isClosed(i) ? 'done' : ''}"><span class="st st-${i.status}">${statusName(i.status)}</span>
+      <span class="t">${esc(i.title || '(ohne Titel)')}${i.status === 'waiting' && i.waitingFor ? ` <small class="muted">⏳ ${esc(i.waitingFor)}</small>` : ''}</span>${dateHTML(i)}
+      ${ok ? `<button class="btn small m-ok" data-ok="${i.id}" title="Im Meeting besprochen – von der Agenda nehmen">✓ besprochen</button>` : ''}</li>`;
+    return `<div class="goal" data-mid="${m.id}" style="--g:var(--accent)">
+      <div class="goal-head">
+        <span class="goal-av" style="--g:var(--accent)"><svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.3M15.5 4.7a3.5 3.5 0 0 1 0 6.6"/></svg></span>
+        <input class="title-input m-name" value="${esc(m.name)}" placeholder="Name des Meetings">
+        <button class="btn danger small m-del" title="Meeting löschen (Tickets bleiben erhalten)">Löschen</button>
+      </div>
+      <div class="goal-meta">
+        <label>Nächster Termin <input type="date" class="inline-input m-next" value="${esc(m.next || '')}"></label>
+        <select class="inline-input m-freq" style="height:30px">${Object.entries(MEET_FREQS).map(([k, n]) => `<option value="${k}" ${k === m.freq ? 'selected' : ''}>${n}</option>`).join('')}</select>
+      </div>
+      <div class="sec-label" style="margin:2px 0 0">Agenda <small>${items.length} offene Punkte</small></div>
+      <ul class="goal-issues">${items.map(i => li(i, true)).join('') || '<li style="cursor:default;color:var(--subtle)">Keine Punkte – im Ticket „🗣 Auf Agenda für“ wählen oder „+ Punkt“.</li>'}</ul>
+      <div class="ph-chips">
+        <button class="btn ghost small m-add">+ Punkt</button>
+        <button class="btn small m-copy">📋 Agenda kopieren</button>
+        <button class="btn primary small m-prep" title="Fertiger Text für das Meeting: Agenda, Erledigtes, In Arbeit, Blocker, Nächste Schritte">📝 Sync-Vorbereitung</button>
+        <span class="m-msg"></span>
+      </div>
+      ${src.length ? `<details><summary>📍 ${src.length} offene Aufgabe(n) aus diesem Meeting</summary><ul class="goal-issues" style="margin-top:6px">${src.map(i => li(i, false)).join('')}</ul></details>` : ''}
+    </div>`;
+  }).join('') : `<div class="empty" style="grid-column:1/-1">Noch keine Meetings. Lege z. B. deinen Jour fixe an – offene Punkte tauchen dann beim nächsten Termin auf.</div>`;
+}
+$('#newMeetBtn').onclick = () => { const m = createMeeting(''); renderMeetings(); renderFilterOptions(); $(`[data-mid="${m.id}"] .m-name`)?.focus(); };
+$('#view-meetings').addEventListener('input', e => {
+  const m = getMeet(e.target.closest('[data-mid]')?.dataset.mid); if (!m) return;
+  if (e.target.matches('.m-name')) { m.name = e.target.value; save(); }
+});
+$('#view-meetings').addEventListener('focusout', e => {
+  if (!e.target.matches('.m-name')) return;
+  const m = getMeet(e.target.closest('[data-mid]').dataset.mid);
+  if (m && !m.name.trim()) { m.name = 'Neues Meeting'; save(); }
+  setTimeout(() => { renderFilterOptions(); renderBoard(); renderMeetings(); }, 0);
+});
+$('#view-meetings').addEventListener('change', e => {
+  const m = getMeet(e.target.closest('[data-mid]')?.dataset.mid); if (!m) return;
+  if (e.target.matches('.m-next')) m.next = e.target.value;
+  if (e.target.matches('.m-freq')) m.freq = e.target.value;
+  save(); e.target.blur(); renderMeetings();
+});
+$('#view-meetings').addEventListener('click', e => {
+  const card = e.target.closest('[data-mid]'); if (!card) return;
+  const m = getMeet(card.dataset.mid);
+  const ok = e.target.closest('[data-ok]');
+  if (ok) {
+    const i = getIssue(ok.dataset.ok);
+    i.meetingId = null; i.updated = now();
+    i.comments.unshift({ id: uid(), text: `Im Meeting „${m.name}“ besprochen`, at: now(), system: true });
+    save(); renderMeetings(); return;
+  }
+  if (e.target.closest('.m-del')) {
+    if (!confirm(`Meeting „${m.name}“ löschen? Die Tickets bleiben erhalten, nur die Agenda-Zuordnung wird entfernt.`)) return;
+    state.meetings = state.meetings.filter(x => x.id !== m.id);
+    state.issues.forEach(i => { if (i.meetingId === m.id) i.meetingId = null; });
+    if (filters.meet === m.id) filters.meet = '';
+    save(); renderAll(); return;
+  }
+  if (e.target.closest('.m-add')) { const i = createIssue({ meetingId: m.id, status: 'todo' }); openIssue(i.id, true); return; }
+  if (e.target.closest('.m-copy')) { copyText(agendaText(m), $('.m-msg', card), '✓ Agenda kopiert'); return; }
+  if (e.target.closest('.m-prep')) { openPrep(m); return; }
+  const li = e.target.closest('li[data-id]'); if (li) openIssue(li.dataset.id);
+});
+
+/* Sync-Vorbereitung (für Meetings mit Manager) */
+let prepMeet = null;
+function openPrep(m) {
+  prepMeet = m;
+  const ref = m.next || today();
+  $('#prepSince').value = m.freq === 'none' ? addDays(today(), -7) : stepMeetBack(ref, m.freq);
+  $('#prepTitle').textContent = `📝 Sync-Vorbereitung: ${m.name}`;
+  renderPrep(); $('#prepModal').hidden = false;
+}
+function renderPrep() {
+  const m = prepMeet; if (!m) return;
+  const o = { keys: $('#prepKeys').checked, subs: $('#prepSubs').checked, goals: true };
+  const since = $('#prepSince').value || addDays(today(), -7), t = today(), until = addDays(t, 7);
+  const pool = state.issues.filter(i => !i.private); // Manager-Sicht: nie private Tickets
+  const agenda = agendaItems(m).filter(i => !i.private);
+  const agendaIds = new Set(agenda.map(i => i.id));
+  const rest = pool.filter(i => !agendaIds.has(i.id));
+  let out = `Sync-Vorbereitung: ${m.name}${m.next ? ' – ' + fmtDate(m.next) : ''}\nZeitraum: seit ${fmtDate(since)}\n\n`;
+  out += section('🗣 Agenda / zu besprechen', agenda, i => exportLine(i, o, i.status === 'waiting' ? waitExtra(i) : [statusName(i.status), dateExtra(i)].filter(Boolean).join(', ')));
+  out += section(`✅ Erledigt seit ${short(since)}`, rest.filter(i => i.status === 'done' && tsIn(i.doneAt, since, t)), i => exportLine(i, { ...o, subs: false }));
+  out += section('🔄 In Arbeit', rest.filter(i => i.status === 'doing'), i => exportLine(i, o, doingExtra(i)));
+  out += section('⏳ Blocker / warte auf', rest.filter(i => i.status === 'waiting'), i => exportLine(i, o, waitExtra(i)));
+  out += section('⚠ Überfällig', rest.filter(i => isActive(i) && i.status !== 'waiting' && i.deadline && i.deadline < t), i => exportLine(i, o, `Deadline war ${short(i.deadline)}`));
+  out += section(`📅 Als Nächstes – bis ${short(until)}`, rest.filter(i => isActive(i) && i.status !== 'doing' && i.status !== 'waiting' && ((i.target && i.target >= t && i.target <= until) || (i.deadline && i.deadline >= t && i.deadline <= until))), i => exportLine(i, o, dateExtra(i)));
+  out += section(`✖ Gestrichen seit ${short(since)}`, rest.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), since, t)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'Grund: ' + i.cancelReason : ''));
+  $('#prepOut').value = out.trim() + '\n';
+}
+['#prepKeys', '#prepSubs', '#prepSince'].forEach(sel => $(sel).addEventListener('change', renderPrep));
+$('#prepCopy').onclick = () => copyText($('#prepOut').value, $('#prepMsg'));
+$('#prepDownload').onclick = () => downloadText($('#prepOut').value, `sync-vorbereitung-${(prepMeet?.name || 'meeting').toLowerCase().replace(/[^a-z0-9äöüß]+/gi, '-')}-${today()}.txt`);
+
+/* ================= Wochenrückblick ================= */
+const REV_KEY = 'jiratype.review';
+const rev = (() => { try { return JSON.parse(safeGet(REV_KEY)) || {}; } catch { return {}; } })();
+rev.sec ??= { done: true, doing: true, waiting: true, late: true, next: true, cancelled: false, paused: false };
+rev.opt ??= { keys: false, goals: true, subs: false, priv: false };
+let revOffset = 0;
+$$('#view-review [data-sec]').forEach(cb => { cb.checked = !!rev.sec[cb.dataset.sec]; });
+$$('#view-review [data-opt]').forEach(cb => { cb.checked = !!rev.opt[cb.dataset.opt]; });
+function renderReview() {
+  const base = parseISO(today());
+  const mon = isoOf(new Date(base.getFullYear(), base.getMonth(), base.getDate() - ((base.getDay() + 6) % 7) + revOffset * 7));
+  const sun = addDays(mon, 6), nMon = addDays(mon, 7), nSun = addDays(mon, 13), t = today();
+  const [kw] = isoWeek(mon);
+  $('#revTitle').textContent = `KW ${kw} · ${short(mon)}–${short(sun)}`;
+  const o = rev.opt, sec = rev.sec;
+  const pool = state.issues.filter(i => !i.private || (o.priv && !showMode));
+  let out = `Wochenrückblick KW ${kw} (${dateText(mon)} – ${dateText(sun)})\n\n`;
+  if (sec.done) out += section('✅ Erledigt', pool.filter(i => i.status === 'done' && tsIn(i.doneAt, mon, sun)), i => exportLine(i, { ...o, subs: false }));
+  if (sec.doing) out += section('🔄 In Arbeit', pool.filter(i => i.status === 'doing'), i => exportLine(i, o, doingExtra(i)));
+  if (sec.waiting) out += section('⏳ Warten auf', pool.filter(i => i.status === 'waiting'), i => exportLine(i, o, waitExtra(i)));
+  if (sec.late) out += section('⚠ Überfällig', pool.filter(i => isActive(i) && i.status !== 'waiting' && i.deadline && i.deadline < t), i => exportLine(i, o, `Deadline war ${short(i.deadline)}`));
+  if (sec.next) out += section(`📅 Nächste Woche · KW ${isoWeek(nMon)[0]}`, pool.filter(i => isActive(i) && ((i.target >= nMon && i.target <= nSun) || (i.deadline >= nMon && i.deadline <= nSun))), i => exportLine(i, o, dateExtra(i)));
+  if (sec.cancelled) out += section('✖ Gestrichen', pool.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), mon, sun)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'Grund: ' + i.cancelReason : ''));
+  if (sec.paused) out += section('⏸ Pausiert', pool.filter(i => i.status === 'paused'), i => exportLine(i, { ...o, subs: false }, i.followUp ? 'wieder ab ' + short(i.followUp) : ''));
+  $('#revOut').value = out.trim() + '\n';
+}
+$('#view-review').addEventListener('change', e => {
+  const cb = e.target;
+  if (cb.dataset.sec) rev.sec[cb.dataset.sec] = cb.checked;
+  else if (cb.dataset.opt) rev.opt[cb.dataset.opt] = cb.checked;
+  else return;
+  safeSet(REV_KEY, JSON.stringify(rev)); renderReview();
+});
+$('#revPrev').onclick = () => { revOffset--; renderReview(); };
+$('#revNext').onclick = () => { revOffset++; renderReview(); };
+$('#revNow').onclick = () => { revOffset = 0; renderReview(); };
+$('#revCopy').onclick = () => copyText($('#revOut').value, $('#revMsg'));
+
+/* ================= Liste einfügen (Aktionspunkte → Tickets) ================= */
+function parseBulkLine(raw) {
+  const it = { labels: [], importance: '', deadline: '', waitingFor: '', toks: [] };
+  let s = raw.replace(/^\s*(?:--+|->|[-*•–·▪◦]|o(?=\s)|\d+[.)]|\[[ xX]?\]|☐|☑|□)\s*/, '').trim();
+  s = s.replace(/(^|\s)#([\p{L}\p{N}_-]+)/gu, (m, a, l) => { it.labels.push(l.toLowerCase()); it.toks.push('#' + l.toLowerCase()); return a; });
+  s = s.replace(/(^|\s)@([\p{L}][\p{L}\p{N}._-]*)/u, (m, a, p) => { it.waitingFor = p; it.toks.push('⏳ ' + p); return a; });
+  s = s.replace(/(?:\b(?:bis|by)\s+)?\b(?:KW|CW|wk|week)\s?(\d{1,2})(?:\s?\/\s?(\d{4}))?\b/i, (m, w, y) => { const d = kwFriday(+w, y ? +y : 0); if (!d) return m; it.deadline = d; it.toks.push(`⚑ KW${w}`); return ''; });
+  if (!it.deadline) s = s.replace(/(?:\b(?:bis|by)\s+(?:zum\s+)?)?\b(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})?(?!\d)/i, (m, d, mo, y) => {
+    let yy = y ? (y.length === 2 ? 2000 + +y : +y) : new Date().getFullYear();
+    let dt = new Date(yy, +mo - 1, +d);
+    if (dt.getMonth() !== +mo - 1) return m;
+    if (!y && isoOf(dt) < addDays(today(), -180)) dt = new Date(yy + 1, +mo - 1, +d);
+    it.deadline = isoOf(dt); it.toks.push('⚑ ' + fmtShort(it.deadline)); return '';
+  });
+  s = s.replace(/(^|\s)!+(?=\s|$)|\((?:pflicht|wichtig|dringend|must|important|urgent)\)/i, (m, a) => { it.importance = 'must'; it.toks.push('Pflicht'); return a || ''; });
+  it.title = s.replace(/\s{2,}/g, ' ').replace(/[\s,;:–-]+$/, '').trim();
+  return it;
+}
+function parseBulk(text) {
+  const items = [];
+  for (const raw of text.split(/\r?\n/)) {
+    if (!raw.trim()) continue;
+    const sub = /^(\t|\s{2,})\S/.test(raw) || /^\s*(--|->)/.test(raw);
+    if (!sub && /:\s*$/.test(raw.trim())) continue; // Überschrift
+    const it = parseBulkLine(raw);
+    if (!it.title) continue;
+    if (sub && items.length) items[items.length - 1].subs.push(it.title);
+    else items.push({ ...it, subs: [] });
+  }
+  return items;
+}
+let bulkItems = [];
+function openBulk() {
+  setOptions($('#bulkStatus'), COLS.filter(c => ['backlog', 'todo', 'doing', 'waiting'].includes(c.id)).map(c => [c.id, c.name]));
+  $('#bulkStatus').value = 'todo';
+  setOptions($('#bulkGoal'), state.goals.map(g => [g.id, g.name]), '— kein Ziel —');
+  setOptions($('#bulkMeet'), state.meetings.map(m => [m.id, m.name]), '— keins —');
+  if (!$('#bulkSourceDate').value) $('#bulkSourceDate').value = today();
+  $('#bulkModal').hidden = false; $('#bulkText').focus(); renderBulk();
+}
+function renderBulk() {
+  bulkItems = parseBulk($('#bulkText').value);
+  const subs = bulkItems.reduce((n, i) => n + i.subs.length, 0);
+  $('#bulkCreate').disabled = !bulkItems.length;
+  $('#bulkCreate').textContent = bulkItems.length ? `${bulkItems.length} Ticket(s) anlegen${subs ? ` (+${subs} Unteraufgaben)` : ''}` : 'Tickets anlegen';
+  $('#bulkPreview').innerHTML = bulkItems.length ? `<div class="table-wrap" style="max-height:260px"><table class="grid"><tbody>${bulkItems.map((it, k) => `<tr><td class="mono" style="width:30px">${k + 1}</td>
+    <td style="white-space:normal">${esc(it.title)}${it.toks.map(t => `<span class="tok">${esc(t)}</span>`).join('')}${it.subs.map(s => `<span class="bulk-sub">◦ ${esc(s)}</span>`).join('')}</td></tr>`).join('')}</tbody></table></div>` : '';
+}
+$('#bulkText').addEventListener('input', renderBulk);
+$('#bulkBtn').onclick = openBulk;
+$('#bulkCreate').onclick = () => {
+  if (!bulkItems.length) return;
+  const common = $('#bulkLabels').value.split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
+  const source = $('#bulkSource').value.trim();
+  bulkItems.forEach(it => {
+    const status = it.waitingFor ? 'waiting' : $('#bulkStatus').value;
+    createIssue({
+      title: it.title, status, importance: it.importance, deadline: it.deadline,
+      labels: [...new Set([...it.labels, ...common])], waitingFor: it.waitingFor,
+      followUp: status === 'waiting' ? addWorkdays(today(), 3) : '',
+      goalId: $('#bulkGoal').value || null, meetingId: $('#bulkMeet').value || null,
+      source, sourceDate: source ? $('#bulkSourceDate').value : '', private: $('#bulkPriv').checked,
+      checklist: it.subs.map(text => ({ id: uid(), text, done: false })),
+    });
+  });
+  const n = bulkItems.length;
+  $('#bulkText').value = ''; bulkItems = []; $('#bulkModal').hidden = true;
+  if (!TASK_VIEWS.includes(currentView)) showView('board');
+  renderAll(); saveEl.textContent = `✓ ${n} Ticket(s) angelegt`;
+};
+
+/* ================= Datensicherheit ================= */
+const SID_KEY = 'jiratype.sid', RT_KEY = 'jiratype.restartTest';
+let sid = null;
+try { sid = sessionStorage.getItem(SID_KEY); if (!sid) { sid = uid(); sessionStorage.setItem(SID_KEY, sid); } } catch { sid = uid(); }
+// Neustart-Test: in einer neuen Browser-Sitzung geöffnet und die Daten sind noch da → bestanden
+(() => { try { const rt = JSON.parse(safeGet(RT_KEY) || 'null'); if (rt && !rt.passed && rt.sid !== sid && safeGet(STORE_KEY)) { rt.passed = now(); safeSet(RT_KEY, JSON.stringify(rt)); } } catch {} })();
+try { navigator.storage?.persist?.(); } catch {}
+const kb = n => n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))} KB` : `${(n / 1048576).toFixed(1)} MB`;
+async function renderSafety() {
+  const row = (ico, title, text, btn = '') => `<div class="check-row"><div class="check-ico">${ico}</div><div><b>${title}</b><p>${text}</p>${btn}</div></div>`;
+  let ok = false;
+  try { localStorage.setItem('jiratype.selftest', '1'); ok = localStorage.getItem('jiratype.selftest') === '1'; localStorage.removeItem('jiratype.selftest'); } catch {}
+  let est = null, pers = null;
+  try { est = await navigator.storage?.estimate?.(); } catch {}
+  try { pers = await navigator.storage?.persisted?.(); } catch {}
+  const size = (safeGet(STORE_KEY) || '').length;
+  const lastSync = +safeGet('jiratype.lastSync') || 0, lastBackup = +safeGet('jiratype.lastBackup') || 0;
+  const rt = JSON.parse(safeGet(RT_KEY) || 'null');
+  let h = '';
+  h += row(ok ? '✅' : '❌', 'Speichern im Browser', ok ? `Schreiben und Lesen funktioniert. Deine Daten: ${kb(size)}${est?.quota ? ` · Platz frei: ${kb(est.quota - (est.usage || 0))}` : ''}.` : 'Der Browser blockiert das Speichern (z. B. durch eine Firmenrichtlinie oder ein InPrivate-Fenster). Nutze unbedingt die Auto-Sync-Datei und exportiere Backups.');
+  h += row(pers ? '✅' : 'ℹ️', 'Speicher vor automatischem Aufräumen geschützt', pers ? 'Edge hat den Speicher als dauerhaft markiert – er wird nicht von selbst geleert.' : 'Edge könnte den Speicher bei extremem Platzmangel leeren (selten). Die Auto-Sync-Datei schützt dich davor.', pers ? '' : '<button class="btn small" data-safe="persist">Schutz anfordern</button>');
+  h += fsSupported
+    ? (fileHandle ? row('✅', 'Auto-Sync in Datei', `Aktiv: <b>${esc(fileHandle.name)}</b>${lastSync ? ` · zuletzt geschrieben ${relTime(lastSync)}` : ''}. Jede Änderung landet zusätzlich in dieser Datei.`)
+      : pendingHandle ? row('⚠️', 'Auto-Sync in Datei', `Pausiert (<b>${esc(pendingHandle.name)}</b>) – Edge braucht nach dem Neustart einmal deine Erlaubnis.`, '<button class="btn small primary" data-safe="resume">Fortsetzen</button>')
+      : row('❌', 'Auto-Sync in Datei', 'Nicht eingerichtet. Empfehlung: Datei in deinen <b>OneDrive</b>-Ordner legen – dann ist sie automatisch gesichert und überlebt auch einen PC-Wechsel.', '<button class="btn small primary" data-safe="sync">Auto-Sync einrichten</button>'))
+    : row('❌', 'Auto-Sync in Datei', 'Dieser Browser unterstützt keine Sync-Datei. Bitte in Microsoft Edge öffnen oder regelmäßig Backups exportieren.');
+  h += row(lastBackup && now() - lastBackup < 14 * 86400000 ? '✅' : '⚠️', 'Backup (JSON-Export)', lastBackup ? `Letztes Backup: ${fmtDateTime(lastBackup)}.` : 'Noch nie exportiert. Ein Backup kannst du jederzeit wieder einspielen (⋯ → Backup importieren).', '<button class="btn small" data-safe="export">Backup jetzt exportieren</button>');
+  h += row(rt?.passed ? '✅' : rt ? '⏳' : '❔', 'Neustart-Test', rt?.passed
+    ? `Bestanden am ${fmtDateTime(rt.passed)}: Deine Daten waren nach dem Schließen von Edge noch da.`
+    : rt ? 'Test läuft: Schließe jetzt <b>alle Edge-Fenster</b>, starte Edge neu und öffne diese Datei wieder per Doppelklick. Danach hier erneut prüfen.'
+    : 'Prüft, ob Edge deine Daten beim Schließen behält (Firmenrechner löschen manchmal Browserdaten beim Beenden).', rt?.passed ? '<button class="btn small" data-safe="restart">Erneut testen</button>' : rt ? '' : '<button class="btn small" data-safe="restart">Test starten</button>');
+  h += row('🔧', 'Edge-Einstellung prüfen', 'Öffne in Edge die Adresse <code>edge://settings/clearBrowsingDataOnClose</code> – der Schalter <b>„Cookies und andere Websitedaten“</b> muss <b>aus</b> sein. Und die App nicht im InPrivate-Fenster öffnen.');
+  $('#safeBody').innerHTML = h;
+}
+function openSafety() { $('#safeModal').hidden = false; renderSafety(); }
+$('#safeBody').addEventListener('click', async e => {
+  const act = e.target.closest('[data-safe]')?.dataset.safe; if (!act) return;
+  try {
+    if (act === 'persist') { const ok = await navigator.storage?.persist?.(); if (!ok) alert('Edge hat den Schutz (noch) nicht gewährt. Das ist bei lokalen Dateien üblich – die Auto-Sync-Datei ist der wichtigere Schutz.'); }
+    else if (act === 'resume') $('#fileResumeBtn').click();
+    else if (act === 'sync') await menuAction('file-new');
+    else if (act === 'export') await menuAction('export');
+    else if (act === 'restart') safeSet(RT_KEY, JSON.stringify({ at: now(), sid }));
+  } catch (err) { if (err.name !== 'AbortError') alert('Fehler: ' + err.message); }
+  setTimeout(renderSafety, 300);
+});
+function checkBackupBanner() {
+  const snooze = +safeGet('jiratype.backupSnooze') || 0, lastBackup = +safeGet('jiratype.lastBackup') || 0;
+  $('#backupBanner').hidden = !!(fileHandle || pendingHandle || now() - lastBackup < 14 * 86400000 || now() - snooze < 3 * 86400000);
+}
+$('#backupBannerBtn').onclick = openSafety;
+$('#backupBannerClose').onclick = () => { safeSet('jiratype.backupSnooze', String(now())); checkBackupBanner(); };
+$$('[data-close]').forEach(b => b.onclick = () => { $('#' + b.dataset.close).hidden = true; });
+$$('#bulkModal, #safeModal, #prepModal').forEach(m => m.addEventListener('mousedown', e => { if (e.target === m) m.hidden = true; }));
+
+/* ================= Notizen ================= */
+let curNoteId = null;
+const nq = $('#nq');
+function renderNotes() {
+  const q = nq.value.trim().toLowerCase();
+  const notes = [...state.notes].sort((a, b) => b.updated - a.updated)
+    .filter(n => !q || (n.title + ' ' + n.body).toLowerCase().includes(q));
+  if (!curNoteId || !state.notes.some(n => n.id === curNoteId)) curNoteId = notes[0]?.id || null;
+  $('#notesList').innerHTML = notes.length ? notes.map(n => `<div class="note-item ${n.id === curNoteId ? 'active' : ''}" data-nid="${n.id}">
+      <b>${esc(n.title) || 'Ohne Titel'}</b><small>${relTime(n.updated)} · ${esc(n.body.slice(0, 60)) || '…'}</small></div>`).join('')
+    : `<div class="empty">${q ? 'Nichts gefunden' : 'Noch keine Notizen'}</div>`;
+  renderNoteEditor();
+}
+function renderNoteEditor() {
+  const ed = $('#noteEditor');
+  const n = state.notes.find(x => x.id === curNoteId);
+  if (!n) { ed.innerHTML = `<div class="empty">Wähle links eine Notiz oder erstelle eine neue mit <b>+</b>.</div>`; delete ed.dataset.nid; return; }
+  if (ed.dataset.nid === n.id && ed.contains(document.activeElement)) { $('#noteMeta').textContent = `Zuletzt bearbeitet: ${fmtDateTime(n.updated)}`; return; }
+  ed.dataset.nid = n.id;
+  ed.innerHTML = `<input class="title-input" id="noteTitle" placeholder="Titel" value="${esc(n.title)}">
+    <textarea id="noteBody" placeholder="Schreib los…">${esc(n.body)}</textarea>
+    <div class="note-foot"><span id="noteMeta">Zuletzt bearbeitet: ${fmtDateTime(n.updated)}</span><button class="btn danger" id="noteDel">Löschen</button></div>`;
+  const upd = () => { n.updated = now(); save(); refreshNoteItem(n); };
+  $('#noteTitle').addEventListener('input', e => { n.title = e.target.value; upd(); });
+  $('#noteBody').addEventListener('input', e => { n.body = e.target.value; upd(); });
+  $('#noteDel').onclick = () => {
+    if (!confirm(`Notiz „${n.title || 'Ohne Titel'}“ löschen?`)) return;
+    state.notes = state.notes.filter(x => x.id !== n.id); curNoteId = null; delete ed.dataset.nid; save(); renderNotes();
+  };
+}
+function refreshNoteItem(n) {
+  const el = $(`.note-item[data-nid="${n.id}"]`);
+  if (el) el.innerHTML = `<b>${esc(n.title) || 'Ohne Titel'}</b><small>gerade eben · ${esc(n.body.slice(0, 60)) || '…'}</small>`;
+  $('#noteMeta').textContent = `Zuletzt bearbeitet: ${fmtDateTime(n.updated)}`;
+}
+$('#notesList').addEventListener('click', e => {
+  const it = e.target.closest('.note-item'); if (!it) return;
+  curNoteId = it.dataset.nid; delete $('#noteEditor').dataset.nid; renderNotes();
+});
+nq.addEventListener('input', renderNotes);
+$('#newNoteBtn').onclick = () => {
+  const t = now(); const n = { id: uid(), title: '', body: '', created: t, updated: t };
+  state.notes.push(n); curNoteId = n.id; nq.value = ''; save(); renderNotes(); $('#noteTitle').focus();
+};
+
+/* ================= Ansichten ================= */
+let currentView = 'board';
+const TASK_VIEWS = ['board', 'list', 'cal'];
+const PAGE = {
+  tasks:   ['Meine Aufgaben', 'Alle deine Tickets – als Board, Liste oder im Kalender.'],
+  meetings: ['Meetings', 'Agenda pro Meeting: offene Punkte tauchen beim passenden Termin auf.'],
+  review:  ['Wochenrückblick', 'Was diese Woche passiert ist – fertig zum Kopieren fürs Status-Update.'],
+  goals:   ['Ziele', 'Größere Ziele mit Fortschritt und deine wiederkehrenden Aufgaben.'],
+  notes:   ['Notizen', 'Freie Notizen – werden automatisch gespeichert.'],
+  prompts: ['Prompts', 'KI-Vorlagen: Notizen verarbeiten lassen und als Tickets übernehmen.'],
+};
+let lastTaskView = safeGet('jiratype.taskView') || 'board';
+function showView(v) {
+  if (v === 'tasks') v = TASK_VIEWS.includes(lastTaskView) ? lastTaskView : 'board';
+  if ((v === 'notes' || v === 'prompts') && showMode) v = 'board';
+  closePop();
+  currentView = v;
+  const isTask = TASK_VIEWS.includes(v);
+  if (isTask) { lastTaskView = v; safeSet('jiratype.taskView', v); }
+  $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === v || (isTask && t.dataset.view === 'tasks')));
+  $$('.view').forEach(s => s.hidden = s.id !== 'view-' + v);
+  $('#segWrap').hidden = !isTask;
+  const [title, sub] = PAGE[isTask ? 'tasks' : v];
+  $('#pageTitle').textContent = title; $('#pageSub').textContent = sub;
+  document.body.classList.remove('side-open');
+  renderSidebar();
+  safeSet(VIEW_KEY, v);
+  if (v === 'board') renderBoard();
+  if (v === 'cal') renderCal();
+  if (v === 'goals') renderGoals();
+  if (v === 'notes') renderNotes();
+  if (v === 'list') renderList();
+  if (v === 'prompts') renderPrompts();
+  if (v === 'meetings') renderMeetings();
+  if (v === 'review') renderReview();
+}
+$$('.tab').forEach(t => t.onclick = () => showView(t.dataset.view));
+
+/* ================= Theme ================= */
+function applyTheme(t) { if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; }
+applyTheme(safeGet(THEME_KEY));
+$('#themeBtn').onclick = () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  const t = dark ? 'light' : 'dark'; applyTheme(t); safeSet(THEME_KEY, t);
+};
+
+/* ================= Menü ================= */
+const menu = $('#menu');
+$('#menuBtn').onclick = e => {
+  e.stopPropagation(); menu.hidden = !menu.hidden;
+  if (menu.hidden) return;
+  // An den Button andocken (fixed, damit die Sidebar das Menü nicht abschneidet)
+  const r = $('#menuBtn').getBoundingClientRect();
+  menu.style.left = Math.max(8, Math.min(r.left, innerWidth - menu.offsetWidth - 8)) + 'px';
+  menu.style.bottom = (innerHeight - r.top + 6) + 'px';
+};
+document.addEventListener('click', e => { if (!menu.hidden && !menu.contains(e.target)) menu.hidden = true; });
+menu.addEventListener('click', async e => {
+  const act = e.target.closest('button')?.dataset.act; if (!act) return;
+  menu.hidden = true;
+  try { await menuAction(act); }
+  catch (err) { if (err.name !== 'AbortError') alert('Fehler: ' + err.message); }
+});
+async function menuAction(act) {
+  {
+    if (act === 'safety') openSafety();
+    else if (act === 'export') {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `board-backup-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      safeSet('jiratype.lastBackup', String(now())); checkBackupBanner();
+    } else if (act === 'csv-all') {
+      const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const head = ['Key', 'Titel', 'Beschreibung', 'Status', 'Wartet auf', 'Wiedervorlage', 'Grund (gestrichen)', 'Wichtigkeit', 'Typ', 'Ziel', 'Agenda', 'Quelle', 'Quelle am', 'Link', 'Labels', 'Ziel-Datum (soft)', 'Deadline (hard)', 'KW', 'Wiederholung', 'Privat', 'Unteraufgaben', 'Updates', 'Erstellt', 'Aktualisiert'];
+      const rows = [...state.issues].sort((a, b) => (parseInt(a.key.split('-').pop(), 10) || 0) - (parseInt(b.key.split('-').pop(), 10) || 0)).map(i => [
+        i.key, i.title, i.desc, statusName(i.status), i.waitingFor, dateText(i.followUp), i.cancelReason, IMPS[i.importance]?.n || '', TYPES[i.type].n, getGoal(i.goalId)?.name || '',
+        getMeet(i.meetingId)?.name || '', i.source, dateText(i.sourceDate), i.sourceLink, i.labels.join(', '),
+        dateText(i.target), dateText(i.deadline), i.deadline ? isoWeek(i.deadline)[0] : '', getRule(i.recurId) ? freqText(getRule(i.recurId)) : '', i.private ? 'ja' : '',
+        i.checklist.map(c => (c.done ? '[x] ' : '[ ] ') + c.text).join('\n'),
+        i.comments.filter(c => !c.system).map(c => `${fmtDateTime(c.at)}: ${c.text}`).join('\n'),
+        fmtDateTime(i.created), fmtDateTime(i.updated),
+      ]);
+      const csv = [head, ...rows].map(r => r.map(cell).join(';')).join('\r\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
+      a.download = `alle-tickets-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    } else if (act === 'import') {
+      $('#importInput').click();
+    } else if (act === 'file-new') {
+      const h = await window.showSaveFilePicker({ suggestedName: 'board-daten.json', types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
+      pendingHandle = null; await attachHandle(h, { preferFile: false }); checkBackupBanner();
+    } else if (act === 'file-open') {
+      const [h] = await window.showOpenFilePicker({ types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
+      if (await h.requestPermission({ mode: 'readwrite' }) !== 'granted') return;
+      if (!confirm('Daten aus dieser Datei laden? Der aktuelle Stand im Browser wird ersetzt (vorher ggf. Backup exportieren).')) return;
+      pendingHandle = null; await attachHandle(h, { preferFile: true }); generateRecurring();
+    } else if (act === 'file-off') {
+      fileHandle = null; pendingHandle = null; await idbSet('fileHandle', undefined); updateFileUI(); saveNow();
+    } else if (act === 'rename') {
+      const n = prompt('Name des Boards:', state.name);
+      if (n && n.trim()) { state.name = n.trim(); save(); renderAll(); }
+    } else if (act === 'clear-done') {
+      const n = state.issues.filter(i => i.status === 'done').length;
+      if (!n) return alert('Keine erledigten Tickets vorhanden.');
+      if (!confirm(`${n} erledigte Ticket(s) endgültig löschen?`)) return;
+      state.issues = state.issues.filter(i => i.status !== 'done'); save(); renderAll();
+    }
+  }
+}
+$('#importInput').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try {
+    const data = normalize(JSON.parse(await f.text()));
+    if (!confirm(`Backup laden (${data.issues.length} Tickets, ${data.goals.length} Ziele, ${data.notes.length} Notizen)? Der aktuelle Stand wird ersetzt.`)) return;
+    state = data; saveNow(); generateRecurring(); renderAll();
+  } catch (err) { alert('Import fehlgeschlagen: ' + err.message); }
+});
+
+/* ================= Tastatur ================= */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (pop) { closePop(); return; }
+    const dlg = ['#prepModal', '#bulkModal', '#safeModal'].map(s => $(s)).find(m => !m.hidden);
+    if (dlg) { dlg.hidden = true; return; }
+    if (!modal.hidden) { e.preventDefault(); closeModal(); }
+    else if (!menu.hidden) menu.hidden = true;
+    return;
+  }
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName);
+  if (typing || e.metaKey || e.ctrlKey || e.altKey || !modal.hidden || !$('#bulkModal').hidden || !$('#safeModal').hidden || !$('#prepModal').hidden) return;
+  const k = e.key.toLowerCase();
+  if (k === 'c') { e.preventDefault(); $('#newIssueBtn').click(); }
+  else if (k === '/') { e.preventDefault(); showView('board'); $('#q').focus(); }
+  else if (k === 'l') { e.preventDefault(); openBulk(); }
+  else if (k === 'n' && !showMode) { e.preventDefault(); showView('notes'); $('#newNoteBtn').click(); }
+});
+
+/* ================= Start ================= */
+applyMode();
+if (!safeGet(STORE_KEY)) safeSet(STORE_KEY, JSON.stringify(state));
+const lastView = safeGet(VIEW_KEY);
+showView(['board', 'list', 'cal', 'goals', 'notes', 'prompts', 'meetings', 'review'].includes(lastView) ? lastView : 'board');
+advanceMeetings();
+renderAll();
+generateRecurring();
+initFileSync().then(checkBackupBanner);
+// Regelmäßig prüfen: neue Serientermine (z. B. über Nacht offen gelassen), relative Zeiten
+setInterval(() => { generateRecurring(); if (!modal.hidden) renderComments(); }, 10 * 60 * 1000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { generateRecurring(); if (modal.hidden) renderAll(); } });
+})();
+</script>
+</body>
+</html>
