@@ -110,6 +110,12 @@ Goals group several tickets and show a progress bar; cancelled tickets don't cou
   2. Insert your notes and copy the finished prompt.
   3. Paste the AI's answer and import it. The JSON is extracted automatically. Existing tickets are updated when the answer contains their `key`.
 
+### Export to Obsidian
+**Menu > Tickets → Obsidian (choose folder)** writes one Markdown note per ticket (`KEY Title.md`, with properties, summary, sub-tasks, updates and contribution & impact) straight into a vault folder such as `06 Tickets`. The folder picker opens in the folder you used last.
+- Existing notes with the same key are updated, the file name stays, and everything from `## Eigene Notizen` downwards is kept.
+- Notes encrypted by company DRM (e.g. written by Excel) are detected and rewritten.
+- **Fallback:** if you cancel the folder picker or writing fails, the notes are saved as `Tickets-YYYY-MM-DD.zip` in Downloads instead.
+
 ### Private / Show mode
 The toggle sits at the bottom of the sidebar. **Show mode** hides private tickets everywhere, plus notes, prompts and the update logs, so you can share your screen with your manager. This is a visual privacy screen, not encryption.
 

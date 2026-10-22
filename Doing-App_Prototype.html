@@ -512,6 +512,7 @@ input.bad{outline:2px solid var(--danger)!important}
           <button data-act="export">⬇ Backup exportieren (JSON)</button>
           <button data-act="import">⬆ Backup importieren…</button>
           <button data-act="csv-all">📊 Alle Tickets als CSV (Excel)</button>
+          <button data-act="obs-export">📝 Tickets → Obsidian (Ordner wählen)…</button>
           <button data-act="csv-wins" class="f-wins">🏆 Erfolge als CSV (Brag Sheet)</button>
           <hr>
           <button data-act="features">⚙ Funktionen ein/aus</button>
@@ -3034,9 +3035,127 @@ menu.addEventListener('click', async e => {
   try { await menuAction(act); }
   catch (err) { if (err.name !== 'AbortError') alert('Fehler: ' + err.message); }
 });
+/* ================= Obsidian-Export (Ticket-Ordner im Vault) ================= */
+// Schreibt pro Ticket "KEY Titel.md" direkt in den gewählten Ordner (Aufbau wie Vorlage Ticket.md).
+// Alles ab "## Eigene Notizen" bleibt beim Aktualisieren erhalten.
+const obsSupported = 'showDirectoryPicker' in window && 'indexedDB' in window;
+const OBS_NOTES = '## Eigene Notizen';
+const obsOne = s => String(s ?? '').replace(/[\r\n]+/g, ' ').trim();
+const obsLink = s => obsOne(s).replace(/[\[\]|#^]/g, '').trim();
+const obsFile = s => obsLink(s).replace(/[\\/:*?"<>]/g, ' ').replace(/\s{2,}/g, ' ').trim().replace(/\.+$/, '');
+const obsQ = s => { const t = obsOne(s); return t ? `"${t.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"` : ''; };
+function obsMarkdown(i, alt) {
+  const st = statusName(i.status), closed = isClosed(i), g = getGoal(i.goalId), imp = IMPS[i.importance]?.n || '', rule = getRule(i.recurId);
+  const ziel = g ? `[[${obsLink(g.name)}]]` : '';
+  const quelle = i.source ? (i.sourceDate ? `[[${i.sourceDate} ${obsLink(i.source)}]]` : obsOne(i.source)) : '';
+  const tsIso = t => t ? isoOf(new Date(t)) : '';
+  const yl = (a, link) => a.length ? a.map(x => `\n  - ${obsQ(link ? `[[${obsLink(x)}]]` : String(x).trim().replace(/ /g, '-'))}`).join('') : '[]';
+  const role = { lead: 'Lead', contrib: ROLE_CONTRIB, support: 'Support' }[i.role] || '';
+  const D = ' · ', L = [];
+  L.push('---', 'typ: ticket', `key: ${obsQ(i.key)}`, `status: ${obsQ(st)}`, `wichtigkeit: ${obsQ(imp)}`, `ticket-typ: ${obsQ(TYPES[i.type]?.n)}`,
+    `thema: ${obsQ(ziel)}`, `quelle: ${obsQ(quelle)}`, `deadline: ${i.deadline || ''}`, `ziel-datum: ${i.target || ''}`,
+    `wartet-auf: ${obsQ(i.waitingFor)}`, `wiedervorlage: ${i.followUp || ''}`, `stakeholder: ${yl(i.stakeholders, true)}`, `labels: ${yl(i.labels, false)}`,
+    `privat: ${i.private ? 'true' : 'false'}`, `erstellt: ${tsIso(i.created)}`, `aktualisiert: ${tsIso(i.updated)}`, `erledigt: ${tsIso(i.doneAt)}`, 'tags: [ticket]', '---');
+  L.push(`# ${obsOne(i.title)}`, '', '> [!abstract] Kurzfassung',
+    `> **Status:** ${st}${D}**Wichtigkeit:** ${imp}${D}**Deadline:** ${dateText(i.deadline)}${i.deadline ? ` (KW ${isoWeek(i.deadline)[0]})` : ''}`,
+    `> **Thema / Ziel:** ${ziel}`, `> **Quelle:** ${quelle}`);
+  if (i.waitingFor) L.push(`> **Wartet auf:** ${obsOne(i.waitingFor)}${D}**Nachfassen:** ${dateText(i.followUp)}`);
+  if (i.cancelReason) L.push(`> **Grund (gestrichen):** ${obsOne(i.cancelReason)}`);
+  if (rule) L.push(`> **Wiederholung:** ${freqText(rule)}`);
+  if (i.stakeholders.length) L.push(`> **Stakeholder:** ${i.stakeholders.map(s => `[[${obsLink(s)}]]`).join(', ')}`);
+  if (i.sourceLink) L.push(`> **Link:** ${obsOne(i.sourceLink)}`);
+  L.push('', '## Beschreibung', (i.desc || '').trim() || '- ', '', '## Unteraufgaben');
+  // Bei Erledigt/Gestrichen keine Checkboxen, damit sie nicht in "Offene Aufgaben" auftauchen
+  if (i.checklist.length) i.checklist.forEach(c => L.push(closed ? `- ${c.done ? '(x)' : '( )'} ${obsOne(c.text)}` : `- [${c.done ? 'x' : ' '}] ${obsOne(c.text)}`));
+  else L.push('- ');
+  L.push('', '## Updates', '> [!quote]- Verlauf (aufklappen)');
+  const ups = i.comments.filter(c => !c.system);
+  if (ups.length) ups.forEach(c => String(c.text).split(/\r?\n/).filter(z => z.trim()).forEach((z, k) => L.push(k ? `>   ${z}` : `> - ${fmtDateTime(c.at)}: ${z}`)));
+  else L.push('> - ');
+  L.push('', '## Beitrag & Impact', `**Was ich gemacht habe:** ${obsOne(i.did)}`, `**Rolle:** ${role}`, `**Impact:** ${obsOne(i.impact)}`, '');
+  const old = String(alt || '').replace(/\r\n/g, '\n');
+  const p = old.indexOf(OBS_NOTES, Math.max(0, old.indexOf('## Beitrag & Impact')));
+  return L.join('\n') + '\n' + (p >= 0 ? old.slice(p) : `${OBS_NOTES}\n- \n`);
+}
+// Fallback ohne Ordnerzugriff: ZIP (ohne Kompression) mit Ordner "Tickets-JJJJ-MM-TT/" in Downloads
+const crcTab = (() => { const t = []; for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = b => { let c = 0xFFFFFFFF; for (let k = 0; k < b.length; k++) c = crcTab[(c ^ b[k]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+function zipBlob(files) {
+  const enc = new TextEncoder(), parts = [], cdir = [], d = new Date();
+  const time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+  const date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  let off = 0;
+  for (const f of files) {
+    const name = enc.encode(f.name), data = enc.encode(f.text), crc = crc32(data);
+    const head = (sig, extra) => { const h = new DataView(new ArrayBuffer(extra ? 46 : 30)); let p = 0;
+      const u32 = v => { h.setUint32(p, v, true); p += 4; }, u16 = v => { h.setUint16(p, v, true); p += 2; };
+      u32(sig); if (extra) u16(20); u16(20); u16(0x0800); u16(0); u16(time); u16(date); u32(crc); u32(data.length); u32(data.length); u16(name.length); u16(0);
+      if (extra) { u16(0); u16(0); u16(0); u32(0); u32(off); } return new Uint8Array(h.buffer); };
+    cdir.push(head(0x02014b50, true), name);
+    parts.push(head(0x04034b50, false), name, data);
+    off += 30 + name.length + data.length;
+  }
+  const size = cdir.reduce((s, b) => s + b.length, 0), end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+  end.setUint32(12, size, true); end.setUint32(16, off, true);
+  return new Blob([...parts, ...cdir, new Uint8Array(end.buffer)], { type: 'application/zip' });
+}
+function obsZip() {
+  const folder = `Tickets-${today()}`;
+  const files = state.issues.filter(i => i.key).map(i => ({ name: `${folder}/${`${i.key} ${obsFile(i.title)}`.slice(0, 120).trim()}.md`, text: obsMarkdown(i, '') }));
+  if (!files.length) return alert(MSG_EMPTY);
+  const a = document.createElement('a'); a.href = URL.createObjectURL(zipBlob(files));
+  a.download = `${folder}.zip`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  alert(MSG_ZIP(files.length, folder));
+}
+async function obsExport() {
+  // Erst nach dem Ordner fragen (startet im zuletzt gewählten); bei Abbruch/Fehler -> ZIP in Downloads
+  let dir = null;
+  if (obsSupported) {
+    try { dir = await window.showDirectoryPicker({ id: 'obsidian-tickets', mode: 'readwrite' }); }
+    catch (err) { if (err.name !== 'AbortError') console.warn(err); }
+  }
+  if (!dir) { if (confirm(MSG_ASKZIP)) obsZip(); return; }
+  try {
+    const files = new Map();
+    for await (const [name, h] of dir.entries()) {
+      if (h.kind !== 'file' || !name.toLowerCase().endsWith('.md')) continue;
+      const k = name.slice(0, -3).split(' ')[0];
+      if (!files.has(k)) files.set(k, name);
+    }
+    let created = 0, updated = 0, drm = 0;
+    for (const i of state.issues) {
+      if (!i.key) continue;
+      let name = files.get(i.key), alt = '';
+      if (name) {
+        alt = await (await (await dir.getFileHandle(name)).getFile()).text();
+        // Von Excel geschriebene Notizen sind DRM-verschlüsselt -> komplett neu schreiben
+        if (/^﻿?<## NASCA DRM/.test(alt)) { alt = ''; drm++; }
+        updated++;
+      } else {
+        name = `${i.key} ${obsFile(i.title)}`.slice(0, 120).trim() + '.md';
+        created++;
+      }
+      const w = await (await dir.getFileHandle(name, { create: true })).createWritable();
+      await w.write(obsMarkdown(i, alt));
+      await w.close();
+    }
+    alert(MSG_DONE(created, updated, drm, dir.name));
+  } catch (err) {
+    console.error(err);
+    if (confirm(MSG_FAIL(err.message))) obsZip();
+  }
+}
+const ROLE_CONTRIB = 'Mitarbeit';
+const MSG_ASKZIP = 'Kein Ordner gewählt.\n\nStattdessen eine ZIP-Datei mit allen Ticket-Notizen in „Downloads“ speichern?\n(Entpacken und den Inhalt nach „06 Tickets“ kopieren. Achtung: Beim Überschreiben gehen „Eigene Notizen“ in vorhandenen Dateien verloren.)';
+const MSG_FAIL = m => `Schreiben in den Ordner fehlgeschlagen:\n${m}\n\nStattdessen als ZIP in „Downloads“ speichern?`;
+const MSG_EMPTY = 'Keine Tickets vorhanden.';
+const MSG_ZIP = (n, f) => `${n} Notizen als „${f}.zip“ in Downloads gespeichert.`;
+const MSG_DONE = (n, u, d, f) => `Fertig.\n\nNeu angelegt: ${n}\nAktualisiert: ${u}${d ? `\n(davon ${d} verschlüsselte Notizen neu geschrieben)` : ''}\n\nOrdner: ${f}`;
 async function menuAction(act) {
   {
     if (act === 'safety') openSafety();
+    else if (act === 'obs-export') await obsExport();
     else if (act === 'export') {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
