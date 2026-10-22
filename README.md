@@ -60,7 +60,7 @@ A personal to-do board in the style of Jira, packed into **one single HTML file*
 - **Contribution & impact** per ticket: *what I did*, *role* (Lead / Contributor / Support) and *impact*. **Menu > Wins as CSV (brag sheet)** exports all done tickets with date, project/goal, what you did, role, importance, impact, stakeholders and source – ready for performance reviews, salary talks or your CV.
 
 ### Features on/off
-**Menu > Features on/off** hides stakeholders, sub-task due dates, contribution & impact or the timeline view. This only affects the display: data you entered stays saved and reappears as soon as you switch the feature back on. Turned-off sub-task dates also stop turning cards red. The setting is saved with your data (and in backups).
+**Menu > Features on/off** hides stakeholders, sub-task due dates, contribution & impact, timeline, goals, meetings & agenda, labels, source, recurrence, target date, week-number input, type, calendar, weekly review, notes, prompts and the Obsidian sync. This only affects the display: data you entered stays saved and reappears as soon as you switch the feature back on. Turned-off sub-task dates also stop turning cards red. The setting is saved with your data (and in backups).
 
 ### Timeline (flow view)
 **📈 Timeline** in a ticket or on a goal card opens a visual history:
@@ -101,7 +101,7 @@ Status, goal, source meeting and date, agenda, labels and the private flag can b
 Pick a week to get a text with *Done*, *In progress*, *Waiting for*, *Overdue*, *Next week* and optionally *Cancelled* and *Paused*. You can switch sections and options on and off, edit the text, and copy it straight into Teams or Outlook.
 
 ### Goals
-Goals group several tickets and show a progress bar; cancelled tickets don't count towards it. The Goals page also lists all recurring tasks, which you can pause, change or delete there. Clicking a goal in the sidebar filters the board.
+Goals group several tickets and show a progress bar; cancelled tickets don't count towards it. The Goals page also lists all recurring tasks, which you can pause, change or delete there. Clicking a goal in the sidebar filters the board; **All tickets** at the top of the list clears the filter.
 
 ### Notes & AI prompts
 - **Notes:** simple free-form notes. Meeting notes are meant to stay in OneNote.
@@ -110,11 +110,16 @@ Goals group several tickets and show a progress bar; cancelled tickets don't cou
   2. Insert your notes and copy the finished prompt.
   3. Paste the AI's answer and import it. The JSON is extracted automatically. Existing tickets are updated when the answer contains their `key`.
 
-### Export to Obsidian
-**Menu > Tickets → Obsidian (choose folder)** writes one Markdown note per ticket (`KEY Title.md`, with properties, summary, sub-tasks, updates and contribution & impact) straight into a vault folder such as `06 Tickets`. The folder picker opens in the folder you used last.
-- Existing notes with the same key are updated, the file name stays, and everything from `## Eigene Notizen` downwards is kept.
+### Obsidian sync (both ways)
+**Menu > ⇄ Sync with Obsidian** writes one Markdown note per ticket (`KEY Title.md`: properties, summary, sub-tasks, updates, contribution & impact) into a vault folder such as `06 Tickets`, and reads changes back. **📁 Choose Obsidian folder…** picks another folder. The folder is remembered; while the app is open it syncs **automatically every 5 minutes** (after a browser restart, click **Resume** once).
+- **From Obsidian into the app:** title, status, importance, type, goal (`thema`), deadline, target date, waiting for, follow-up, stakeholders, labels, private, description, sub-tasks (ticking off and new ones), contribution & impact.
+- **App only:** summary, updates log and source are rewritten by the app.
+- Everything from `## Eigene Notizen` downwards stays in Obsidian and is never touched.
+- Changed on one side since the last sync → that side wins. Changed on both → the app lists the conflicts and you choose *Keep app* or *Take Obsidian* per ticket.
+- A note created in the folder from the ticket template with an empty `key:` becomes a new ticket; the file is renamed to `KEY Title.md`.
 - Notes encrypted by company DRM (e.g. written by Excel) are detected and rewritten.
-- **Fallback:** if you cancel the folder picker or writing fails, the notes are saved as `Tickets-YYYY-MM-DD.zip` in Downloads instead.
+- **Fallback:** if you cancel the folder picker or writing fails, the notes are saved as `Tickets-YYYY-MM-DD.zip` in Downloads.
+- Only the top level of the folder is read. A ticket note that was moved or deleted is created again on the next sync; delete tickets in the app.
 
 ### Private / Show mode
 The toggle sits at the bottom of the sidebar. **Show mode** hides private tickets everywhere, plus notes, prompts and the update logs, so you can share your screen with your manager. This is a visual privacy screen, not encryption.
@@ -167,3 +172,19 @@ Browser data is lost if site data is cleared, if "clear on close" is enabled (co
 
 ## Tech
 Plain HTML, CSS and vanilla JavaScript in one file, with no build step and no dependencies. Data is stored in `localStorage`. The file sync uses the File System Access API, with the file handle kept in IndexedDB.
+
+---
+
+## Changelog
+
+### 1.1.0 – 2026-10-22
+- **Obsidian sync in both directions** (menu ⇄), automatic every 5 minutes while the app is open, conflict dialog, ZIP fallback, detection of DRM-encrypted notes.
+- **Features on/off:** 13 more features can be hidden (17 in total).
+- **All tickets** entry in the sidebar clears the goal filter.
+
+**Compatibility (both directions):** 1.1.0 reads data from 1.0 unchanged. 1.0 can also load data saved by 1.1.0 (sync file or backup): it ignores the new fields but keeps them, so nothing is lost when you switch back and forth. In 1.0, features that were hidden in 1.1.0 are simply shown again.
+
+**Updating:** replace the HTML file with the new one *at the same path* and reopen it. The data lives in the browser (and in your auto-sync file), not in the HTML file. To be safe, export a backup first (menu > Export backup). Firefox stores data per file path, so keep the same file name and folder there.
+
+### 1.0 – 2026-10-22
+- Board, list, calendar, goals, meetings, weekly review, notes & prompts, stakeholders, sub-task due dates, wins export, timeline, features on/off.

@@ -334,7 +334,7 @@ textarea.desc{width:100%;min-height:90px;border:1px solid var(--border);border-r
 .checklist li .sub-due.late{color:var(--danger);font-weight:600}
 .checklist li .sub-due.soft{color:var(--warn);font-weight:600}
 .sub-list label .date{margin-left:auto;font-size:11px;padding-left:6px}
-body.no-f-stake .f-stake,body.no-f-subdue .f-subdue,body.no-f-wins .f-wins,body.no-f-flow .f-flow{display:none!important}
+body.no-f-stake .f-stake,body.no-f-subdue .f-subdue,body.no-f-wins .f-wins,body.no-f-flow .f-flow,body.no-f-goals .f-goals,body.no-f-meet .f-meet,body.no-f-labels .f-labels,body.no-f-src .f-src,body.no-f-recur .f-recur,body.no-f-target .f-target,body.no-f-kw .f-kw,body.no-f-type .f-type,body.no-f-cal .f-cal,body.no-f-review .f-review,body.no-f-notes .f-notes,body.no-f-prompts .f-prompts,body.no-f-obs .f-obs{display:none!important}
 .feat-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .feat-list label{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
 .feat-list label:hover{background:var(--surface)}
@@ -484,15 +484,15 @@ input.bad{outline:2px solid var(--danger)!important}
   <div class="sep"></div>
   <nav class="side-nav">
     <button class="nav-item tab" data-view="tasks"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>Meine Aufgaben</button>
-    <button class="nav-item tab" data-view="meetings"><svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.3M15.5 4.7a3.5 3.5 0 0 1 0 6.6"/></svg>Meetings</button>
-    <button class="nav-item tab" data-view="goals"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></svg>Ziele</button>
-    <button class="nav-item tab" data-view="review"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17M8.5 15l2 2 4-4"/></svg>Wochenrückblick</button>
-    <button class="nav-item tab priv-only" data-view="notes"><svg class="ico" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h4.5"/></svg>Notizen</button>
-    <button class="nav-item tab priv-only" data-view="prompts"><svg class="ico" viewBox="0 0 24 24"><path d="M11 3.5l1.8 4.9 4.9 1.8-4.9 1.8L11 16.9l-1.8-4.9-4.9-1.8 4.9-1.8z"/><path d="M18.5 14.5v5M16 17h5"/></svg>Prompts</button>
+    <button class="nav-item tab f-meet" data-view="meetings"><svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.3M15.5 4.7a3.5 3.5 0 0 1 0 6.6"/></svg>Meetings</button>
+    <button class="nav-item tab f-goals" data-view="goals"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></svg>Ziele</button>
+    <button class="nav-item tab f-review" data-view="review"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17M8.5 15l2 2 4-4"/></svg>Wochenrückblick</button>
+    <button class="nav-item tab priv-only f-notes" data-view="notes"><svg class="ico" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h4.5"/></svg>Notizen</button>
+    <button class="nav-item tab priv-only f-prompts" data-view="prompts"><svg class="ico" viewBox="0 0 24 24"><path d="M11 3.5l1.8 4.9 4.9 1.8-4.9 1.8L11 16.9l-1.8-4.9-4.9-1.8 4.9-1.8z"/><path d="M18.5 14.5v5M16 17h5"/></svg>Prompts</button>
   </nav>
   <div class="sep"></div>
-  <div class="side-label"><span>Ziele</span><button class="side-add" id="sideAddGoal" title="Neues Ziel">+</button></div>
-  <div id="sideGoals"></div>
+  <div class="f-goals side-label"><span>Ziele</span><button class="side-add" id="sideAddGoal" title="Neues Ziel">+</button></div>
+  <div id="sideGoals" class="f-goals"></div>
   <div class="side-bottom">
     <button class="btn mode-btn" id="modeBtn" title="Privat-/Show-Modus umschalten">🔒 Privat</button>
     <div class="side-row">
@@ -502,7 +502,7 @@ input.bad{outline:2px solid var(--danger)!important}
       <div class="menu-wrap">
         <button class="icon-btn" id="menuBtn" title="Daten &amp; Einstellungen"><svg class="ico" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
         <div class="menu" id="menu" hidden>
-          <div class="hint">Alles wird automatisch im Browser gespeichert.</div>
+          <div class="hint">Alles wird automatisch im Browser gespeichert.<br><small>Version 1.1.0 · 22.10.2026</small></div>
           <button data-act="safety">🛡 Datensicherheit prüfen</button>
           <hr>
           <button data-act="file-new" class="fs-only">💾 Auto-Sync in neue Datei…</button>
@@ -512,7 +512,8 @@ input.bad{outline:2px solid var(--danger)!important}
           <button data-act="export">⬇ Backup exportieren (JSON)</button>
           <button data-act="import">⬆ Backup importieren…</button>
           <button data-act="csv-all">📊 Alle Tickets als CSV (Excel)</button>
-          <button data-act="obs-export">📝 Tickets → Obsidian (Ordner wählen)…</button>
+          <button data-act="obs-sync" class="f-obs">⇄ Mit Obsidian abgleichen</button>
+          <button data-act="obs-pick" class="f-obs">📁 Obsidian-Ordner wählen…</button>
           <button data-act="csv-wins" class="f-wins">🏆 Erfolge als CSV (Brag Sheet)</button>
           <hr>
           <button data-act="features">⚙ Funktionen ein/aus</button>
@@ -539,6 +540,11 @@ input.bad{outline:2px solid var(--danger)!important}
     <button class="btn primary small" id="backupBannerBtn">Datensicherheit prüfen</button>
     <button class="btn ghost small" id="backupBannerClose">Später</button>
   </div>
+  <div class="banner" id="obsBanner" hidden>
+    <span id="obsBannerText"></span>
+    <button class="btn primary small" id="obsBannerBtn"></button>
+    <button class="btn ghost small" id="obsBannerClose">Später</button>
+  </div>
   <div class="banner" id="fileBanner" hidden>
     <span>Datei-Sync mit <b id="fileBannerName"></b> ist pausiert (Edge braucht nach einem Neustart einmal deine Erlaubnis).</span>
     <button class="btn primary small" id="fileResumeBtn">Fortsetzen</button>
@@ -550,7 +556,7 @@ input.bad{outline:2px solid var(--danger)!important}
     <div class="seg-row">
       <button class="seg tab" data-view="board">Board</button>
       <button class="seg tab" data-view="list">Liste</button>
-      <button class="seg tab" data-view="cal">Kalender</button>
+      <button class="seg tab f-cal" data-view="cal">Kalender</button>
     </div>
     <div class="sep"></div>
   </div>
@@ -559,11 +565,11 @@ input.bad{outline:2px solid var(--danger)!important}
 <section class="view" id="view-board">
   <div class="toolbar">
     <label class="search"><input id="q" placeholder="Suchen…  ( / )" aria-label="Suchen"></label>
-    <select id="fGoal" aria-label="Ziel"></select>
+    <select id="fGoal" class="f-goals" aria-label="Ziel"></select>
     <select id="fImp" aria-label="Wichtigkeit"></select>
-    <select id="fType" aria-label="Typ"></select>
-    <select id="fLabel" aria-label="Label"></select>
-    <select id="fMeet" aria-label="Meeting"></select>
+    <select id="fType" class="f-type" aria-label="Typ"></select>
+    <select id="fLabel" class="f-labels" aria-label="Label"></select>
+    <select id="fMeet" class="f-meet" aria-label="Meeting"></select>
     <label class="check-field" title="Spalten „Pausiert“ und „Gestrichen“ einblenden"><input type="checkbox" id="fArchive"> Pausiert & Gestrichen</label>
     <button class="btn ghost" id="fReset" hidden>Filter zurücksetzen</button>
   </div>
@@ -725,10 +731,17 @@ input.bad{outline:2px solid var(--danger)!important}
 
 <!-- Ticket-Detail -->
 <!-- Funktionen ein/aus -->
+<div class="backdrop" id="obsModal" hidden style="z-index:110">
+  <div class="modal" role="dialog" aria-modal="true" style="max-width:720px">
+    <div class="modal-head"><b style="color:var(--text);font-size:15px">⇄ Konflikte beim Obsidian-Abgleich</b><span class="grow"></span><button class="icon-btn" data-close="obsModal" title="Esc">✕</button></div>
+    <div class="fl-body" id="obsBody"></div>
+  </div>
+</div>
+
 <div class="backdrop" id="featModal" hidden style="z-index:110">
   <div class="modal" role="dialog" aria-modal="true" style="max-width:560px">
     <div class="modal-head"><b style="color:var(--text);font-size:15px">⚙ Funktionen ein/aus</b><span class="grow"></span><button class="icon-btn" data-close="featModal" title="Esc">✕</button></div>
-    <div class="fl-body"><ul class="feat-list" id="featList"><li><label><input type="checkbox" data-feat="stake"><span><b>👥 Stakeholder</b><small>Feld im Ticket, Zeile auf der Karte, Listenspalte, Venn-Diagramm im Verlauf</small></span></label></li><li><label><input type="checkbox" data-feat="subdue"><span><b>⚑ Fristen für Unteraufgaben</b><small>Datum je Unteraufgabe, rote Karte bei überfälliger Unteraufgabe</small></span></label></li><li><label><input type="checkbox" data-feat="wins"><span><b>🏆 Beitrag & Impact</b><small>Felder im Ticket und „Erfolge als CSV“ im Menü</small></span></label></li><li><label><input type="checkbox" data-feat="flow"><span><b>📈 Verlauf</b><small>Button im Ticket und auf den Ziel-Karten</small></span></label></li></ul><div class="fl-muted">Nur die Anzeige wird umgeschaltet. Eingetragene Daten bleiben gespeichert und sind beim Wieder-Einschalten sofort wieder da.</div></div>
+    <div class="fl-body"><ul class="feat-list" id="featList"><li><label><input type="checkbox" data-feat="stake"><span><b>👥 Stakeholder</b><small>Feld im Ticket, Zeile auf der Karte, Listenspalte, Venn-Diagramm im Verlauf</small></span></label></li><li><label><input type="checkbox" data-feat="subdue"><span><b>⚑ Fristen für Unteraufgaben</b><small>Datum je Unteraufgabe, rote Karte bei überfälliger Unteraufgabe</small></span></label></li><li><label><input type="checkbox" data-feat="wins"><span><b>🏆 Beitrag & Impact</b><small>Felder im Ticket und „Erfolge als CSV“ im Menü</small></span></label></li><li><label><input type="checkbox" data-feat="flow"><span><b>📈 Verlauf</b><small>Button im Ticket und auf den Ziel-Karten</small></span></label></li><li><label><input type="checkbox" data-feat="goals"><span><b>🎯 Ziele</b><small>Menüpunkt und Seitenleiste, Ziel-Feld, Filter, Listenspalte, Ziel auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="meet"><span><b>🗣 Meetings & Agenda</b><small>Menüpunkt, Feld „Auf Agenda für“, Filter, Listenspalte, Agenda-Chip auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="labels"><span><b>🏷 Labels</b><small>Feld im Ticket, Filter, Listenspalte, Labels auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="src"><span><b>📍 Quelle</b><small>Quelle/Datum/Link im Ticket und in „Liste einfügen“, Listenspalte, Zeile auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="recur"><span><b>🔁 Wiederholungen</b><small>Feld im Ticket, Listenspalte, 🔁 auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="target"><span><b>◎ Ziel-Datum (soft)</b><small>Feld im Ticket und Listenspalte (die Deadline bleibt)</small></span></label></li><li><label><input type="checkbox" data-feat="kw"><span><b>KW-Eingabe</b><small>Feld „Deadline per KW“ und Listenspalte KW</small></span></label></li><li><label><input type="checkbox" data-feat="type"><span><b>Typ (Aufgabe/Problem/Idee)</b><small>Feld im Ticket, Filter, Listenspalte, Symbol auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="cal"><span><b>📅 Kalender</b><small>Ansicht „Kalender“ bei Meine Aufgaben</small></span></label></li><li><label><input type="checkbox" data-feat="review"><span><b>📋 Wochenrückblick</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="notes"><span><b>📝 Notizen</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="prompts"><span><b>✨ Prompts</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="obs"><span><b>⇄ Obsidian-Abgleich</b><small>Menüpunkte im ⋯-Menü (automatischer Abgleich läuft weiter, solange ein Ordner gewählt ist)</small></span></label></li></ul><div class="fl-muted">Nur die Anzeige wird umgeschaltet. Eingetragene Daten bleiben gespeichert und sind beim Wieder-Einschalten sofort wieder da.</div></div>
   </div>
 </div>
 
@@ -784,18 +797,18 @@ input.bad{outline:2px solid var(--danger)!important}
           <label class="field" id="mReasonWrap"><span>✖ Grund fürs Streichen</span><input id="mReason" placeholder="z. B. Anforderung entfallen"></label>
         </div>
         <datalist id="personList"></datalist>
-        <label class="field"><span>Ziel</span><select id="mGoal"></select></label>
+        <label class="f-goals field"><span>Ziel</span><select id="mGoal"></select></label>
         <label class="field f-stake"><span>👥 Stakeholder <small class="hint">Komma-getrennt</small></span><input id="mStake" list="personList" placeholder="z. B. Anna, Ben"></label>
         <div class="field-row">
           <label class="field"><span>Wichtigkeit</span><select id="mImp"></select></label>
-          <label class="field"><span>Typ</span><select id="mType"></select></label>
+          <label class="f-type field"><span>Typ</span><select id="mType"></select></label>
         </div>
         <div class="field-row">
-          <label class="field"><span>◎ Ziel (soft)</span><input type="date" id="mTarget"></label>
+          <label class="f-target field"><span>◎ Ziel (soft)</span><input type="date" id="mTarget"></label>
           <label class="field"><span>⚑ Deadline (hard)</span><input type="date" id="mDeadline"></label>
         </div>
-        <label class="field"><span>⚑ Deadline per KW <small class="hint">→ Freitag der Woche</small></span><input id="mKW" inputmode="numeric" placeholder="z. B. 43 oder 43/2027"></label>
-        <label class="field"><span>🔁 Wiederholung</span>
+        <label class="f-kw field"><span>⚑ Deadline per KW <small class="hint">→ Freitag der Woche</small></span><input id="mKW" inputmode="numeric" placeholder="z. B. 43 oder 43/2027"></label>
+        <label class="f-recur field"><span>🔁 Wiederholung</span>
           <select id="mRecur">
             <option value="">Keine</option>
             <option value="weekly">Wöchentlich</option>
@@ -821,13 +834,13 @@ input.bad{outline:2px solid var(--danger)!important}
           </div>
           <div id="mRecurInfo"></div>
         </div>
-        <label class="field"><span>🗣 Auf Agenda für</span><select id="mMeet"></select></label>
-        <div class="field"><span>📍 Quelle <small class="hint">wo ist die Aufgabe entstanden?</small></span>
+        <label class="f-meet field"><span>🗣 Auf Agenda für</span><select id="mMeet"></select></label>
+        <div class="f-src field"><span>📍 Quelle <small class="hint">wo ist die Aufgabe entstanden?</small></span>
           <div class="src-row"><input id="mSource" list="sourceList" placeholder="z. B. Jour fixe" class="inline-input"><input type="date" id="mSourceDate" class="inline-input"></div>
           <div class="link-row"><input id="mSourceLink" placeholder="Link, z. B. zur OneNote-Seite"><button type="button" class="btn small" id="mSourceOpen" title="Link öffnen" style="height:36px">↗</button></div>
         </div>
         <datalist id="sourceList"></datalist>
-        <label class="field"><span>Labels <small style="font-weight:400">(Komma-getrennt)</small></span><input id="mLabels" list="labelList" placeholder="z. B. arbeit, privat"></label>
+        <label class="f-labels field"><span>Labels <small style="font-weight:400">(Komma-getrennt)</small></span><input id="mLabels" list="labelList" placeholder="z. B. arbeit, privat"></label>
         <datalist id="labelList"></datalist>
         <label class="field check-field priv-only"><input type="checkbox" id="mPrivate"> 🔒 Privat – im Show-Modus ausgeblendet</label>
         <div class="meta-dates" id="mDates"></div>
@@ -849,11 +862,11 @@ input.bad{outline:2px solid var(--danger)!important}
       </div>
       <aside class="side">
         <label class="field"><span>Status</span><select id="bulkStatus"></select></label>
-        <label class="field"><span>Ziel</span><select id="bulkGoal"></select></label>
-        <label class="field"><span>📍 Quelle (Meeting)</span><input id="bulkSource" list="sourceList" placeholder="z. B. Jour fixe"></label>
-        <label class="field"><span>Quelle am</span><input type="date" id="bulkSourceDate"></label>
-        <label class="field"><span>🗣 Auf Agenda für</span><select id="bulkMeet"></select></label>
-        <label class="field"><span>Labels für alle</span><input id="bulkLabels" placeholder="z. B. projekt-x"></label>
+        <label class="f-goals field"><span>Ziel</span><select id="bulkGoal"></select></label>
+        <label class="f-src field"><span>📍 Quelle (Meeting)</span><input id="bulkSource" list="sourceList" placeholder="z. B. Jour fixe"></label>
+        <label class="f-src field"><span>Quelle am</span><input type="date" id="bulkSourceDate"></label>
+        <label class="f-meet field"><span>🗣 Auf Agenda für</span><select id="bulkMeet"></select></label>
+        <label class="f-labels field"><span>Labels für alle</span><input id="bulkLabels" placeholder="z. B. projekt-x"></label>
         <label class="field check-field priv-only"><input type="checkbox" id="bulkPriv"> 🔒 Alle als privat</label>
         <button class="btn primary" id="bulkCreate" disabled>Tickets anlegen</button>
       </aside>
@@ -1274,7 +1287,13 @@ const getGoal = id => state.goals.find(g => g.id === id);
 const getRule = id => state.recurrences.find(r => r.id === id);
 const getMeet = id => state.meetings.find(m => m.id === id);
 const F = k => state.features?.[k] !== false;
-function applyFeatures() { ['stake', 'subdue', 'wins', 'flow'].forEach(k => document.body.classList.toggle('no-f-' + k, !F(k))); }
+const FEATS = ['stake', 'subdue', 'wins', 'flow', 'goals', 'meet', 'labels', 'src', 'recur', 'target', 'kw', 'type', 'cal', 'review', 'notes', 'prompts', 'obs'];
+const VIEW_FEAT = { meetings: 'meet', goals: 'goals', review: 'review', notes: 'notes', prompts: 'prompts', cal: 'cal' };
+function applyFeatures() {
+  FEATS.forEach(k => document.body.classList.toggle('no-f-' + k, !F(k)));
+  // Ausgeblendete Filter zurücksetzen, sonst filtern sie unsichtbar weiter
+  [['goals', 'goal', '#fGoal'], ['meet', 'meet', '#fMeet'], ['labels', 'label', '#fLabel'], ['type', 'type', '#fType']].forEach(([k, fk, sel]) => { if (!F(k) && filters[fk]) { filters[fk] = ''; $(sel).value = ''; } });
+}
 const statusName = s => COLS.find(c => c.id === s)?.name || s;
 
 function createGoal(name) {
@@ -1454,18 +1473,18 @@ function cardHTML(i) {
   const ds = dueState(i);
   const g = getGoal(i.goalId);
   const m = getMeet(i.meetingId);
-  const tags = [impChip(i.importance), m ? `<span class="meet-chip" title="Auf der Agenda">🗣 ${esc(m.name)}</span>` : '', ...i.labels.map(l => `<span class="label">${esc(l)}</span>`)].join('');
+  const tags = [impChip(i.importance), m ? `<span class="meet-chip f-meet" title="Auf der Agenda">🗣 ${esc(m.name)}</span>` : '', ...i.labels.map(l => `<span class="label f-labels">${esc(l)}</span>`)].join('');
   return `<div class="card ${ds ? 'due-' + ds : ''}" draggable="true" data-id="${i.id}">
     <div class="card-title">${esc(i.title) || '<i style="color:var(--subtle)">(ohne Titel)</i>'}</div>
     ${tags ? `<div class="card-tags">${tags}</div>` : ''}
     ${stateHTML(i)}
-    ${i.source ? `<div class="card-src" title="Quelle">📍 ${esc(i.source)}${i.sourceDate ? ' · ' + fmtShort(i.sourceDate) : ''}</div>` : ''}
+    ${i.source ? `<div class="card-src f-src" title="Quelle">📍 ${esc(i.source)}${i.sourceDate ? ' · ' + fmtShort(i.sourceDate) : ''}</div>` : ''}
     ${i.stakeholders?.length ? `<div class="card-src f-stake">👥 ${esc(i.stakeholders.join(', '))}</div>` : ''}
     <div class="sep"></div>
     <div class="card-foot">
-      <span class="type-icon" style="background:${t.c}" title="${t.n}">${t.i}</span>
+      <span class="type-icon f-type" style="background:${t.c}" title="${t.n}">${t.i}</span>
       <span class="card-key">${esc(i.key)}</span>
-      ${i.recurId && getRule(i.recurId) ? '<span title="Wiederkehrend">🔁</span>' : ''}
+      ${i.recurId && getRule(i.recurId) ? '<span class="f-recur" title="Wiederkehrend">🔁</span>' : ''}
       ${i.private && !showMode ? '<span title="Privat – im Show-Modus unsichtbar">🔒</span>' : ''}
       <span class="card-meta">
         ${dateHTML(i)}
@@ -1474,7 +1493,7 @@ function cardHTML(i) {
       </span>
     </div>
     ${expanded.has(i.id) && i.checklist.length ? `<ul class="sub-list">${i.checklist.map(c => `<li class="${c.done ? 'done' : ''}"><label><input type="checkbox" data-subid="${c.id}" ${c.done ? 'checked' : ''}><span>${esc(c.text)}</span>${subDueHTML(c)}</label></li>`).join('')}</ul>` : ''}
-    ${g ? `<div class="card-goal">${goalAv(g, 'sm')}<span>${esc(g.name)}</span></div>` : ''}
+    ${g ? `<div class="card-goal f-goals">${goalAv(g, 'sm')}<span>${esc(g.name)}</span></div>` : ''}
   </div>`;
 }
 function renderBoard() {
@@ -1513,7 +1532,8 @@ function renderFilterOptions() {
 }
 function renderSidebar() {
   const active = TASK_VIEWS.includes(currentView) ? filters.goal : '';
-  $('#sideGoals').innerHTML = state.goals.map(g => {
+  const allOpen = visIssues().filter(i => !isClosed(i)).length;
+  $('#sideGoals').innerHTML = (state.goals.length ? `<button class="side-goal ${active ? '' : 'active'}" data-gid="" title="Filter aufheben: alle Tickets unabhängig vom Ziel"><span class="goal-av" style="--g:var(--muted)">∗</span><span class="n">Alle Tickets</span>${allOpen ? `<small>${allOpen}</small>` : ''}</button>` : '') + state.goals.map(g => {
     const open = visIssues().filter(i => i.goalId === g.id && !isClosed(i)).length;
     return `<button class="side-goal ${active === g.id ? 'active' : ''}" data-gid="${g.id}" title="Board nach diesem Ziel filtern">${goalAv(g)}<span class="n">${esc(g.name || 'Neues Ziel')}</span>${open ? `<small>${open}</small>` : ''}<span class="side-del" role="button" title="Ziel löschen">✕</span></button>`;
   }).join('') || '<div class="side-empty">Noch keine Ziele</div>';
@@ -2096,7 +2116,9 @@ const flowModal = $('#flowModal');
 function openFeat() { $$('#featList [data-feat]').forEach(cb => cb.checked = F(cb.dataset.feat)); $('#featModal').hidden = false; }
 $('#featList').addEventListener('change', e => {
   const k = e.target.dataset.feat; if (!k) return;
-  state.features[k] = e.target.checked; save(); renderAll();
+  state.features[k] = e.target.checked; save();
+  if (VIEW_FEAT[currentView] && !F(VIEW_FEAT[currentView])) showView('board');
+  renderAll();
   if (!modal.hidden) fillModal();
 });
 $('#featModal').addEventListener('mousedown', e => { if (e.target === $('#featModal')) $('#featModal').hidden = true; });
@@ -2265,22 +2287,22 @@ const LCOLS = [
   { id: 'followUp', n: '⏰ Wiedervorlage', text: i => dateText(i.followUp), sortv: i => i.followUp, cell: i => `<td>${dateCell(i, 'followUp')}</td>` },
   { id: 'importance', n: 'Wichtigkeit', text: i => IMPS[i.importance]?.n || '', sortv: i => IMP_ORDER[i.importance],
     cell: i => `<td><select class="cell-in" data-f="importance">${opts([['', '—'], ...Object.entries(IMPS).map(([k, p]) => [k, p.n])], i.importance)}</select></td>` },
-  { id: 'goal', n: 'Ziel', text: i => getGoal(i.goalId)?.name || '', sortv: i => (getGoal(i.goalId)?.name || '').toLowerCase(),
+  { id: 'goal', feat: 'goals', n: 'Ziel', text: i => getGoal(i.goalId)?.name || '', sortv: i => (getGoal(i.goalId)?.name || '').toLowerCase(),
     cell: i => `<td><select class="cell-in" data-f="goalId">${opts([['', '—'], ...state.goals.map(g => [g.id, g.name])], i.goalId || '')}</select></td>` },
-  { id: 'labels', n: 'Labels', text: i => i.labels.join(', '), vals: i => i.labels.length ? i.labels : ['(leer)'], sortv: i => i.labels.join(','),
+  { id: 'labels', feat: 'labels', n: 'Labels', text: i => i.labels.join(', '), vals: i => i.labels.length ? i.labels : ['(leer)'], sortv: i => i.labels.join(','),
     cell: i => `<td>${i.labels.map(l => `<span class="label">${esc(l)}</span>`).join(' ')}</td>` },
-  { id: 'target', n: '◎ Ziel-Datum', text: i => dateText(i.target), sortv: i => i.target, cell: i => `<td>${dateCell(i, 'target')}</td>` },
+  { id: 'target', feat: 'target', n: '◎ Ziel-Datum', text: i => dateText(i.target), sortv: i => i.target, cell: i => `<td>${dateCell(i, 'target')}</td>` },
   { id: 'deadline', n: '⚑ Deadline', text: i => dateText(i.deadline), sortv: i => i.deadline, cell: i => `<td>${dateCell(i, 'deadline')}</td>` },
-  { id: 'kw', n: 'KW', text: i => i.deadline ? 'KW ' + String(isoWeek(i.deadline)[0]).padStart(2, '0') : '', sortv: i => i.deadline, cell: function (i) { return `<td>${this.text(i)}</td>`; } },
-  { id: 'meeting', n: '🗣 Agenda', text: i => getMeet(i.meetingId)?.name || '', sortv: i => (getMeet(i.meetingId)?.name || '').toLowerCase(),
+  { id: 'kw', feat: 'kw', n: 'KW', text: i => i.deadline ? 'KW ' + String(isoWeek(i.deadline)[0]).padStart(2, '0') : '', sortv: i => i.deadline, cell: function (i) { return `<td>${this.text(i)}</td>`; } },
+  { id: 'meeting', feat: 'meet', n: '🗣 Agenda', text: i => getMeet(i.meetingId)?.name || '', sortv: i => (getMeet(i.meetingId)?.name || '').toLowerCase(),
     cell: i => `<td><select class="cell-in" data-f="meetingId">${opts([['', '—'], ...state.meetings.map(m => [m.id, m.name])], i.meetingId || '')}</select></td>` },
-  { id: 'source', n: '📍 Quelle', text: i => i.source + (i.sourceDate ? ` (${dateText(i.sourceDate)})` : ''), vals: i => [i.source || '(leer)'], sortv: i => i.source.toLowerCase(),
+  { id: 'source', feat: 'src', n: '📍 Quelle', text: i => i.source + (i.sourceDate ? ` (${dateText(i.sourceDate)})` : ''), vals: i => [i.source || '(leer)'], sortv: i => i.source.toLowerCase(),
     cell: function (i) { return `<td title="${esc(this.text(i))}">${esc(this.text(i))}</td>`; } },
   { id: 'reason', n: '✖ Grund', text: i => i.status === 'cancelled' ? i.cancelReason : '', sortv: i => i.status === 'cancelled' ? i.cancelReason.toLowerCase() : '',
     cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
-  { id: 'type', n: 'Typ', text: i => TYPES[i.type].n, sortv: i => TYPES[i.type].n,
+  { id: 'type', feat: 'type', n: 'Typ', text: i => TYPES[i.type].n, sortv: i => TYPES[i.type].n,
     cell: i => `<td><select class="cell-in" data-f="type">${opts(Object.entries(TYPES).map(([k, t]) => [k, t.n]), i.type)}</select></td>` },
-  { id: 'recur', n: '🔁 Wiederholung', text: i => { const r = getRule(i.recurId); return r ? freqText(r) : ''; }, sortv: i => getRule(i.recurId)?.freq || '', cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
+  { id: 'recur', feat: 'recur', n: '🔁 Wiederholung', text: i => { const r = getRule(i.recurId); return r ? freqText(r) : ''; }, sortv: i => getRule(i.recurId)?.freq || '', cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
   { id: 'check', n: '☑ Unteraufgaben', nofilter: true, text: i => i.checklist.length ? `${i.checklist.filter(c => c.done).length}/${i.checklist.length}` : '',
     sortv: i => i.checklist.length ? i.checklist.filter(c => c.done).length / i.checklist.length : '', cell: function (i) { return `<td>${this.text(i)}</td>`; } },
   { id: 'private', n: '🔒 Privat', privOnly: true, text: i => i.private ? 'privat' : '', sortv: i => i.private ? 0 : 1,
@@ -3108,45 +3130,227 @@ function obsZip() {
   a.download = `${folder}.zip`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   alert(MSG_ZIP(files.length, folder));
 }
-async function obsExport() {
-  // Erst nach dem Ordner fragen (startet im zuletzt gewählten); bei Abbruch/Fehler -> ZIP in Downloads
-  let dir = null;
-  if (obsSupported) {
-    try { dir = await window.showDirectoryPicker({ id: 'obsidian-tickets', mode: 'readwrite' }); }
-    catch (err) { if (err.name !== 'AbortError') console.warn(err); }
-  }
-  if (!dir) { if (confirm(MSG_ASKZIP)) obsZip(); return; }
+/* --- Abgleich Obsidian ⇄ App ---
+   Je Ticket wird der Stand beim letzten Abgleich als Prüfsumme gemerkt (i.obsSig).
+   Nur eine Seite geändert -> diese gewinnt. Beide geändert -> Konflikt, du entscheidest.
+   Aus Obsidian übernommen werden nur die Felder unten (obsParse); "Eigene Notizen" bleiben nur in Obsidian. */
+const OBS_SYNC_MS = 5 * 60 * 1000;
+let obsHandle = null, obsPending = null, obsBusy = false, obsOpen = [];
+const obsNorm = s => String(s).replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
+const obsHash = s => { let h = 0x811c9dc5; for (let k = 0; k < s.length; k++) { h ^= s.charCodeAt(k); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36); };
+const yUnq = v => { v = v.trim(); return v.length > 1 && v[0] === '"' && v.endsWith('"') ? v.slice(1, -1).replace(/\\(["\\])/g, '$1') : v; };
+const unLink = v => String(v || '').replace(/^\[\[/, '').replace(/\]\]$/, '').trim();
+const OBS_MAP = {
+  status: { backlog: 'backlog', todo: 'todo', 'to do': 'todo', doing: 'doing', 'in arbeit': 'doing', 'in progress': 'doing', waiting: 'waiting', warten: 'waiting', done: 'done', erledigt: 'done', paused: 'paused', pausiert: 'paused', cancelled: 'cancelled', gestrichen: 'cancelled' },
+  imp: { must: 'must', pflicht: 'must', worth: 'worth', 'lohnt sich': 'worth', 'worth it': 'worth', nice: 'nice', 'nice-to-have': 'nice' },
+  type: { task: 'task', aufgabe: 'task', bug: 'bug', problem: 'bug', issue: 'bug', idea: 'idea', idee: 'idea' },
+  role: { lead: 'lead', mitarbeit: 'contrib', contributor: 'contrib', contrib: 'contrib', support: 'support' },
+};
+const obsMapV = (m, v) => OBS_MAP[m][String(v || '').trim().toLowerCase()] || '';
+const isoOk = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || '').trim()) ? String(v).trim() : '';
+function obsParse(txt) {
+  const t = obsNorm(txt), m = t.match(/^---\n([\s\S]*?)\n---\n?/);
+  if (!m) return null;
+  const y = {}; let last = null;
+  m[1].split('\n').forEach(z => {
+    const li = z.match(/^\s+-\s*(.*)$/);
+    if (li && last) { if (!Array.isArray(y[last])) y[last] = []; y[last].push(yUnq(li[1])); return; }
+    const kv = z.match(/^([\w-]+):\s*(.*)$/); if (!kv) return;
+    last = kv[1]; const v = kv[2].trim();
+    y[last] = v === '[]' ? [] : /^\[.*\]$/.test(v) ? v.slice(1, -1).split(',').map(yUnq).filter(Boolean) : yUnq(v);
+  });
+  if (String(y.typ).toLowerCase() !== 'ticket') return null;
+  const body = t.slice(m[0].length), cut = body.search(/^## Eigene Notizen\s*$/m);
+  const sec = {}; let cur = null, title = '';
+  (cut >= 0 ? body.slice(0, cut) : body).split('\n').forEach(z => {
+    if (cur === null && !title && /^# /.test(z)) { title = z.slice(2).trim(); return; }
+    const h = z.match(/^## (.+?)\s*$/); if (h) { cur = h[1]; sec[cur] = []; return; }
+    if (cur) sec[cur].push(z);
+  });
+  const S = k => (sec[k] || []).join('\n').trim();
+  const desc = S('Beschreibung'), bi = S('Beitrag & Impact');
+  const fld = n => (bi.match(new RegExp('\\*\\*' + n + ':\\*\\*[ \\t]*(.*)')) || [])[1]?.trim() || '';
+  const arr = v => (Array.isArray(v) ? v : v ? [v] : []).map(unLink).filter(Boolean);
+  return {
+    key: String(y.key || '').trim(), title: title === '{{title}}' ? '' : title,
+    status: obsMapV('status', y.status), importance: obsMapV('imp', y.wichtigkeit), type: obsMapV('type', y['ticket-typ']),
+    goal: unLink(y.thema), deadline: isoOk(y.deadline), target: isoOk(y['ziel-datum']),
+    waitingFor: String(y['wartet-auf'] || '').trim(), followUp: isoOk(y.wiedervorlage),
+    stakeholders: arr(y.stakeholder), labels: arr(y.labels), private: String(y.privat).toLowerCase() === 'true',
+    desc: /^-?$/.test(desc) ? '' : desc,
+    checklist: (sec['Unteraufgaben'] || []).map(z => z.match(/^\s*[-*]\s+(?:\[([ xX])\]\s*|\(([ xX])\)\s*)?(.*)$/))
+      .filter(r => r && r[3].trim()).map(r => ({ text: r[3].trim(), done: (r[1] || r[2] || '').toLowerCase() === 'x' })),
+    did: fld('Was ich gemacht habe'), role: obsMapV('role', fld('Rolle')), impact: fld('Impact'),
+  };
+}
+const obsSigP = p => obsHash(JSON.stringify(p));
+const obsSigOf = i => obsSigP(obsParse(obsMarkdown(i, '')));
+const obsFname = i => `${i.key} ${obsFile(i.title)}`.slice(0, 120).trim() + '.md';
+function obsApply(i, p) {
+  if (p.title) i.title = p.title;
+  i.desc = p.desc; i.importance = p.importance; if (p.type) i.type = p.type;
+  i.deadline = p.deadline; i.target = p.target; i.waitingFor = p.waitingFor; i.followUp = p.followUp;
+  i.stakeholders = [...p.stakeholders]; i.labels = [...p.labels]; i.private = p.private;
+  i.did = p.did; i.impact = p.impact; i.role = p.role;
+  if (p.goal) { const g = state.goals.find(g => obsLink(g.name).toLowerCase() === p.goal.toLowerCase()) || createGoal(p.goal); i.goalId = g.id; }
+  else i.goalId = null;
+  const pool = [...i.checklist];
+  i.checklist = p.checklist.map(x => {
+    const k = pool.findIndex(c => obsOne(c.text) === x.text), c = k >= 0 ? pool.splice(k, 1)[0] : { id: uid(), text: x.text, done: false, due: '', doneAt: null };
+    if (x.done && !c.done) c.doneAt = now();
+    if (!x.done) c.doneAt = null;
+    c.done = x.done; return c;
+  });
+  if (p.status && p.status !== i.status) setStatus(i, p.status, { ask: false, reason: i.cancelReason || '' });
+  i.updated = now();
+}
+async function obsWrite(dir, name, text) {
+  const w = await (await dir.getFileHandle(name, { create: true })).createWritable();
+  await w.write(text); await w.close();
+}
+async function obsSync(dir, auto) {
+  if (obsBusy) return null; obsBusy = true;
+  const r = { created: 0, toFile: 0, toApp: 0, fresh: 0, conflicts: [] };
   try {
-    const files = new Map();
+    const files = new Map(), neu = [];
     for await (const [name, h] of dir.entries()) {
-      if (h.kind !== 'file' || !name.toLowerCase().endsWith('.md')) continue;
-      const k = name.slice(0, -3).split(' ')[0];
-      if (!files.has(k)) files.set(k, name);
+      if (h.kind !== 'file' || !/\.md$/i.test(name)) continue;
+      const txt = obsNorm(await (await h.getFile()).text());
+      // Von Excel geschriebene Notizen sind DRM-verschlüsselt -> neu schreiben
+      if (/^<## NASCA DRM/.test(txt)) { const k = name.slice(0, -3).split(' ')[0]; if (!files.has(k)) files.set(k, { name, txt: '', drm: true }); continue; }
+      const p = obsParse(txt); if (!p) continue;
+      if (p.key) { if (!files.has(p.key)) files.set(p.key, { name, txt, p }); }
+      else neu.push({ name, txt, p });
     }
-    let created = 0, updated = 0, drm = 0;
+    // In Obsidian angelegte Tickets (Vorlage ohne Key) -> neues Ticket, Datei bekommt "KEY Titel.md"
+    for (const f of neu) {
+      const p = f.p, title = p.title || f.name.slice(0, -3);
+      const i = createIssue({ title, status: p.status || 'todo' });
+      obsApply(i, { ...p, title, status: '' });
+      i.comments.unshift({ id: uid(), text: OBS_T.fromObs, at: now(), system: true });
+      const name = obsFname(i), text = obsMarkdown(i, f.txt);
+      await obsWrite(dir, name, text);
+      if (name !== f.name) await dir.removeEntry(f.name);
+      files.set(i.key, { name, txt: text, p: obsParse(text) });
+      i.obsSig = obsSigOf(i); r.fresh++;
+    }
     for (const i of state.issues) {
       if (!i.key) continue;
-      let name = files.get(i.key), alt = '';
-      if (name) {
-        alt = await (await (await dir.getFileHandle(name)).getFile()).text();
-        // Von Excel geschriebene Notizen sind DRM-verschlüsselt -> komplett neu schreiben
-        if (/^﻿?<## NASCA DRM/.test(alt)) { alt = ''; drm++; }
-        updated++;
-      } else {
-        name = `${i.key} ${obsFile(i.title)}`.slice(0, 120).trim() + '.md';
-        created++;
-      }
-      const w = await (await dir.getFileHandle(name, { create: true })).createWritable();
-      await w.write(obsMarkdown(i, alt));
-      await w.close();
+      const f = files.get(i.key);
+      if (!f || f.drm) { await obsWrite(dir, f ? f.name : obsFname(i), obsMarkdown(i, '')); i.obsSig = obsSigOf(i); f ? r.toFile++ : r.created++; continue; }
+      const fSig = obsSigP(f.p), aSig = obsSigOf(i), base = i.obsSig;
+      if (fSig !== aSig && fSig !== base && aSig !== base) { r.conflicts.push({ i, f }); continue; }
+      let fromObs = false;
+      if (fSig !== aSig && aSig === base) { obsApply(i, f.p); fromObs = true; r.toApp++; }
+      const text = obsMarkdown(i, f.txt);
+      if (text !== f.txt) { await obsWrite(dir, f.name, text); if (!fromObs) r.toFile++; }
+      i.obsSig = obsSigOf(i);
     }
-    alert(MSG_DONE(created, updated, drm, dir.name));
+    if (r.toApp || r.fresh) { renderFilterOptions(); renderAll(); if (curId && getIssue(curId)) fillModal(); }
+    save();
+    obsOpen = r.conflicts;
+    safeSet('jiratype.obsLast', String(now()));
+    obsBannerUpdate();
+    saveEl.textContent = OBS_T.status(r);
+    return r;
   } catch (err) {
     console.error(err);
+    if (!auto) throw err;
+    saveEl.textContent = OBS_T.autoFail;
+    return null;
+  } finally { obsBusy = false; }
+}
+async function obsResolve(c, keepApp) {
+  const dir = obsHandle; if (!dir) return;
+  if (!keepApp) obsApply(c.i, c.f.p);
+  const text = obsMarkdown(c.i, c.f.txt);
+  await obsWrite(dir, c.f.name, text);
+  c.f.txt = text; c.f.p = obsParse(text);
+  c.i.obsSig = obsSigOf(c.i);
+  obsOpen = obsOpen.filter(x => x !== c);
+  save(); renderAll(); obsBannerUpdate();
+}
+function obsConflictDlg() {
+  const el = $('#obsModal'), list = obsOpen;
+  if (!list.length) { el.hidden = true; return; }
+  const diff = c => { const a = obsParse(obsMarkdown(c.i, '')), b = c.f.p; return Object.keys(a).filter(k => JSON.stringify(a[k]) !== JSON.stringify(b[k])).map(k => OBS_T.fields[k] || k).join(', '); };
+  $('#obsBody').innerHTML = `<div class="fl-muted" style="margin-bottom:10px">${OBS_T.conflictHint}</div>` + list.map((c, k) => `
+    <div style="padding:8px 0;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <span style="flex:1;min-width:220px"><b>${esc(c.i.key)}</b> ${esc(c.i.title)}<br><small class="muted">${OBS_T.differs}: ${esc(diff(c))}</small></span>
+      <button class="btn small" data-k="${k}" data-w="app">${OBS_T.keepApp}</button>
+      <button class="btn small primary" data-k="${k}" data-w="obs">${OBS_T.keepObs}</button>
+    </div>`).join('');
+  el.hidden = false;
+}
+$('#obsBody').addEventListener('click', async e => {
+  const b = e.target.closest('[data-w]'); if (!b) return;
+  try { await obsResolve(obsOpen[b.dataset.k], b.dataset.w === 'app'); } catch (err) { alert(err.message); }
+  obsConflictDlg();
+});
+$('#obsModal').addEventListener('mousedown', e => { if (e.target === $('#obsModal')) $('#obsModal').hidden = true; });
+function obsBannerUpdate() {
+  const n = obsOpen.length;
+  $('#obsBanner').hidden = !(obsPending || n);
+  $('#obsBannerText').textContent = obsPending ? OBS_T.paused(obsPending.name) : OBS_T.conflicts(n);
+  $('#obsBannerBtn').textContent = obsPending ? OBS_T.resume : OBS_T.show;
+}
+$('#obsBannerBtn').onclick = async () => {
+  if (!obsPending) return obsConflictDlg();
+  const h = obsPending;
+  try {
+    if (await h.requestPermission({ mode: 'readwrite' }) !== 'granted') return;
+    obsHandle = h; obsPending = null; obsBannerUpdate();
+    const r = await obsSync(h, false); if (r?.conflicts.length) obsConflictDlg();
+  } catch (err) { alert(err.message); }
+};
+$('#obsBannerClose').onclick = () => { $('#obsBanner').hidden = true; };
+async function obsPick() {
+  const h = await window.showDirectoryPicker({ id: 'obsidian-tickets', mode: 'readwrite' });
+  obsHandle = h; obsPending = null; await idbSet('obsDir', h);
+  return h;
+}
+async function obsManual(pick) {
+  // Ordner wählen (erstes Mal / "Ordner wählen") oder gemerkten nehmen; ohne Ordner -> ZIP in Downloads
+  let dir = null;
+  if (obsSupported) {
+    try {
+      if (!pick && !obsHandle && obsPending && await obsPending.requestPermission({ mode: 'readwrite' }) === 'granted') { obsHandle = obsPending; obsPending = null; }
+      dir = !pick && obsHandle ? obsHandle : await obsPick();
+    } catch (err) { if (err.name !== 'AbortError') console.warn(err); }
+  }
+  obsBannerUpdate();
+  if (!dir) { if (confirm(MSG_ASKZIP)) obsZip(); return; }
+  try {
+    const r = await obsSync(dir, false);
+    if (!r) return;
+    alert(OBS_T.done(r, dir.name));
+    if (r.conflicts.length) obsConflictDlg();
+  } catch (err) {
     if (confirm(MSG_FAIL(err.message))) obsZip();
   }
 }
+async function initObsSync() {
+  if (!obsSupported) return;
+  try {
+    const h = await idbGet('obsDir'); if (!h) return;
+    if (await h.queryPermission({ mode: 'readwrite' }) === 'granted') { obsHandle = h; obsSync(h, true); }
+    else obsPending = h;
+    obsBannerUpdate();
+  } catch (e) { console.warn('Obsidian-Abgleich nicht verfügbar', e); }
+}
+setInterval(() => { if (obsHandle && !obsOpen.length) obsSync(obsHandle, true); }, OBS_SYNC_MS);
 const ROLE_CONTRIB = 'Mitarbeit';
+const OBS_T = {
+  fromObs: 'In Obsidian angelegt',
+  status: r => `Obsidian ⇄ abgeglichen ${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}${r.conflicts.length ? ` · ⚠ ${r.conflicts.length} Konflikt(e)` : ''}`,
+  autoFail: '⚠ Obsidian-Abgleich fehlgeschlagen (nächster Versuch in 5 Min.)',
+  done: (r, f) => `Abgleich mit „${f}“ fertig.\n\nNeu in Obsidian: ${r.created}\nIn Obsidian aktualisiert: ${r.toFile}\nAus Obsidian übernommen: ${r.toApp}\nNeue Tickets aus Obsidian: ${r.fresh}${r.conflicts.length ? `\n\n⚠ Konflikte: ${r.conflicts.length} (in App und Obsidian geändert)` : ''}\n\nAutomatisch weiter alle 5 Minuten, solange die App offen ist.`,
+  conflictHint: 'Diese Tickets wurden seit dem letzten Abgleich in der App <b>und</b> in Obsidian geändert. Welche Fassung soll gelten? Die andere wird überschrieben („Eigene Notizen“ bleiben immer erhalten).',
+  differs: 'Unterschied bei', keepApp: 'App behalten', keepObs: 'Obsidian übernehmen',
+  paused: n => `Obsidian-Abgleich mit „${n}“ ist pausiert (Edge braucht nach einem Neustart einmal deine Erlaubnis).`,
+  conflicts: n => `⚠ ${n} Ticket(s) wurden in App und Obsidian geändert.`, resume: 'Fortsetzen', show: 'Konflikte ansehen',
+  fields: { title: 'Titel', status: 'Status', importance: 'Wichtigkeit', type: 'Typ', goal: 'Thema/Ziel', deadline: 'Deadline', target: 'Ziel-Datum', waitingFor: 'Wartet auf', followUp: 'Wiedervorlage', stakeholders: 'Stakeholder', labels: 'Labels', private: 'Privat', desc: 'Beschreibung', checklist: 'Unteraufgaben', did: 'Was ich gemacht habe', role: 'Rolle', impact: 'Impact' },
+};
 const MSG_ASKZIP = 'Kein Ordner gewählt.\n\nStattdessen eine ZIP-Datei mit allen Ticket-Notizen in „Downloads“ speichern?\n(Entpacken und den Inhalt nach „06 Tickets“ kopieren. Achtung: Beim Überschreiben gehen „Eigene Notizen“ in vorhandenen Dateien verloren.)';
 const MSG_FAIL = m => `Schreiben in den Ordner fehlgeschlagen:\n${m}\n\nStattdessen als ZIP in „Downloads“ speichern?`;
 const MSG_EMPTY = 'Keine Tickets vorhanden.';
@@ -3155,7 +3359,7 @@ const MSG_DONE = (n, u, d, f) => `Fertig.\n\nNeu angelegt: ${n}\nAktualisiert: $
 async function menuAction(act) {
   {
     if (act === 'safety') openSafety();
-    else if (act === 'obs-export') await obsExport();
+    else if (act === 'obs-sync' || act === 'obs-pick') await obsManual(act === 'obs-pick');
     else if (act === 'export') {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
@@ -3226,19 +3430,19 @@ $('#importInput').addEventListener('change', async e => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if (pop) { closePop(); return; }
-    const dlg = ['#featModal', '#flowModal', '#prepModal', '#bulkModal', '#safeModal'].map(s => $(s)).find(m => !m.hidden);
+    const dlg = ['#obsModal', '#featModal', '#flowModal', '#prepModal', '#bulkModal', '#safeModal'].map(s => $(s)).find(m => !m.hidden);
     if (dlg) { dlg.hidden = true; return; }
     if (!modal.hidden) { e.preventDefault(); closeModal(); }
     else if (!menu.hidden) menu.hidden = true;
     return;
   }
   const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName);
-  if (typing || e.metaKey || e.ctrlKey || e.altKey || !modal.hidden || !$('#bulkModal').hidden || !$('#safeModal').hidden || !$('#prepModal').hidden || !$('#flowModal').hidden || !$('#featModal').hidden) return;
+  if (typing || e.metaKey || e.ctrlKey || e.altKey || !modal.hidden || !$('#bulkModal').hidden || !$('#safeModal').hidden || !$('#prepModal').hidden || !$('#flowModal').hidden || !$('#featModal').hidden || !$('#obsModal').hidden) return;
   const k = e.key.toLowerCase();
   if (k === 'c') { e.preventDefault(); $('#newIssueBtn').click(); }
   else if (k === '/') { e.preventDefault(); showView('board'); $('#q').focus(); }
   else if (k === 'l') { e.preventDefault(); openBulk(); }
-  else if (k === 'n' && !showMode) { e.preventDefault(); showView('notes'); $('#newNoteBtn').click(); }
+  else if (k === 'n' && !showMode && F('notes')) { e.preventDefault(); showView('notes'); $('#newNoteBtn').click(); }
 });
 
 /* ================= Start ================= */
@@ -3250,6 +3454,7 @@ advanceMeetings();
 renderAll();
 generateRecurring();
 initFileSync().then(checkBackupBanner);
+initObsSync();
 // Regelmäßig prüfen: neue Serientermine (z. B. über Nacht offen gelassen), relative Zeiten
 setInterval(() => { generateRecurring(); if (!modal.hidden) renderComments(); }, 10 * 60 * 1000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { generateRecurring(); if (modal.hidden) renderAll(); } });
