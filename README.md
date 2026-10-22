@@ -1,11 +1,11 @@
-# Personal Jira-style Board
+# Doing-App (Prototype)
 
 A personal to-do board in the style of Jira, packed into **one single HTML file**. No installation, no server, no account – open the file in Microsoft Edge and start working. Everything is saved automatically.
 
 | File | Language |
 |---|---|
-| `jira_clone.html` | German UI |
-| `jira_clone_en.html` | English UI (separate data – the two versions don't mix) |
+| `Doing-App_Prototype.html` | German UI |
+| `Doing-App_Prototype_en.html` | English UI (separate data – the two versions don't mix) |
 
 > Design inspired by [sanidhyy/jira-clone](https://github.com/sanidhyy/jira-clone).
 
@@ -13,7 +13,7 @@ A personal to-do board in the style of Jira, packed into **one single HTML file*
 
 ## Quick start
 
-1. Open the file in **Microsoft Edge** (Chrome / Brave work too).
+1. Open the file in **Microsoft Edge** (Chrome / Brave / Firefox work too – Firefox without auto-sync, see Data safety).
 2. Go to **the menu button (bottom left) > Check data safety** and set up **auto-sync to a file** – ideally in your OneDrive folder.
 3. Delete the example tickets and add your own with **+ New** (key `C`) or **Paste list** (key `L`).
 
@@ -54,6 +54,18 @@ A personal to-do board in the style of Jira, packed into **one single HTML file*
   Per series you can set the buffer between the soft and the hard deadline, and how many days in advance the ticket appears. Public holidays are not taken into account.
 - **Private** flag (see Show mode).
 
+### Stakeholders, sub-task deadlines, wins
+- **Stakeholders** per ticket (comma-separated). Shown on the card, as a list column with filter, and suggested from earlier entries.
+- **Sub-task due dates:** every sub-task can have its own date. Overdue open sub-tasks turn the card red; the card shows the next due date next to the sub-task counter.
+- **Contribution & impact** per ticket: *what I did*, *role* (Lead / Contributor / Support) and *impact*. **Menu > Wins as CSV (brag sheet)** exports all done tickets with date, project/goal, what you did, role, importance, impact, stakeholders and source – ready for performance reviews, salary talks or your CV.
+
+### Timeline (flow view)
+**📈 Timeline** in a ticket or on a goal card opens a visual history:
+- **Ticket:** flow chain of all status phases with durations (e.g. *To Do 3 d → In progress 3 d → Waiting 4 d, waiting for X → …*), a "where did the time go?" bar, a timeline with sub-task completions, sub-task due dates, updates, target/deadline and today, plus the people involved and the impact text.
+- **Goal:** Gantt chart of all tickets (click a row to open it), time split across all tickets, and a **Venn diagram** of the top-3 stakeholders showing how many tickets they share.
+
+Phases are rebuilt from the automatic status entries in the updates log. Tickets created before this existed show an approximate flow.
+
 ### Paste list (action items > tickets)
 Paste action items, e.g. copied from OneNote, and each line becomes a ticket. Recognised automatically:
 - **Indented lines** become sub-tasks of the line above.
@@ -61,6 +73,8 @@ Paste action items, e.g. copied from OneNote, and each line becomes a ticket. Re
 - `KW43` / `wk43` or `24.10.` sets the deadline.
 - `!` or `(Pflicht)` / `(must)` sets the importance to *Must*.
 - `@Name` sets the status *Waiting* for that name.
+- `+Name` adds a stakeholder.
+- An indented line with `KW43` or `24.10.` sets that **sub-task's** due date.
 - Lines ending in `:` count as headings and are skipped.
 
 Status, goal, source meeting and date, agenda, labels and the private flag can be set once for all tickets in the list. A live preview shows the result before anything is created.
@@ -115,6 +129,10 @@ The toggle sits at the bottom of the sidebar. **Show mode** hides private ticket
 - a reminder to check `edge://settings/clearBrowsingDataOnClose`; *Cookies and other site data* must be **off**
 
 A banner appears as long as neither auto-sync nor a recent backup exists.
+
+**Firefox:** everything works except the auto-sync file (Firefox doesn't support the File System Access API). Firefox stores data **per file path** – renaming or moving the file shows an empty board. Export a backup first and import it into the renamed file. Edge/Chrome are not affected.
+
+**Older backups** can be imported as they are: new fields (stakeholders, sub-task dates, impact) simply start empty.
 
 Browser data is lost if site data is cleared, if "clear on close" is enabled (common on company PCs), in InPrivate windows, or when you switch PC or browser. Use the auto-sync file and backups for that.
 

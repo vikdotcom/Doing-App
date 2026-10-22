@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Board</title>
+<title>Mein Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -327,6 +327,37 @@ textarea.desc{width:100%;min-height:90px;border:1px solid var(--border);border-r
 .checklist li:hover{background:var(--surface)}
 .checklist li input[type=text]{flex:1;border:0;background:transparent;padding:3px 4px;border-radius:4px}
 .checklist li.done input[type=text]{text-decoration:line-through;color:var(--subtle)}
+.checklist li .sub-due{flex:none;width:122px;border:0;background:transparent;color:var(--muted);font-size:12px;padding:2px 4px;border-radius:4px}
+.checklist li .sub-due.empty{opacity:.35}
+.checklist li:hover .sub-due.empty,.checklist li .sub-due:focus{opacity:1}
+.checklist li .sub-due.late{color:var(--danger);font-weight:600}
+.checklist li .sub-due.soft{color:var(--warn);font-weight:600}
+.sub-list label .date{margin-left:auto;font-size:11px;padding-left:6px}
+.wins-grid{display:flex;flex-direction:column;gap:8px}
+.wins-grid textarea{width:100%;min-height:54px;resize:vertical;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);padding:8px 10px;font:inherit;font-size:14px}
+.wins-grid select{align-self:flex-start;height:30px}
+.fl-body{padding:8px 24px 24px;display:flex;flex-direction:column;gap:8px}
+.fl-body h4{margin:14px 0 2px;font-size:13px;color:var(--muted);font-weight:600}
+.fl-kpis{display:flex;flex-wrap:wrap;gap:8px}
+.fl-kpi{background:var(--surface);border-radius:8px;padding:8px 12px;min-width:110px}
+.fl-kpi small{display:block;color:var(--muted);font-size:11px}
+.fl-kpi b{font-size:17px}
+.fl-chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px}
+.fl-node{border:1px solid var(--border);border-left:4px solid var(--c,var(--subtle));border-radius:8px;padding:6px 10px;background:var(--card);min-width:92px}
+.fl-node b{display:block;font-size:13px}
+.fl-node small{color:var(--muted);font-size:11px}
+.fl-arrow{color:var(--subtle);align-self:center}
+.fl-split{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px}
+.fl-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted)}
+.fl-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.fl-svg{width:100%;height:auto;display:block}
+.fl-svg text{font-size:11px;fill:var(--muted);font-family:inherit}
+.fl-svg .fl-row{cursor:pointer}
+.fl-svg .fl-row:hover .bg{fill:var(--surface)}
+.fl-people{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fl-bub{border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--text);font-size:12px;text-align:center;line-height:1.15;padding:4px;overflow:hidden}
+.fl-impact{background:var(--ok-soft);border-radius:8px;padding:10px 12px;white-space:pre-wrap;font-size:14px}
+.fl-muted{color:var(--subtle);font-size:12px}
 .checklist li .x{visibility:hidden}
 .checklist li:hover .x{visibility:visible}
 .check-new{width:100%;border:1px dashed var(--border);border-radius:6px;padding:8px 10px;background:transparent;margin-top:4px}
@@ -442,41 +473,42 @@ input.bad{outline:2px solid var(--danger)!important}
 <body>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><div class="logo-mark"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span id="boardName">My Board</span></div>
+  <div class="logo"><div class="logo-mark"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span id="boardName">Mein Board</span></div>
   <div class="sep"></div>
   <nav class="side-nav">
-    <button class="nav-item tab" data-view="tasks"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>My Tasks</button>
+    <button class="nav-item tab" data-view="tasks"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>Meine Aufgaben</button>
     <button class="nav-item tab" data-view="meetings"><svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.3M15.5 4.7a3.5 3.5 0 0 1 0 6.6"/></svg>Meetings</button>
-    <button class="nav-item tab" data-view="goals"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></svg>Goals</button>
-    <button class="nav-item tab" data-view="review"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17M8.5 15l2 2 4-4"/></svg>Weekly review</button>
-    <button class="nav-item tab priv-only" data-view="notes"><svg class="ico" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h4.5"/></svg>Notes</button>
+    <button class="nav-item tab" data-view="goals"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></svg>Ziele</button>
+    <button class="nav-item tab" data-view="review"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17M8.5 15l2 2 4-4"/></svg>Wochenrückblick</button>
+    <button class="nav-item tab priv-only" data-view="notes"><svg class="ico" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h4.5"/></svg>Notizen</button>
     <button class="nav-item tab priv-only" data-view="prompts"><svg class="ico" viewBox="0 0 24 24"><path d="M11 3.5l1.8 4.9 4.9 1.8-4.9 1.8L11 16.9l-1.8-4.9-4.9-1.8 4.9-1.8z"/><path d="M18.5 14.5v5M16 17h5"/></svg>Prompts</button>
   </nav>
   <div class="sep"></div>
-  <div class="side-label"><span>Goals</span><button class="side-add" id="sideAddGoal" title="New goal">+</button></div>
+  <div class="side-label"><span>Ziele</span><button class="side-add" id="sideAddGoal" title="Neues Ziel">+</button></div>
   <div id="sideGoals"></div>
   <div class="side-bottom">
-    <button class="btn mode-btn" id="modeBtn" title="Toggle private / show mode">🔒 Private</button>
+    <button class="btn mode-btn" id="modeBtn" title="Privat-/Show-Modus umschalten">🔒 Privat</button>
     <div class="side-row">
-      <span class="save-state" id="saveState">Saved locally</span>
+      <span class="save-state" id="saveState">Lokal gespeichert</span>
       <span class="spacer"></span>
-      <button class="icon-btn" id="themeBtn" title="Light/Dark"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+      <button class="icon-btn" id="themeBtn" title="Hell/Dunkel"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
       <div class="menu-wrap">
-        <button class="icon-btn" id="menuBtn" title="Data &amp; settings"><svg class="ico" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
+        <button class="icon-btn" id="menuBtn" title="Daten &amp; Einstellungen"><svg class="ico" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
         <div class="menu" id="menu" hidden>
-          <div class="hint">Everything is saved automatically in your browser.</div>
-          <button data-act="safety">🛡 Check data safety</button>
+          <div class="hint">Alles wird automatisch im Browser gespeichert.</div>
+          <button data-act="safety">🛡 Datensicherheit prüfen</button>
           <hr>
-          <button data-act="file-new" class="fs-only">💾 Auto-sync to new file…</button>
-          <button data-act="file-open" class="fs-only">📂 Open sync file…</button>
-          <button data-act="file-off" class="fs-only" id="fileOffBtn" hidden>⛔ Disconnect file sync</button>
+          <button data-act="file-new" class="fs-only">💾 Auto-Sync in neue Datei…</button>
+          <button data-act="file-open" class="fs-only">📂 Sync-Datei öffnen…</button>
+          <button data-act="file-off" class="fs-only" id="fileOffBtn" hidden>⛔ Datei-Sync trennen</button>
           <hr class="fs-only">
-          <button data-act="export">⬇ Export backup (JSON)</button>
-          <button data-act="import">⬆ Import backup…</button>
-          <button data-act="csv-all">📊 All tickets as CSV (Excel)</button>
+          <button data-act="export">⬇ Backup exportieren (JSON)</button>
+          <button data-act="import">⬆ Backup importieren…</button>
+          <button data-act="csv-all">📊 Alle Tickets als CSV (Excel)</button>
+          <button data-act="csv-wins">🏆 Erfolge als CSV (Brag Sheet)</button>
           <hr>
-          <button data-act="rename">✎ Rename board</button>
-          <button data-act="clear-done">🧹 Delete done tickets</button>
+          <button data-act="rename">✎ Board umbenennen</button>
+          <button data-act="clear-done">🧹 Erledigte Tickets löschen</button>
         </div>
       </div>
     </div>
@@ -487,29 +519,29 @@ input.bad{outline:2px solid var(--danger)!important}
 
 <div class="main">
   <header class="page-head">
-    <button class="icon-btn hamburger" id="hamburger" title="Menu"><svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div><h1 id="pageTitle">My Tasks</h1><p id="pageSub" class="muted"></p></div>
+    <button class="icon-btn hamburger" id="hamburger" title="Menü"><svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div><h1 id="pageTitle">Meine Aufgaben</h1><p id="pageSub" class="muted"></p></div>
     <span class="spacer"></span>
-    <button class="btn" id="bulkBtn" title="Create several tickets from a list (e.g. action items from OneNote)">⇣ Paste list</button>
-    <button class="btn primary" id="newIssueBtn" title="New ticket (C)"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New</button>
+    <button class="btn" id="bulkBtn" title="Mehrere Tickets aus einer Liste anlegen (z. B. Aktionspunkte aus OneNote)">⇣ Liste einfügen</button>
+    <button class="btn primary" id="newIssueBtn" title="Neues Ticket (C)"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Neu</button>
   </header>
   <div class="banner" id="backupBanner" hidden>
-    <span>⚠ Your data currently lives only in the browser. Set up auto-sync to a file or export a backup.</span>
-    <button class="btn primary small" id="backupBannerBtn">Check data safety</button>
-    <button class="btn ghost small" id="backupBannerClose">Later</button>
+    <span>⚠ Deine Daten liegen bisher nur im Browser. Richte den Auto-Sync in eine Datei ein oder exportiere ein Backup.</span>
+    <button class="btn primary small" id="backupBannerBtn">Datensicherheit prüfen</button>
+    <button class="btn ghost small" id="backupBannerClose">Später</button>
   </div>
   <div class="banner" id="fileBanner" hidden>
-    <span>File sync with <b id="fileBannerName"></b> is paused (after a browser restart it needs your permission once).</span>
-    <button class="btn primary small" id="fileResumeBtn">Resume</button>
-    <button class="btn ghost small" id="fileBannerClose">Later</button>
+    <span>Datei-Sync mit <b id="fileBannerName"></b> ist pausiert (Edge braucht nach einem Neustart einmal deine Erlaubnis).</span>
+    <button class="btn primary small" id="fileResumeBtn">Fortsetzen</button>
+    <button class="btn ghost small" id="fileBannerClose">Später</button>
   </div>
 
   <div class="panel">
   <div id="segWrap">
     <div class="seg-row">
       <button class="seg tab" data-view="board">Board</button>
-      <button class="seg tab" data-view="list">List</button>
-      <button class="seg tab" data-view="cal">Calendar</button>
+      <button class="seg tab" data-view="list">Liste</button>
+      <button class="seg tab" data-view="cal">Kalender</button>
     </div>
     <div class="sep"></div>
   </div>
@@ -517,14 +549,14 @@ input.bad{outline:2px solid var(--danger)!important}
 <!-- Board -->
 <section class="view" id="view-board">
   <div class="toolbar">
-    <label class="search"><input id="q" placeholder="Search…  ( / )" aria-label="Search"></label>
-    <select id="fGoal" aria-label="Goal"></select>
-    <select id="fImp" aria-label="Importance"></select>
-    <select id="fType" aria-label="Type"></select>
+    <label class="search"><input id="q" placeholder="Suchen…  ( / )" aria-label="Suchen"></label>
+    <select id="fGoal" aria-label="Ziel"></select>
+    <select id="fImp" aria-label="Wichtigkeit"></select>
+    <select id="fType" aria-label="Typ"></select>
     <select id="fLabel" aria-label="Label"></select>
     <select id="fMeet" aria-label="Meeting"></select>
-    <label class="check-field" title="Show the Paused and Cancelled columns"><input type="checkbox" id="fArchive"> Paused & cancelled</label>
-    <button class="btn ghost" id="fReset" hidden>Reset filters</button>
+    <label class="check-field" title="Spalten „Pausiert“ und „Gestrichen“ einblenden"><input type="checkbox" id="fArchive"> Pausiert & Gestrichen</label>
+    <button class="btn ghost" id="fReset" hidden>Filter zurücksetzen</button>
   </div>
   <div class="sep"></div>
   <div class="board" id="board"></div>
@@ -533,14 +565,14 @@ input.bad{outline:2px solid var(--danger)!important}
 <!-- Liste / Tabelle -->
 <section class="view" id="view-list" hidden>
   <div class="toolbar">
-    <label class="search"><input id="lq" placeholder="Search…" aria-label="Search table"></label>
-    <label class="check-field"><input type="checkbox" id="lHideDone"> Hide done & cancelled</label>
-    <button class="btn" id="lColsBtn">Columns ▾</button>
-    <button class="btn ghost" id="lReset" hidden>Clear all filters</button>
+    <label class="search"><input id="lq" placeholder="Suchen…" aria-label="Tabelle durchsuchen"></label>
+    <label class="check-field"><input type="checkbox" id="lHideDone"> Erledigte & Gestrichene ausblenden</label>
+    <button class="btn" id="lColsBtn">Spalten ▾</button>
+    <button class="btn ghost" id="lReset" hidden>Alle Filter löschen</button>
     <div class="spacer"></div>
     <span class="save-state" id="lCount"></span>
-    <button class="btn" id="lCsv" title="Current view as CSV (opens in Excel)">⬇ CSV</button>
-    <button class="btn" id="lNew">+ Row</button>
+    <button class="btn" id="lCsv" title="Aktuelle Ansicht als CSV (öffnet in Excel)">⬇ CSV</button>
+    <button class="btn" id="lNew">+ Zeile</button>
   </div>
   <div class="sep"></div>
   <div class="table-wrap"><table class="grid" id="lTable"></table></div>
@@ -550,34 +582,34 @@ input.bad{outline:2px solid var(--danger)!important}
 <section class="view" id="view-prompts" hidden>
   <div class="prompts">
     <div class="notes-list">
-      <div class="notes-list-head"><b style="flex:1;align-self:center">AI templates</b><button class="btn primary" id="newPromptBtn" title="New template">+</button></div>
+      <div class="notes-list-head"><b style="flex:1;align-self:center">KI-Vorlagen</b><button class="btn primary" id="newPromptBtn" title="Neue Vorlage">+</button></div>
       <div id="promptList"></div>
     </div>
     <div class="prompt-main">
       <div class="step">
-        <h3><span class="step-no">1</span> Template</h3>
-        <input class="title-input" id="pName" placeholder="Template name" style="font-size:17px">
+        <h3><span class="step-no">1</span> Vorlage</h3>
+        <input class="title-input" id="pName" placeholder="Name der Vorlage" style="font-size:17px">
         <textarea class="ta" id="pText" rows="12" spellcheck="false"></textarea>
-        <div class="ph-chips">Insert placeholder:
-          <button data-ph="{{NOTE}}" title="The text from step 2">{{NOTE}}</button>
-          <button data-ph="{{TODAY}}" title="Today's date">{{TODAY}}</button>
-          <button data-ph="{{GOALS}}" title="Names of your goals">{{GOALS}}</button>
-          <button data-ph="{{LABELS}}" title="Labels in use">{{LABELS}}</button>
-          <button data-ph="{{OPEN_TICKETS}}" title="All open tickets as JSON">{{OPEN_TICKETS}}</button>
-          <span class="spacer"></span><button class="btn danger small" id="pDel">Delete template</button>
+        <div class="ph-chips">Platzhalter einfügen:
+          <button data-ph="{{NOTIZ}}" title="Der Text aus Schritt 2">{{NOTIZ}}</button>
+          <button data-ph="{{HEUTE}}" title="Heutiges Datum">{{HEUTE}}</button>
+          <button data-ph="{{ZIELE}}" title="Namen deiner Ziele">{{ZIELE}}</button>
+          <button data-ph="{{LABELS}}" title="Vorhandene Labels">{{LABELS}}</button>
+          <button data-ph="{{OFFENE_TICKETS}}" title="Alle nicht erledigten Tickets als JSON">{{OFFENE_TICKETS}}</button>
+          <span class="spacer"></span><button class="btn danger small" id="pDel">Vorlage löschen</button>
         </div>
       </div>
       <div class="step">
-        <h3><span class="step-no">2</span> Insert notes</h3>
+        <h3><span class="step-no">2</span> Notizen einfügen</h3>
         <select id="pNote" class="inline-input"></select>
-        <textarea class="ta" id="pInput" rows="7" placeholder="Pick a note above or paste text here, e.g. from OneNote…"></textarea>
-        <div class="ph-chips"><button class="btn primary" id="pCopy">📋 Copy finished prompt</button><span id="pCopyMsg"></span></div>
-        <small class="muted">Then paste it into ChatGPT, Copilot, Claude etc. and copy the answer into step 3.</small>
+        <textarea class="ta" id="pInput" rows="7" placeholder="Notiz oben auswählen oder Text z. B. aus OneNote hier einfügen…"></textarea>
+        <div class="ph-chips"><button class="btn primary" id="pCopy">📋 Fertigen Prompt kopieren</button><span id="pCopyMsg"></span></div>
+        <small class="muted">Dann in ChatGPT, Copilot, Claude o. ä. einfügen und die Antwort in Schritt 3 kopieren.</small>
       </div>
       <div class="step">
-        <h3><span class="step-no">3</span> Import AI answer</h3>
-        <textarea class="ta" id="pAnswer" rows="7" placeholder="Paste the complete AI answer here – the JSON is extracted automatically. A simple bullet list works too."></textarea>
-        <div><button class="btn" id="pParse">Show preview</button></div>
+        <h3><span class="step-no">3</span> KI-Antwort übernehmen</h3>
+        <textarea class="ta" id="pAnswer" rows="7" placeholder="Komplette Antwort der KI hier einfügen – das JSON wird automatisch herausgesucht. Eine einfache Stichpunktliste geht auch."></textarea>
+        <div><button class="btn" id="pParse">Vorschau anzeigen</button></div>
         <div id="pPreview"></div>
       </div>
     </div>
@@ -588,21 +620,21 @@ input.bad{outline:2px solid var(--danger)!important}
 <section class="view" id="view-cal" hidden>
   <div class="toolbar">
     <div class="cal-nav">
-      <button class="icon-btn" id="calPrev" title="Previous month"><svg class="ico" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button class="icon-btn" id="calPrev" title="Vorheriger Monat"><svg class="ico" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
       <span class="cal-title"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg><span id="calTitle"></span></span>
-      <button class="icon-btn" id="calNext" title="Next month"><svg class="ico" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="btn small" id="calToday">Today</button>
+      <button class="icon-btn" id="calNext" title="Nächster Monat"><svg class="ico" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="btn small" id="calToday">Heute</button>
     </div>
     <div class="spacer"></div>
     <div class="cal-legend">
-      <span><span class="cal-chip soft" style="display:inline-block">◎ Target (soft)</span></span>
+      <span><span class="cal-chip soft" style="display:inline-block">◎ Ziel (soft)</span></span>
       <span><span class="cal-chip hard" style="display:inline-block">⚑ Deadline (hard)</span></span>
-      <span><span class="cal-chip ghost" style="display:inline-block">🔁 planned</span></span>
+      <span><span class="cal-chip ghost" style="display:inline-block">🔁 geplant</span></span>
     </div>
   </div>
   <div class="sep"></div>
   <div class="cal-wrap">
-    <div class="cal-head"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div></div>
+    <div class="cal-head"><div>Mo</div><div>Di</div><div>Mi</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div></div>
     <div class="cal-grid" id="calGrid"></div>
   </div>
 </section>
@@ -610,12 +642,12 @@ input.bad{outline:2px solid var(--danger)!important}
 <!-- Ziele -->
 <section class="view" id="view-goals" hidden>
   <div class="toolbar">
-    <button class="btn" id="newGoalBtn">+ New goal</button>
+    <button class="btn" id="newGoalBtn">+ Neues Ziel</button>
   </div>
   <div class="sep"></div>
   <div class="goals-wrap">
     <div class="goal-grid" id="goalGrid"></div>
-    <h2 class="section-title">🔁 Recurring tasks</h2>
+    <h2 class="section-title">🔁 Wiederkehrende Aufgaben</h2>
     <div class="rec-list" id="recList"></div>
   </div>
 </section>
@@ -623,8 +655,8 @@ input.bad{outline:2px solid var(--danger)!important}
 <!-- Meetings -->
 <section class="view" id="view-meetings" hidden>
   <div class="toolbar">
-    <button class="btn" id="newMeetBtn">+ New meeting</button>
-    <span class="muted" style="font-size:13px">Pick a meeting under "🗣 On agenda for" in a ticket – the item then shows up here for the next meeting.</span>
+    <button class="btn" id="newMeetBtn">+ Neues Meeting</button>
+    <span class="muted" style="font-size:13px">Im Ticket unter „🗣 Auf Agenda für“ ein Meeting wählen – dann taucht der Punkt hier beim nächsten Termin auf.</span>
   </div>
   <div class="sep"></div>
   <div class="goals-wrap"><div class="goal-grid" id="meetGrid"></div></div>
@@ -634,32 +666,32 @@ input.bad{outline:2px solid var(--danger)!important}
 <section class="view" id="view-review" hidden>
   <div class="toolbar">
     <div class="cal-nav">
-      <button class="icon-btn" id="revPrev" title="Previous week"><svg class="ico" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button class="icon-btn" id="revPrev" title="Vorherige Woche"><svg class="ico" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
       <span class="cal-title" id="revTitle"></span>
-      <button class="icon-btn" id="revNext" title="Next week"><svg class="ico" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="btn small" id="revNow">This week</button>
+      <button class="icon-btn" id="revNext" title="Nächste Woche"><svg class="ico" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="btn small" id="revNow">Diese Woche</button>
     </div>
     <div class="spacer"></div>
     <span id="revMsg"></span>
-    <button class="btn primary" id="revCopy">📋 Copy text</button>
+    <button class="btn primary" id="revCopy">📋 Text kopieren</button>
   </div>
   <div class="sep"></div>
   <div class="review-wrap">
     <div class="review-opts">
-      <b>Sections</b>
-      <label><input type="checkbox" data-sec="done"> ✅ Done</label>
-      <label><input type="checkbox" data-sec="doing"> 🔄 In progress</label>
-      <label><input type="checkbox" data-sec="waiting"> ⏳ Waiting for</label>
-      <label><input type="checkbox" data-sec="late"> ⚠ Overdue</label>
-      <label><input type="checkbox" data-sec="next"> 📅 Next week</label>
-      <label><input type="checkbox" data-sec="cancelled"> ✖ Cancelled</label>
-      <label><input type="checkbox" data-sec="paused"> ⏸ Paused</label>
-      <b style="margin-top:10px">Options</b>
-      <label><input type="checkbox" data-opt="keys"> Show ticket numbers</label>
-      <label><input type="checkbox" data-opt="goals"> Goal in brackets</label>
-      <label><input type="checkbox" data-opt="subs"> Show open sub-tasks</label>
-      <label class="priv-only"><input type="checkbox" data-opt="priv"> 🔒 Include private tickets</label>
-      <p class="muted" style="font-size:12px;line-height:1.5;margin-top:10px">The text can be pasted straight into Teams or Outlook. You can edit it on the right before copying.</p>
+      <b>Abschnitte</b>
+      <label><input type="checkbox" data-sec="done"> ✅ Erledigt</label>
+      <label><input type="checkbox" data-sec="doing"> 🔄 In Arbeit</label>
+      <label><input type="checkbox" data-sec="waiting"> ⏳ Warten auf</label>
+      <label><input type="checkbox" data-sec="late"> ⚠ Überfällig</label>
+      <label><input type="checkbox" data-sec="next"> 📅 Nächste Woche</label>
+      <label><input type="checkbox" data-sec="cancelled"> ✖ Gestrichen</label>
+      <label><input type="checkbox" data-sec="paused"> ⏸ Pausiert</label>
+      <b style="margin-top:10px">Optionen</b>
+      <label><input type="checkbox" data-opt="keys"> Ticket-Nummern zeigen</label>
+      <label><input type="checkbox" data-opt="goals"> Ziel in Klammern</label>
+      <label><input type="checkbox" data-opt="subs"> Offene Unteraufgaben zeigen</label>
+      <label class="priv-only"><input type="checkbox" data-opt="priv"> 🔒 Private Tickets einbeziehen</label>
+      <p class="muted" style="font-size:12px;line-height:1.5;margin-top:10px">Der Text lässt sich direkt in Teams oder Outlook einfügen. Du kannst ihn rechts vor dem Kopieren noch anpassen.</p>
     </div>
     <textarea class="review-out" id="revOut" spellcheck="false"></textarea>
   </div>
@@ -670,8 +702,8 @@ input.bad{outline:2px solid var(--danger)!important}
   <div class="notes">
     <div class="notes-list">
       <div class="notes-list-head">
-        <label class="search" style="flex:1"><input id="nq" placeholder="Search notes…" style="width:100%"></label>
-        <button class="btn primary" id="newNoteBtn" title="New note">+</button>
+        <label class="search" style="flex:1"><input id="nq" placeholder="Notizen suchen…" style="width:100%"></label>
+        <button class="btn primary" id="newNoteBtn" title="Neue Notiz">+</button>
       </div>
       <div id="notesList"></div>
     </div>
@@ -683,30 +715,46 @@ input.bad{outline:2px solid var(--danger)!important}
 </div><!-- /main -->
 
 <!-- Ticket-Detail -->
+<!-- Verlauf -->
+<div class="backdrop" id="flowModal" hidden style="z-index:110">
+  <div class="modal" role="dialog" aria-modal="true" style="max-width:920px">
+    <div class="modal-head"><b style="color:var(--text);font-size:15px" id="flowTitle">📈 Verlauf</b><span class="grow"></span><button class="icon-btn" data-close="flowModal" title="Esc">✕</button></div>
+    <div class="fl-body" id="flowBody"></div>
+  </div>
+</div>
+
 <div class="backdrop" id="modal" hidden>
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-head">
       <span class="type-icon" id="mTypeIcon"></span>
       <span id="mKey"></span>
       <span id="mRecurBadge"></span>
+      <button class="btn small" id="mFlow" type="button">📈 Verlauf</button>
       <span class="grow"></span>
-      <button class="icon-btn" id="mClose" title="Close (Esc)">✕</button>
+      <button class="icon-btn" id="mClose" title="Schließen (Esc)">✕</button>
     </div>
     <div class="modal-body">
       <div>
-        <input class="title-input" id="mTitle" placeholder="What needs to be done?">
-        <div class="sec-label">Description</div>
-        <textarea class="desc" id="mDesc" placeholder="Details, links, thoughts…"></textarea>
+        <input class="title-input" id="mTitle" placeholder="Was ist zu tun?">
+        <div class="sec-label">Beschreibung</div>
+        <textarea class="desc" id="mDesc" placeholder="Details, Links, Gedanken…"></textarea>
 
-        <div class="sec-label">Sub-tasks <small id="mCheckCount"></small><div class="progress" id="mProgress"><div></div></div></div>
+        <div class="sec-label">Unteraufgaben <small id="mCheckCount"></small><div class="progress" id="mProgress"><div></div></div></div>
         <ul class="checklist" id="mChecklist"></ul>
-        <input class="check-new" id="mCheckNew" placeholder="+ Add sub-task (Enter)">
+        <input class="check-new" id="mCheckNew" placeholder="+ Unteraufgabe hinzufügen (Enter)">
+
+        <div class="sec-label">🏆 Beitrag & Impact <small>für Review, Gehaltsgespräch, Lebenslauf</small></div>
+        <div class="wins-grid">
+          <textarea id="mDid" placeholder="Was habe ich konkret gemacht?"></textarea>
+          <select id="mRole" class="inline-input" title="Rolle"><option value="">— Rolle —</option><option value="lead">Lead</option><option value="contrib">Mitarbeit</option><option value="support">Support</option></select>
+          <textarea id="mImpact" placeholder="Was hat es bewirkt? (Zahlen, Feedback, Entscheidung)"></textarea>
+        </div>
 
         <div class="priv-only">
-          <div class="sec-label">Updates <small>History / notes on this ticket</small></div>
+          <div class="sec-label">Updates <small>Verlauf / Notizen zu diesem Ticket</small></div>
           <div class="comment-new">
-            <textarea id="mComment" placeholder="Add update… (Ctrl + Enter)"></textarea>
-            <button class="btn primary" id="mCommentBtn">Save</button>
+            <textarea id="mComment" placeholder="Update hinzufügen… (Strg + Enter)"></textarea>
+            <button class="btn primary" id="mCommentBtn">Speichern</button>
           </div>
           <ul class="comments" id="mComments"></ul>
         </div>
@@ -714,58 +762,59 @@ input.bad{outline:2px solid var(--danger)!important}
       <aside class="side">
         <label class="field"><span>Status</span><select id="mStatus" class="status-select"></select></label>
         <div class="state-box" id="mStateBox" hidden>
-          <label class="field" id="mWaitWrap"><span>⏳ Waiting for</span><input id="mWaitFor" list="personList" placeholder="Person or thing"></label>
-          <label class="field" id="mFollowWrap"><span id="mFollowLabel">Follow up on</span><input type="date" id="mFollowUp"></label>
-          <label class="field" id="mReasonWrap"><span>✖ Reason for cancelling</span><input id="mReason" placeholder="e.g. requirement dropped"></label>
+          <label class="field" id="mWaitWrap"><span>⏳ Wartet auf</span><input id="mWaitFor" list="personList" placeholder="Person oder Sache"></label>
+          <label class="field" id="mFollowWrap"><span id="mFollowLabel">Nachfassen am</span><input type="date" id="mFollowUp"></label>
+          <label class="field" id="mReasonWrap"><span>✖ Grund fürs Streichen</span><input id="mReason" placeholder="z. B. Anforderung entfallen"></label>
         </div>
         <datalist id="personList"></datalist>
-        <label class="field"><span>Goal</span><select id="mGoal"></select></label>
+        <label class="field"><span>Ziel</span><select id="mGoal"></select></label>
+        <label class="field"><span>👥 Stakeholder <small class="hint">Komma-getrennt</small></span><input id="mStake" list="personList" placeholder="z. B. Anna, Ben"></label>
         <div class="field-row">
-          <label class="field"><span>Importance</span><select id="mImp"></select></label>
-          <label class="field"><span>Type</span><select id="mType"></select></label>
+          <label class="field"><span>Wichtigkeit</span><select id="mImp"></select></label>
+          <label class="field"><span>Typ</span><select id="mType"></select></label>
         </div>
         <div class="field-row">
-          <label class="field"><span>◎ Target (soft)</span><input type="date" id="mTarget"></label>
+          <label class="field"><span>◎ Ziel (soft)</span><input type="date" id="mTarget"></label>
           <label class="field"><span>⚑ Deadline (hard)</span><input type="date" id="mDeadline"></label>
         </div>
-        <label class="field"><span>⚑ Deadline by week no. <small class="hint">→ Friday of that week</small></span><input id="mKW" inputmode="numeric" placeholder="e.g. 43 or 43/2027"></label>
-        <label class="field"><span>🔁 Repeat</span>
+        <label class="field"><span>⚑ Deadline per KW <small class="hint">→ Freitag der Woche</small></span><input id="mKW" inputmode="numeric" placeholder="z. B. 43 oder 43/2027"></label>
+        <label class="field"><span>🔁 Wiederholung</span>
           <select id="mRecur">
-            <option value="">None</option>
-            <option value="weekly">Weekly</option>
-            <option value="biweekly">Every 2 weeks</option>
-            <option value="monthly">Monthly (same date)</option>
-            <option value="nthweekday">Monthly: e.g. 1st Monday</option>
-            <option value="lastworkday">Monthly: last working day</option>
-            <option value="nthworkday">Monthly: n-th working day</option>
-            <option value="quarterly">Quarterly</option>
-            <option value="weekdays">Weekdays (e.g. 2× per week)</option>
+            <option value="">Keine</option>
+            <option value="weekly">Wöchentlich</option>
+            <option value="biweekly">Alle 2 Wochen</option>
+            <option value="monthly">Monatlich (gleiches Datum)</option>
+            <option value="nthweekday">Monatlich: z. B. 1. Montag</option>
+            <option value="lastworkday">Monatlich: letzter Werktag</option>
+            <option value="nthworkday">Monatlich: n-ter Werktag</option>
+            <option value="quarterly">Quartalsweise</option>
+            <option value="weekdays">Wochentage (z. B. 2× pro Woche)</option>
           </select>
         </label>
         <div class="recur-opts" id="mRecurOpts" hidden>
-          <label>Deadline <input type="number" min="0" max="60" id="mBuffer"> day(s) after target date</label>
-          <label>Appears <input type="number" min="0" max="60" id="mLead"> day(s) early on the board</label>
+          <label>Deadline <input type="number" min="0" max="60" id="mBuffer"> Tag(e) nach Ziel-Datum</label>
+          <label>Erscheint <input type="number" min="0" max="60" id="mLead"> Tag(e) vorher auf dem Board</label>
           <div class="wd-row" id="mDays" hidden></div>
           <div class="wd-row" id="mNthRow" hidden>
-            <select id="mNth" class="inline-input" style="height:28px"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="-1">last</option></select>
-            <select id="mNthWd" class="inline-input" style="height:28px"></select> <span style="align-self:center">of the month</span>
+            <select id="mNth" class="inline-input" style="height:28px"><option value="1">1.</option><option value="2">2.</option><option value="3">3.</option><option value="4">4.</option><option value="-1">letzter</option></select>
+            <select id="mNthWd" class="inline-input" style="height:28px"></select> <span style="align-self:center">im Monat</span>
           </div>
           <div class="wd-row" id="mWorkRow" hidden>
-            <select id="mWorkN" class="inline-input" style="height:28px"></select> <span style="align-self:center">working day of the month (Mon–Fri)</span>
+            <select id="mWorkN" class="inline-input" style="height:28px"></select> <span style="align-self:center">Werktag im Monat (Mo–Fr)</span>
           </div>
           <div id="mRecurInfo"></div>
         </div>
-        <label class="field"><span>🗣 On agenda for</span><select id="mMeet"></select></label>
-        <div class="field"><span>📍 Source <small class="hint">where did the task come from?</small></span>
-          <div class="src-row"><input id="mSource" list="sourceList" placeholder="e.g. weekly sync" class="inline-input"><input type="date" id="mSourceDate" class="inline-input"></div>
-          <div class="link-row"><input id="mSourceLink" placeholder="Link, e.g. to the OneNote page"><button type="button" class="btn small" id="mSourceOpen" title="Open link" style="height:36px">↗</button></div>
+        <label class="field"><span>🗣 Auf Agenda für</span><select id="mMeet"></select></label>
+        <div class="field"><span>📍 Quelle <small class="hint">wo ist die Aufgabe entstanden?</small></span>
+          <div class="src-row"><input id="mSource" list="sourceList" placeholder="z. B. Jour fixe" class="inline-input"><input type="date" id="mSourceDate" class="inline-input"></div>
+          <div class="link-row"><input id="mSourceLink" placeholder="Link, z. B. zur OneNote-Seite"><button type="button" class="btn small" id="mSourceOpen" title="Link öffnen" style="height:36px">↗</button></div>
         </div>
         <datalist id="sourceList"></datalist>
-        <label class="field"><span>Labels <small style="font-weight:400">(comma-separated)</small></span><input id="mLabels" list="labelList" placeholder="e.g. work, personal"></label>
+        <label class="field"><span>Labels <small style="font-weight:400">(Komma-getrennt)</small></span><input id="mLabels" list="labelList" placeholder="z. B. arbeit, privat"></label>
         <datalist id="labelList"></datalist>
-        <label class="field check-field priv-only"><input type="checkbox" id="mPrivate"> 🔒 Private – hidden in show mode</label>
+        <label class="field check-field priv-only"><input type="checkbox" id="mPrivate"> 🔒 Privat – im Show-Modus ausgeblendet</label>
         <div class="meta-dates" id="mDates"></div>
-        <button class="btn danger" id="mDelete">Delete ticket</button>
+        <button class="btn danger" id="mDelete">Ticket löschen</button>
       </aside>
     </div>
   </div>
@@ -774,22 +823,22 @@ input.bad{outline:2px solid var(--danger)!important}
 <!-- Liste einfügen -->
 <div class="backdrop" id="bulkModal" hidden>
   <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-head"><b style="color:var(--text);font-size:15px">⇣ Paste list – several tickets at once</b><span class="grow"></span><button class="icon-btn" data-close="bulkModal" title="Close (Esc)">✕</button></div>
+    <div class="modal-head"><b style="color:var(--text);font-size:15px">⇣ Liste einfügen – mehrere Tickets auf einmal</b><span class="grow"></span><button class="icon-btn" data-close="bulkModal" title="Schließen (Esc)">✕</button></div>
     <div class="modal-body bulk-grid">
       <div>
-        <textarea class="ta" id="bulkText" rows="11" placeholder="One line = one ticket, e.g. action items from OneNote:&#10;&#10;- Send offer to Miller wk43 #sales !&#10;    - Check prices&#10;    - Create PDF&#10;- Feedback on the budget @Smith&#10;- Request test data by 24.10."></textarea>
-        <div class="bulk-hint">Recognised: indented lines → <b>sub-tasks</b> · <code>#label</code> · <code>wk43</code> or <code>24.10.</code> → deadline · <code>!</code> → must · <code>@Name</code> → status "Waiting" for Name · lines ending in ":" count as headings and are skipped.</div>
+        <textarea class="ta" id="bulkText" rows="11" placeholder="Eine Zeile = ein Ticket, z. B. Aktionspunkte aus OneNote:&#10;&#10;- Angebot an Müller schicken KW43 #vertrieb !&#10;    - Preise prüfen&#10;    - PDF erstellen&#10;- Rückmeldung zum Budget @Schmidt&#10;- Testdaten anfragen bis 24.10."></textarea>
+        <div class="bulk-hint">Erkannt wird: eingerückte Zeilen → <b>Unteraufgaben</b> · <code>#label</code> · <code>KW43</code> oder <code>24.10.</code> → Deadline · <code>!</code> → Pflicht · <code>@Name</code> → Status „Warten“ auf Name · Zeilen mit „:“ am Ende gelten als Überschrift und werden übersprungen · <code>+Name</code> → Stakeholder · eingerückte Zeile mit <code>KW43</code>/<code>24.10.</code> → Frist der Unteraufgabe.</div>
         <div id="bulkPreview"></div>
       </div>
       <aside class="side">
         <label class="field"><span>Status</span><select id="bulkStatus"></select></label>
-        <label class="field"><span>Goal</span><select id="bulkGoal"></select></label>
-        <label class="field"><span>📍 Source (meeting)</span><input id="bulkSource" list="sourceList" placeholder="e.g. weekly sync"></label>
-        <label class="field"><span>Source date</span><input type="date" id="bulkSourceDate"></label>
-        <label class="field"><span>🗣 On agenda for</span><select id="bulkMeet"></select></label>
-        <label class="field"><span>Labels for all</span><input id="bulkLabels" placeholder="e.g. project-x"></label>
-        <label class="field check-field priv-only"><input type="checkbox" id="bulkPriv"> 🔒 Mark all as private</label>
-        <button class="btn primary" id="bulkCreate" disabled>Create tickets</button>
+        <label class="field"><span>Ziel</span><select id="bulkGoal"></select></label>
+        <label class="field"><span>📍 Quelle (Meeting)</span><input id="bulkSource" list="sourceList" placeholder="z. B. Jour fixe"></label>
+        <label class="field"><span>Quelle am</span><input type="date" id="bulkSourceDate"></label>
+        <label class="field"><span>🗣 Auf Agenda für</span><select id="bulkMeet"></select></label>
+        <label class="field"><span>Labels für alle</span><input id="bulkLabels" placeholder="z. B. projekt-x"></label>
+        <label class="field check-field priv-only"><input type="checkbox" id="bulkPriv"> 🔒 Alle als privat</label>
+        <button class="btn primary" id="bulkCreate" disabled>Tickets anlegen</button>
       </aside>
     </div>
   </div>
@@ -798,19 +847,19 @@ input.bad{outline:2px solid var(--danger)!important}
 <!-- Sync-Vorbereitung -->
 <div class="backdrop" id="prepModal" hidden>
   <div class="modal" role="dialog" aria-modal="true" style="max-width:820px">
-    <div class="modal-head"><b style="color:var(--text);font-size:15px" id="prepTitle">📝 Sync prep</b><span class="grow"></span><button class="icon-btn" data-close="prepModal" title="Close (Esc)">✕</button></div>
+    <div class="modal-head"><b style="color:var(--text);font-size:15px" id="prepTitle">📝 Sync-Vorbereitung</b><span class="grow"></span><button class="icon-btn" data-close="prepModal" title="Schließen (Esc)">✕</button></div>
     <div style="padding:8px 24px 20px;display:flex;flex-direction:column;gap:10px">
       <div class="ph-chips">
-        <label class="check-field" style="height:32px;font-size:13px"><input type="checkbox" id="prepKeys"> Ticket numbers</label>
-        <label class="check-field" style="height:32px;font-size:13px"><input type="checkbox" id="prepSubs"> Open sub-tasks</label>
-        <span class="muted">Period: since <input type="date" id="prepSince" class="inline-input" style="height:32px"></span>
+        <label class="check-field" style="height:32px;font-size:13px"><input type="checkbox" id="prepKeys"> Ticket-Nummern</label>
+        <label class="check-field" style="height:32px;font-size:13px"><input type="checkbox" id="prepSubs"> Offene Unteraufgaben</label>
+        <span class="muted">Zeitraum: seit <input type="date" id="prepSince" class="inline-input" style="height:32px"></span>
         <span id="prepMsg"></span>
         <span class="spacer"></span>
-        <button class="btn" id="prepDownload">⬇ As file</button>
-        <button class="btn primary" id="prepCopy">📋 Copy</button>
+        <button class="btn" id="prepDownload">⬇ Als Datei</button>
+        <button class="btn primary" id="prepCopy">📋 Kopieren</button>
       </div>
       <textarea class="review-out" id="prepOut" spellcheck="false" style="min-height:440px"></textarea>
-      <small class="muted">🔒 Private tickets are always excluded here. You can edit the text before copying.</small>
+      <small class="muted">🔒 Private Tickets sind hier immer ausgeschlossen. Den Text kannst du vor dem Kopieren anpassen.</small>
     </div>
   </div>
 </div>
@@ -818,7 +867,7 @@ input.bad{outline:2px solid var(--danger)!important}
 <!-- Datensicherheit -->
 <div class="backdrop" id="safeModal" hidden>
   <div class="modal" role="dialog" aria-modal="true" style="max-width:720px">
-    <div class="modal-head"><b style="color:var(--text);font-size:15px">🛡 Check data safety</b><span class="grow"></span><button class="icon-btn" data-close="safeModal" title="Close (Esc)">✕</button></div>
+    <div class="modal-head"><b style="color:var(--text);font-size:15px">🛡 Datensicherheit prüfen</b><span class="grow"></span><button class="icon-btn" data-close="safeModal" title="Schließen (Esc)">✕</button></div>
     <div style="padding:4px 24px 20px" id="safeBody"></div>
   </div>
 </div>
@@ -828,29 +877,29 @@ input.bad{outline:2px solid var(--danger)!important}
 'use strict';
 
 /* ================= Konstanten ================= */
-const STORE_KEY = 'jiratype-en.data.v1';
-const THEME_KEY = 'jiratype-en.theme';
-const MODE_KEY = 'jiratype-en.mode';
-const VIEW_KEY = 'jiratype-en.view';
+const STORE_KEY = 'jiratype.data.v1';
+const THEME_KEY = 'jiratype.theme';
+const MODE_KEY = 'jiratype.mode';
+const VIEW_KEY = 'jiratype.view';
 const COLS = [
   { id: 'backlog', name: 'Backlog' },
   { id: 'todo',    name: 'To Do' },
-  { id: 'doing',   name: 'In Progress' },
-  { id: 'waiting', name: 'Waiting' },
-  { id: 'done',    name: 'Done' },
-  { id: 'paused',  name: 'Paused', archive: true },
-  { id: 'cancelled', name: 'Cancelled', archive: true },
+  { id: 'doing',   name: 'In Arbeit' },
+  { id: 'waiting', name: 'Warten' },
+  { id: 'done',    name: 'Erledigt' },
+  { id: 'paused',  name: 'Pausiert', archive: true },
+  { id: 'cancelled', name: 'Gestrichen', archive: true },
 ];
 const isClosed = i => i.status === 'done' || i.status === 'cancelled';
 const isActive = i => !isClosed(i) && i.status !== 'paused';
 const TYPES = {
-  task: { n: 'Task', c: '#4bade8', i: '✓' },
-  bug:  { n: 'Issue', c: '#e5493a', i: '!' },
-  idea: { n: 'Idea',    c: '#63ba3c', i: '★' },
+  task: { n: 'Aufgabe', c: '#4bade8', i: '✓' },
+  bug:  { n: 'Problem', c: '#e5493a', i: '!' },
+  idea: { n: 'Idee',    c: '#63ba3c', i: '★' },
 };
 const IMPS = {
-  must:  { n: 'Must' },
-  worth: { n: 'Worth it' },
+  must:  { n: 'Pflicht' },
+  worth: { n: 'Lohnt sich' },
   nice:  { n: 'Nice-to-have' },
 };
 const STATUS_ICONS = {
@@ -862,106 +911,105 @@ const STATUS_ICONS = {
   paused: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-paused)" stroke-width="2"/><path d="M8.3 7v6M11.7 7v6" stroke="var(--s-paused)" stroke-width="2" stroke-linecap="round"/></svg>',
   cancelled: '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--s-cancelled)" stroke-width="2"/><path d="m7.5 7.5 5 5m0-5-5 5" stroke="var(--s-cancelled)" stroke-width="2" stroke-linecap="round"/></svg>',
 };
-const FREQS = { weekly: 'weekly', biweekly: 'every 2 weeks', monthly: 'monthly', weekdays: 'on weekdays', nthweekday: 'monthly: n-th weekday', lastworkday: 'monthly: last working day', nthworkday: 'monthly: n-th working day', quarterly: 'quarterly' };
-const WD = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const WD_LONG = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const ORD = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 > 10 && n % 100 < 14) ? 0 : (n % 10 < 4 ? n % 10 : 0)]);
-const MEET_FREQS = { none: 'one-off', weekly: 'weekly', biweekly: 'every 2 weeks', monthly: 'monthly' };
+const FREQS = { weekly: 'wöchentlich', biweekly: 'alle 2 Wochen', monthly: 'monatlich', weekdays: 'an Wochentagen', nthweekday: 'monatlich: n-ter Wochentag', lastworkday: 'monatlich: letzter Werktag', nthworkday: 'monatlich: n-ter Werktag', quarterly: 'quartalsweise' };
+const WD = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const WD_LONG = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+const MEET_FREQS = { none: 'einmalig', weekly: 'wöchentlich', biweekly: 'alle 2 Wochen', monthly: 'monatlich' };
 const GOAL_COLORS = ['#0c66e4', '#22a06b', '#e56910', '#8f7ee7', '#e2b203', '#c9372c', '#1d7f8c', '#cd519d'];
 
-const JSON_FORMAT = `Answer format – a JSON array, one object per task. Allowed fields:
-- "title": short task, starts with a verb (required)
-- "desc": details/context (optional)
-- "status": "backlog" | "todo" | "doing" | "waiting" (waiting on others) | "done"
-- "waitingFor": who/what I am waiting for (only with "waiting")
-- "importance": "must" (must do) | "worth" (worth it / promising) | "nice" (nice-to-have) | ""
-- "target": preferred date / soft deadline as "YYYY-MM-DD" or ""
-- "deadline": hard deadline as "YYYY-MM-DD" or ""
-- "goal": name of one of my goals (exactly as listed below) or ""
+const JSON_FORMAT = `Antwortformat – ein JSON-Array, ein Objekt pro Aufgabe. Erlaubte Felder:
+- "title": kurze Aufgabe, beginnt mit einem Verb (Pflicht)
+- "desc": Details/Kontext (optional)
+- "status": "backlog" | "todo" | "doing" | "waiting" (wartet auf andere) | "done"
+- "waitingFor": auf wen/was ich warte (nur bei "waiting")
+- "importance": "must" (Pflicht) | "worth" (lohnt sich / erfolgversprechend) | "nice" (nice-to-have) | ""
+- "target": Wunschtermin / Soft-Deadline als "YYYY-MM-DD" oder ""
+- "deadline": harte Frist als "YYYY-MM-DD" oder ""
+- "goal": Name eines Ziels (exakt wie unten) oder ""
 - "labels": ["…"]
-- "checklist": ["Sub-step 1", "Sub-step 2"]
-- "repeat": "weekly" | "biweekly" (every 2 weeks) | "monthly" | "weekdays" | "" – only for recurring tasks; starts on "target"
-- "days": ["Mon", "Thu"] – only with "weekdays", e.g. for 2× per week
+- "checklist": ["Teilschritt 1", "Teilschritt 2"]
+- "repeat": "weekly" | "biweekly" (alle 2 Wochen) | "monthly" | "weekdays" | "" – nur bei wiederkehrenden Aufgaben; Start = "target"
+- "days": ["Mo", "Do"] – nur bei "weekdays", z. B. für 2× pro Woche
 
-Example:
+Beispiel:
 \`\`\`json
-[{"title":"Send offer to Company X","desc":"Prices from Monday's meeting","status":"todo","importance":"must","target":"2026-10-20","deadline":"2026-10-22","goal":"","labels":["work"],"checklist":["Check prices","Create PDF"]}]
+[{"title":"Angebot an Firma X schicken","desc":"Preise aus Meeting vom Montag","status":"todo","importance":"must","target":"2026-10-20","deadline":"2026-10-22","goal":"","labels":["arbeit"],"checklist":["Preise prüfen","PDF erstellen"]}]
 \`\`\``;
 const DEFAULT_PROMPTS = [
-  { name: 'Notes → Tickets', text:
-`You are my task-planning assistant. Turn my notes below into concrete, actionable to-dos.
+  { name: 'Notizen → Tickets', text:
+`Du bist mein Assistent für Aufgabenplanung. Wandle meine Notizen unten in konkrete, umsetzbare To-dos um.
 
-Rules:
-- One to-do = one clearly worded task that starts with a verb.
-- Merge duplicates. Leave out pure information without an action, or attach it as "desc" to the matching task.
-- Only set importance if it is clear from the notes.
-- Today is {{TODAY}}. Only set dates if they follow from the notes (convert "tomorrow", "by Friday" etc. into real dates).
-- My goals: {{GOALS}}
-- Existing labels (prefer these): {{LABELS}}
-- Bigger tasks get sub-steps as "checklist".
-
-${JSON_FORMAT}
-
-Reply ONLY with the JSON code block, no other text.
-
-My notes:
-"""
-{{NOTE}}
-"""` },
-  { name: 'Meeting → Tasks + Summary', text:
-`Here are my notes from a meeting. Today is {{TODAY}}.
-
-1. First write a short summary (max. 5 bullet points): decisions, key information, open questions.
-2. Then create to-dos – only tasks that I have to do myself. Tasks where I am waiting on others get the label "waiting", and "desc" says who/what I am waiting for.
-
-My goals: {{GOALS}}
-Existing labels: {{LABELS}}
+Regeln:
+- Ein To-do = eine klar formulierte Aufgabe, die mit einem Verb beginnt.
+- Doppeltes zusammenfassen. Reine Infos ohne Handlung weglassen oder als "desc" an die passende Aufgabe hängen.
+- Wichtigkeit nur setzen, wenn es aus den Notizen erkennbar ist.
+- Heute ist {{HEUTE}}. Termine nur setzen, wenn sie sich aus den Notizen ergeben ("morgen", "bis Freitag" usw. in echte Daten umrechnen).
+- Meine Ziele: {{ZIELE}}
+- Vorhandene Labels (bevorzugt verwenden): {{LABELS}}
+- Größere Aufgaben bekommen Teilschritte als "checklist".
 
 ${JSON_FORMAT}
 
-Put the JSON at the end of your answer in its own code block.
+Antworte NUR mit dem JSON-Codeblock, ohne weiteren Text.
 
-Meeting notes:
+Meine Notizen:
 """
-{{NOTE}}
+{{NOTIZ}}
 """` },
-  { name: 'Weekly planning (open tickets)', text:
-`Help me plan my week. Today is {{TODAY}}.
+  { name: 'Meeting → Aufgaben + Zusammenfassung', text:
+`Hier sind meine Notizen aus einem Meeting. Heute ist {{HEUTE}}.
 
-I work with soft deadlines ("target" = when I would like it done) and hard deadlines ("deadline" = must be done by then). Importance: "must" = must do, "worth" = worth it, "nice" = nice-to-have.
+1. Schreib zuerst eine kurze Zusammenfassung (max. 5 Stichpunkte): Entscheidungen, wichtige Infos, offene Fragen.
+2. Erstelle danach To-dos – nur Aufgaben, die ICH erledigen muss. Aufgaben, bei denen ich auf andere warte, bekommen das Label "warten" und in "desc" steht, auf wen/was ich warte.
 
-My goals: {{GOALS}}
+Meine Ziele: {{ZIELE}}
+Vorhandene Labels: {{LABELS}}
 
-My open tickets (JSON):
-{{OPEN_TICKETS}}
+${JSON_FORMAT}
 
-Additional thoughts from me (optional):
+Setze das JSON ans Ende deiner Antwort in einen eigenen Codeblock.
+
+Meeting-Notizen:
 """
-{{NOTE}}
+{{NOTIZ}}
+"""` },
+  { name: 'Wochenplanung (offene Tickets)', text:
+`Hilf mir, meine Woche zu planen. Heute ist {{HEUTE}}.
+
+Ich arbeite mit Soft-Deadlines ("target" = wann ich es gerne fertig hätte) und Hard-Deadlines ("deadline" = muss spätestens fertig sein). Wichtigkeit: "must" = Pflicht, "worth" = lohnt sich, "nice" = nice-to-have.
+
+Meine Ziele: {{ZIELE}}
+
+Meine offenen Tickets (JSON):
+{{OFFENE_TICKETS}}
+
+Zusätzliche Gedanken von mir (optional):
+"""
+{{NOTIZ}}
 """
 
-Task:
-1. Suggest in 3–5 sentences what I should focus on this week and what can wait.
-2. Then return ONLY the tickets you would change – with their "key" and only the changed fields (e.g. "target", "importance", "status"). Plan realistically: no more than ~3 must-do tasks per day.
-3. New tasks you think are missing, without a "key".
+Aufgabe:
+1. Schlag in 3–5 Sätzen vor, worauf ich mich diese Woche konzentrieren sollte und was warten kann.
+2. Gib danach NUR die Tickets zurück, die du ändern würdest – mit ihrem "key" und nur den geänderten Feldern (z. B. "target", "importance", "status"). Realistisch planen: nicht mehr als ~3 Pflicht-Aufgaben pro Tag.
+3. Neue Aufgaben, die dir fehlen, ohne "key".
 
-Format: a JSON array in a code block at the end, e.g.
+Format: ein JSON-Array im Codeblock am Ende, z. B.
 \`\`\`json
-[{"key":"TASK-12","target":"2026-10-21","importance":"must"},{"title":"New task","status":"todo"}]
+[{"key":"TASK-12","target":"2026-10-21","importance":"must"},{"title":"Neue Aufgabe","status":"todo"}]
 \`\`\`` },
-  { name: 'Clean up a note (no import)', text:
-`Clean up and structure this note without inventing content. Structure:
+  { name: 'Notiz aufräumen (ohne Import)', text:
+`Räum diese Notiz auf und strukturiere sie, ohne Inhalte zu erfinden. Gliederung:
 
-## Tasks
-(as a checklist "- [ ] …")
-## Decisions
-## Information
-## Open questions
+## Aufgaben
+(als Checkliste "- [ ] …")
+## Entscheidungen
+## Infos
+## Offene Fragen
 
-Short and in bullet points. Today is {{TODAY}}.
+Kurz und stichpunktartig. Heute ist {{HEUTE}}.
 
 """
-{{NOTE}}
+{{NOTIZ}}
 """` },
 ];
 
@@ -977,16 +1025,16 @@ const parseISO = s => { const [y, m, d] = s.split('-').map(Number); return new D
 const addDays = (s, n) => { const d = parseISO(s); d.setDate(d.getDate() + n); return isoOf(d); };
 const diffDays = (a, b) => Math.round((parseISO(b) - parseISO(a)) / 86400000);
 const today = () => isoOf(new Date());
-const fmtShort = s => { const d = parseISO(s); return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + (d.getFullYear() !== new Date().getFullYear() ? ' ' + String(d.getFullYear()).slice(2) : ''); };
-const fmtDate = s => { const d = parseISO(s); return d.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }); };
-const fmtDateTime = t => new Date(t).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const fmtShort = s => { const d = parseISO(s); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.` + (d.getFullYear() !== new Date().getFullYear() ? String(d.getFullYear()).slice(2) : ''); };
+const fmtDate = s => { const d = parseISO(s); return d.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' }); };
+const fmtDateTime = t => new Date(t).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 function relTime(t) {
   const s = (now() - t) / 1000;
-  if (s < 60) return 'just now';
-  if (s < 3600) return `${Math.floor(s / 60)} min ago`;
-  if (s < 86400) return `${Math.floor(s / 3600)} h ago`;
-  if (s < 86400 * 7) return `${Math.floor(s / 86400)} day${s < 86400 * 2 ? '' : 's'} ago`;
-  return new Date(t).toLocaleDateString('en-GB');
+  if (s < 60) return 'gerade eben';
+  if (s < 3600) return `vor ${Math.floor(s / 60)} Min.`;
+  if (s < 86400) return `vor ${Math.floor(s / 3600)} Std.`;
+  if (s < 86400 * 7) return `vor ${Math.floor(s / 86400)} Tag${s < 86400 * 2 ? '' : 'en'}`;
+  return new Date(t).toLocaleDateString('de-DE');
 }
 // ISO-Kalenderwoche [KW, Jahr]
 function isoWeek(iso) {
@@ -1010,7 +1058,7 @@ function parseKW(str) {
 function addWorkdays(iso, n) { const d = parseISO(iso); while (n > 0) { d.setDate(d.getDate() + 1); if (d.getDay() % 6 !== 0) n--; } return isoOf(d); }
 function sinceText(ts) {
   const days = Math.round((parseISO(today()) - parseISO(isoOf(new Date(ts)))) / 86400000);
-  return days <= 0 ? 'since today' : days === 1 ? 'for 1 day' : `for ${days} days`;
+  return days <= 0 ? 'seit heute' : days === 1 ? 'seit 1 Tag' : `seit ${days} Tagen`;
 }
 function safeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
 function safeSet(k, v) { try { localStorage.setItem(k, v); return true; } catch { return false; } }
@@ -1018,10 +1066,10 @@ function safeSet(k, v) { try { localStorage.setItem(k, v); return true; } catch 
 /* ================= Daten ================= */
 function seed() {
   const t = now(), d = today();
-  const g1 = { id: uid(), name: 'Q4: Launch customer portal', color: GOAL_COLORS[0], desc: 'Example goal – groups all tickets of the project and shows the progress.', target: addDays(d, 60), created: t };
+  const g1 = { id: uid(), name: 'Q4: Kundenportal live bringen', color: GOAL_COLORS[0], desc: 'Beispiel-Ziel – bündelt alle Tickets fürs Projekt und zeigt den Fortschritt.', target: addDays(d, 60), created: t };
   const nextDow = wd => addDays(d, (wd - (parseISO(d).getDay() + 6) % 7 + 7) % 7);
-  const m1 = { id: uid(), name: 'Weekly sync with team lead', freq: 'weekly', next: nextDow(1), created: t };
-  const m2 = { id: uid(), name: 'Customer portal project weekly', freq: 'weekly', next: nextDow(3), created: t };
+  const m1 = { id: uid(), name: 'Jour fixe mit Teamlead', freq: 'weekly', next: nextDow(1), created: t };
+  const m2 = { id: uid(), name: 'Projekt-Weekly Kundenportal', freq: 'weekly', next: nextDow(3), created: t };
   const mk = (n, title, status, extra = {}) => ({
     id: uid(), key: 'TASK-' + n, title, desc: '', status, type: 'task', importance: '', goalId: null, recurId: null, meetingId: null,
     private: false, labels: [], target: '', deadline: '', waitingFor: '', followUp: '', source: '', sourceDate: '', sourceLink: '', cancelReason: '',
@@ -1029,37 +1077,37 @@ function seed() {
   });
   const sub = (text, done = false) => ({ id: uid(), text, done });
   const nextFri = nextDow(4);
-  const weekly = mk(6, 'Weekly status update to team lead', 'todo', { importance: 'must', labels: ['reporting'], target: nextFri, deadline: nextFri,
-    checklist: [sub('Copy the weekly review'), sub('Add blockers & risks'), sub('Plan for next week')] });
+  const weekly = mk(6, 'Wöchentliches Status-Update an Teamlead', 'todo', { importance: 'must', labels: ['reporting'], target: nextFri, deadline: nextFri,
+    checklist: [sub('Wochenrückblick kopieren'), sub('Blocker & Risiken ergänzen'), sub('Plan für nächste Woche')] });
   const rule = { id: uid(), freq: 'weekly', anchor: nextFri, lastDate: nextFri, buffer: 0, lead: 2, active: true, tpl: null, private: false };
   weekly.recurId = rule.id; rule.tpl = snapshot(weekly);
   return {
-    version: 2, name: 'My Board', prefix: 'TASK', nextNum: 10, updatedAt: t,
+    version: 2, name: 'Mein Board', prefix: 'TASK', nextNum: 10, updatedAt: t,
     goals: [g1], recurrences: [rule], meetings: [m1, m2],
     issues: [
-      mk(1, 'Welcome 👋 – click me', 'todo', {
+      mk(1, 'Willkommen 👋 – klick mich an', 'todo', {
         importance: 'must', labels: ['start'], target: d, deadline: addDays(d, 2),
-        desc: 'Quick guide:\n\n• "+ New" or key C → new ticket · "⇣ Paste list" → several tickets from an action list (e.g. from OneNote)\n• Move cards with drag & drop · expand sub-tasks right on the card (☑) and tick them off\n• Status "Waiting": who + follow-up date · show "Paused" / "Cancelled (with reason)" via "Paused & cancelled"\n• Importance: Must / Worth it / Nice-to-have\n• ◎ Target date (soft) and ⚑ Deadline (hard) – deadline can also be entered as a week number\n• 📍 Source: which meeting the task came from (+ link to the OneNote page)\n• 🗣 Meetings: put items on the agenda, tick them off in the meeting, copy the agenda or a sync prep\n• Weekly review: ready-made text for your status update\n• 🔒 Private checkbox: hidden in 👁 Show mode (toggle at the bottom of the sidebar)\n\nJust delete the example tickets. Please go through ⋯ → "Check data safety" once.',
-        checklist: [sub('Open this ticket', true), sub('⋯ → check data safety & set up auto-sync'), sub('Delete the examples and create your own tickets')],
+        desc: 'Kurzanleitung:\n\n• „+ Neu“ oder Taste C → neues Ticket · „⇣ Liste einfügen“ → mehrere Tickets aus einer Aktionsliste (z. B. aus OneNote)\n• Karten per Drag & Drop verschieben · Unteraufgaben direkt auf der Karte aufklappen (☑) und abhaken\n• Status „Warten“: auf wen + Nachfass-Datum · „Pausiert“ / „Gestrichen (mit Grund)“ über „Pausiert & Gestrichen“ einblenden\n• Wichtigkeit: Pflicht / Lohnt sich / Nice-to-have\n• ◎ Ziel-Datum (soft) und ⚑ Deadline (hard) – Deadline auch per KW eingeben\n• 📍 Quelle: aus welchem Meeting stammt die Aufgabe (+ Link zur OneNote-Seite)\n• 🗣 Meetings: Punkte auf die Agenda setzen, im Meeting abhaken, Agenda kopieren\n• Wochenrückblick: fertiger Text fürs Status-Update\n• 🔒 Privat-Haken: im 👁 Show-Modus unsichtbar (Schalter unten in der Sidebar)\n\nDie Beispiel-Tickets kannst du einfach löschen. Bitte einmal ⋯ → „Datensicherheit prüfen“ durchgehen.',
+        checklist: [sub('Dieses Ticket öffnen', true), sub('⋯ → Datensicherheit prüfen & Auto-Sync einrichten'), sub('Beispiele löschen und eigene Tickets anlegen')],
       }),
-      mk(2, 'Align requirements with the business team', 'done', { importance: 'must', goalId: g1.id, labels: ['alignment'], doneAt: t, source: m2.name, sourceDate: addDays(d, -7) }),
-      mk(3, 'Write test plan for the customer portal', 'doing', { importance: 'must', goalId: g1.id, labels: ['docs'], target: addDays(d, 3), deadline: kwFriday(isoWeek(addDays(d, 7))[0]),
+      mk(2, 'Anforderungen mit Fachbereich abstimmen', 'done', { importance: 'must', goalId: g1.id, labels: ['abstimmung'], doneAt: t, source: m2.name, sourceDate: addDays(d, -7) }),
+      mk(3, 'Testkonzept fürs Kundenportal schreiben', 'doing', { importance: 'must', goalId: g1.id, labels: ['doku'], target: addDays(d, 3), deadline: kwFriday(isoWeek(addDays(d, 7))[0]),
         meetingId: m2.id, source: m2.name, sourceDate: addDays(d, -7),
-        checklist: [sub('Collect test cases', true), sub('Clarify test data'), sub('Review with QA')] }),
-      mk(4, 'Approval of the test budget', 'waiting', { importance: 'must', goalId: g1.id, waitingFor: 'Controlling (Ms Weber)', followUp: addWorkdays(d, 2), statusAt: t - 3 * 86400000,
+        checklist: [sub('Testfälle sammeln', true), sub('Testdaten klären'), sub('Review mit QA')] }),
+      mk(4, 'Freigabe fürs Testbudget', 'waiting', { importance: 'must', goalId: g1.id, waitingFor: 'Controlling (Fr. Weber)', followUp: addWorkdays(d, 2), statusAt: t - 3 * 86400000,
         meetingId: m1.id, source: m1.name, sourceDate: addDays(d, -3) }),
-      mk(5, 'Update onboarding docs for new colleague', 'backlog', { importance: 'worth', labels: ['docs'] }),
+      mk(5, 'Onboarding-Doku für neue Kollegin aktualisieren', 'backlog', { importance: 'worth', labels: ['doku'] }),
       weekly,
-      mk(7, 'Prepare performance review', 'todo', { importance: 'must', labels: ['personal'], private: true, deadline: addDays(d, 10) }),
-      mk(8, 'Idea: summarise meeting minutes with AI', 'paused', { importance: 'nice', type: 'idea', labels: ['idea'], followUp: addDays(d, 30) }),
-      mk(9, 'Rebuild legacy system export', 'cancelled', { goalId: g1.id, cancelReason: 'Dropped – data is migrated directly', cancelledAt: t }),
+      mk(7, 'Mitarbeitergespräch vorbereiten', 'todo', { importance: 'must', labels: ['persönlich'], private: true, deadline: addDays(d, 10) }),
+      mk(8, 'Idee: Meeting-Protokolle per KI zusammenfassen', 'paused', { importance: 'nice', type: 'idea', labels: ['idee'], followUp: addDays(d, 30) }),
+      mk(9, 'Alt-System-Export nachbauen', 'cancelled', { goalId: g1.id, cancelReason: 'Entfällt – Daten werden direkt migriert', cancelledAt: t }),
     ].map((i, k) => ({ ...i, order: k + 1 })),
-    notes: [{ id: uid(), title: 'Notes', body: 'Write anything here – it is saved automatically.\n\nMeeting notes stay in OneNote: paste action items from there via "⇣ Paste list" to turn them into tickets.', created: t, updated: t }],
+    notes: [{ id: uid(), title: 'Notizen', body: 'Hier kannst du frei schreiben – wird automatisch gespeichert.\n\nMeeting-Notizen bleiben in OneNote: Aktionspunkte von dort einfach über „⇣ Liste einfügen“ als Tickets übernehmen.', created: t, updated: t }],
   };
 }
 function normalize(d) {
-  if (!d || typeof d !== 'object' || !Array.isArray(d.issues)) throw new Error('Invalid format');
-  d.name ??= 'My Board'; d.prefix ??= 'TASK';
+  if (!d || typeof d !== 'object' || !Array.isArray(d.issues)) throw new Error('Ungültiges Format');
+  d.name ??= 'Mein Board'; d.prefix ??= 'TASK';
   d.notes = Array.isArray(d.notes) ? d.notes : [];
   d.goals = Array.isArray(d.goals) ? d.goals : [];
   d.recurrences = Array.isArray(d.recurrences) ? d.recurrences : [];
@@ -1074,7 +1122,10 @@ function normalize(d) {
     i.goalId ??= null; i.recurId ??= null; i.meetingId ??= null; i.private = !!i.private;
     i.waitingFor ??= ''; i.followUp ??= ''; i.source ??= ''; i.sourceDate ??= ''; i.sourceLink ??= ''; i.cancelReason ??= '';
     i.statusAt ??= i.updated;
-    if (i.status === 'done' && !i.doneAt) i.doneAt = i.comments.find(c => c.system && /→ Done/.test(c.text))?.at || i.updated;
+    i.stakeholders = Array.isArray(i.stakeholders) ? i.stakeholders.filter(x => typeof x === 'string' && x.trim()) : [];
+    i.role ??= ''; i.did ??= ''; i.impact ??= '';
+    i.checklist.forEach(c => { c.due ??= ''; c.doneAt ??= null; });
+    if (i.status === 'done' && !i.doneAt) i.doneAt = i.comments.find(c => c.system && /→ Erledigt/.test(c.text))?.at || i.updated;
     i.type = TYPES[i.type] ? i.type : 'task';
     if (!IMPS[i.importance]) i.importance = '';
     i.status = COLS.some(c => c.id === i.status) ? i.status : 'todo';
@@ -1098,8 +1149,8 @@ const visible = i => !showMode || !i.private;
 const visIssues = () => state.issues.filter(visible);
 function applyMode() {
   document.body.classList.toggle('show-mode', showMode);
-  $('#modeBtn').textContent = showMode ? '👁 Show mode' : '🔒 Private';
-  $('#modeBtn').title = showMode ? 'Show mode active: private tickets, notes and updates are hidden. Click = back to private.' : 'Private mode: everything visible. Click = show mode (e.g. for your manager).';
+  $('#modeBtn').textContent = showMode ? '👁 Show-Modus' : '🔒 Privat';
+  $('#modeBtn').title = showMode ? 'Show-Modus aktiv: private Tickets, Notizen und Updates sind ausgeblendet. Klick = zurück zu Privat.' : 'Privat-Modus: alles sichtbar. Klick = Show-Modus (z. B. für den Manager).';
 }
 $('#modeBtn').onclick = () => {
   showMode = !showMode; safeSet(MODE_KEY, showMode ? 'show' : 'private'); applyMode();
@@ -1117,12 +1168,12 @@ function saveNow() {
   clearTimeout(saveTimer); saveTimer = null;
   state.updatedAt = now();
   const ok = safeSet(STORE_KEY, JSON.stringify(state));
-  if (!ok) { saveEl.textContent = '⚠ Saving in the browser failed – please export a backup'; saveEl.style.color = 'var(--danger)'; }
-  else { saveEl.style.color = ''; saveEl.textContent = fileHandle ? `Saved → ${fileHandle.name}` : 'Saved ✓'; }
+  if (!ok) { saveEl.textContent = '⚠ Speichern im Browser fehlgeschlagen – bitte Backup exportieren'; saveEl.style.color = 'var(--danger)'; }
+  else { saveEl.style.color = ''; saveEl.textContent = fileHandle ? `Gespeichert → ${fileHandle.name}` : 'Gespeichert ✓'; }
   queueFileWrite();
 }
 function save() {
-  saveEl.textContent = 'Saving…';
+  saveEl.textContent = 'Speichert…';
   clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 300);
 }
 window.addEventListener('beforeunload', () => { if (saveTimer) saveNow(); });
@@ -1137,7 +1188,7 @@ const fsSupported = 'showSaveFilePicker' in window && 'indexedDB' in window;
 let fileHandle = null, pendingHandle = null, fileWriteTimer = null;
 function idb() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open('jiratype-en', 1);
+    const r = indexedDB.open('jiratype', 1);
     r.onupgradeneeded = () => r.result.createObjectStore('kv');
     r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
   });
@@ -1155,10 +1206,10 @@ async function writeFile() {
     const w = await fileHandle.createWritable();
     await w.write(JSON.stringify(state, null, 2));
     await w.close();
-    safeSet('jiratype-en.lastSync', String(now()));
+    safeSet('jiratype.lastSync', String(now()));
   } catch (err) {
     console.error(err);
-    saveEl.textContent = '⚠ File sync failed (browser storage ok)';
+    saveEl.textContent = '⚠ Datei-Sync fehlgeschlagen (Browser-Speicher ok)';
   }
 }
 async function readHandle(h) { const f = await h.getFile(); const txt = await f.text(); return txt.trim() ? normalize(JSON.parse(txt)) : null; }
@@ -1171,7 +1222,7 @@ async function attachHandle(h, { preferFile }) {
   await idbSet('fileHandle', h);
   updateFileUI();
   await writeFile();
-  saveEl.textContent = `Saved → ${h.name}`;
+  saveEl.textContent = `Gespeichert → ${h.name}`;
 }
 function updateFileUI() {
   $('#fileOffBtn').hidden = !fileHandle;
@@ -1188,13 +1239,13 @@ async function initFileSync() {
     const p = await h.queryPermission({ mode: 'readwrite' });
     if (p === 'granted') await attachHandle(h, { preferFile: false });
     else { pendingHandle = h; updateFileUI(); }
-  } catch (e) { console.warn('File sync not available', e); }
+  } catch (e) { console.warn('Datei-Sync nicht verfügbar', e); }
 }
 $('#fileResumeBtn').onclick = async () => {
   const h = pendingHandle; if (!h) return;
   try {
     if (await h.requestPermission({ mode: 'readwrite' }) === 'granted') { pendingHandle = null; await attachHandle(h, { preferFile: false }); }
-  } catch (e) { alert('Could not open file: ' + e.message); }
+  } catch (e) { alert('Konnte Datei nicht öffnen: ' + e.message); }
   updateFileUI();
 };
 $('#fileBannerClose').onclick = () => { $('#fileBanner').hidden = true; };
@@ -1219,10 +1270,10 @@ function deleteGoal(id) {
 
 const defaultDays = anchor => { const wd = (parseISO(anchor).getDay() + 6) % 7; return [wd, (wd + 3) % 7].sort((a, b) => a - b); };
 function freqText(r) {
-  if (r.freq === 'weekdays') return `${(r.days || []).length}× per week (${(r.days || []).map(d => WD[d]).join(', ')})`;
-  if (r.freq === 'nthweekday') return `every ${r.nth === -1 ? 'last' : ORD(r.nth || 1)} ${WD_LONG[r.wday ?? 0]} of the month`;
-  if (r.freq === 'lastworkday') return 'last working day of the month';
-  if (r.freq === 'nthworkday') return `${ORD(r.nth || 1)} working day of the month`;
+  if (r.freq === 'weekdays') return `${(r.days || []).length}× pro Woche (${(r.days || []).map(d => WD[d]).join(', ')})`;
+  if (r.freq === 'nthweekday') return `jeden ${r.nth === -1 ? 'letzten' : (r.nth || 1) + '.'} ${WD_LONG[r.wday ?? 0]} im Monat`;
+  if (r.freq === 'lastworkday') return 'letzter Werktag im Monat';
+  if (r.freq === 'nthworkday') return `${r.nth || 1}. Werktag im Monat`;
   return FREQS[r.freq];
 }
 // Fehlende Einstellungen eines Rhythmus aus dem Startdatum ableiten
@@ -1323,7 +1374,7 @@ function generateRecurring() {
 /* ================= Board ================= */
 const boardEl = $('#board');
 const filters = { q: '', type: '', imp: '', label: '', goal: '', meet: '' };
-let showArchive = safeGet('jiratype-en.archive') === '1';
+let showArchive = safeGet('jiratype.archive') === '1';
 const expanded = new Set(); // aufgeklappte Unteraufgaben auf Karten
 function matches(i) {
   if (!visible(i)) return false;
@@ -1340,57 +1391,68 @@ function matches(i) {
   }
   return true;
 }
-function allLabels() { return [...new Set(visIssues().flatMap(i => i.labels))].sort((a, b) => a.localeCompare(b, 'en')); }
+function allLabels() { return [...new Set(visIssues().flatMap(i => i.labels))].sort((a, b) => a.localeCompare(b, 'de')); }
 function dueState(i) {
   if (isClosed(i)) return '';
   const t = today();
   if ((i.status === 'waiting' || i.status === 'paused') && i.followUp && i.followUp <= t) return 'follow';
   if (i.status === 'paused') return '';
   if (i.deadline && i.deadline < t) return 'late';
+  if (i.checklist.some(c => !c.done && c.due && c.due < t)) return 'late';
   if ((i.target && i.target < t) || i.deadline === t) return 'soft';
   return '';
 }
 function stateHTML(i) {
   const due = i.followUp && i.followUp <= today();
-  if (i.status === 'waiting') return `<div class="card-state ${due ? 'follow' : ''}">⏳ waiting for <b>${esc(i.waitingFor || '?')}</b> · ${sinceText(i.statusAt || i.updated)}${i.followUp ? ` · ${due ? '⏰ ' : ''}follow up ${fmtShort(i.followUp)}` : ''}</div>`;
-  if (i.status === 'paused') return `<div class="card-state ${due ? 'follow' : ''}">⏸ paused${i.followUp ? ` · resume on ${fmtShort(i.followUp)}` : ''}</div>`;
-  if (i.status === 'cancelled') return `<div class="card-state">✖ ${esc(i.cancelReason || 'cancelled')}</div>`;
+  if (i.status === 'waiting') return `<div class="card-state ${due ? 'follow' : ''}">⏳ wartet auf <b>${esc(i.waitingFor || '?')}</b> · ${sinceText(i.statusAt || i.updated)}${i.followUp ? ` · ${due ? '⏰ ' : ''}nachfassen ${fmtShort(i.followUp)}` : ''}</div>`;
+  if (i.status === 'paused') return `<div class="card-state ${due ? 'follow' : ''}">⏸ pausiert${i.followUp ? ` · wieder ab ${fmtShort(i.followUp)}` : ''}</div>`;
+  if (i.status === 'cancelled') return `<div class="card-state">✖ ${esc(i.cancelReason || 'gestrichen')}</div>`;
   return '';
 }
-function goalChip(g) { return g ? `<span class="goal-chip" style="--g:${esc(g.color)}" title="Goal">${esc(g.name)}</span>` : ''; }
+function goalChip(g) { return g ? `<span class="goal-chip" style="--g:${esc(g.color)}" title="Ziel">${esc(g.name)}</span>` : ''; }
 function impChip(imp) { return imp ? `<span class="imp imp-${imp}">${IMPS[imp].n}</span>` : ''; }
 function dateHTML(i) {
   const t = today(), done = !isActive(i), out = [];
-  if (i.target) out.push(`<span class="date ${!done && i.target < t ? 'soft' : ''}" title="Target (soft): ${fmtDate(i.target)}">◎ ${fmtShort(i.target)}</span>`);
-  if (i.deadline) out.push(`<span class="date ${!done && i.deadline < t ? 'late' : (!done && i.deadline === t ? 'soft' : '')}" title="Deadline (hard): ${fmtDate(i.deadline)} · Wk ${isoWeek(i.deadline)[0]}">⚑ ${fmtShort(i.deadline)}</span>`);
+  if (i.target) out.push(`<span class="date ${!done && i.target < t ? 'soft' : ''}" title="Ziel (soft): ${fmtDate(i.target)}">◎ ${fmtShort(i.target)}</span>`);
+  if (i.deadline) out.push(`<span class="date ${!done && i.deadline < t ? 'late' : (!done && i.deadline === t ? 'soft' : '')}" title="Deadline (hard): ${fmtDate(i.deadline)} · KW ${isoWeek(i.deadline)[0]}">⚑ ${fmtShort(i.deadline)}</span>`);
   return out.join('');
 }
 const goalAv = (g, cls = '') => `<span class="goal-av ${cls}" style="--g:${esc(g.color)}">${esc((g.name.trim()[0] || '•').toUpperCase())}</span>`;
+function subDueHTML(c) {
+  if (!c.due) return '';
+  const t = today(), cls = c.done ? '' : c.due < t ? 'late' : c.due === t ? 'soft' : '';
+  return `<span class="date ${cls}">⚑ ${fmtShort(c.due)}</span>`;
+}
+function nextSubDue(i) {
+  const d = i.checklist.filter(c => !c.done && c.due).map(c => c.due).sort()[0];
+  return d ? ` · ⚑ ${fmtShort(d)}` : '';
+}
 function cardHTML(i) {
   const t = TYPES[i.type];
   const checkDone = i.checklist.filter(c => c.done).length;
   const ds = dueState(i);
   const g = getGoal(i.goalId);
   const m = getMeet(i.meetingId);
-  const tags = [impChip(i.importance), m ? `<span class="meet-chip" title="On the agenda">🗣 ${esc(m.name)}</span>` : '', ...i.labels.map(l => `<span class="label">${esc(l)}</span>`)].join('');
+  const tags = [impChip(i.importance), m ? `<span class="meet-chip" title="Auf der Agenda">🗣 ${esc(m.name)}</span>` : '', ...i.labels.map(l => `<span class="label">${esc(l)}</span>`)].join('');
   return `<div class="card ${ds ? 'due-' + ds : ''}" draggable="true" data-id="${i.id}">
-    <div class="card-title">${esc(i.title) || '<i style="color:var(--subtle)">(untitled)</i>'}</div>
+    <div class="card-title">${esc(i.title) || '<i style="color:var(--subtle)">(ohne Titel)</i>'}</div>
     ${tags ? `<div class="card-tags">${tags}</div>` : ''}
     ${stateHTML(i)}
-    ${i.source ? `<div class="card-src" title="Source">📍 ${esc(i.source)}${i.sourceDate ? ' · ' + fmtShort(i.sourceDate) : ''}</div>` : ''}
+    ${i.source ? `<div class="card-src" title="Quelle">📍 ${esc(i.source)}${i.sourceDate ? ' · ' + fmtShort(i.sourceDate) : ''}</div>` : ''}
+    ${i.stakeholders?.length ? `<div class="card-src">👥 ${esc(i.stakeholders.join(', '))}</div>` : ''}
     <div class="sep"></div>
     <div class="card-foot">
       <span class="type-icon" style="background:${t.c}" title="${t.n}">${t.i}</span>
       <span class="card-key">${esc(i.key)}</span>
-      ${i.recurId && getRule(i.recurId) ? '<span title="Recurring">🔁</span>' : ''}
-      ${i.private && !showMode ? '<span title="Private – hidden in show mode">🔒</span>' : ''}
+      ${i.recurId && getRule(i.recurId) ? '<span title="Wiederkehrend">🔁</span>' : ''}
+      ${i.private && !showMode ? '<span title="Privat – im Show-Modus unsichtbar">🔒</span>' : ''}
       <span class="card-meta">
         ${dateHTML(i)}
-        ${i.checklist.length ? `<button class="sub-toggle" data-sub title="Expand/collapse sub-tasks">☑ ${checkDone}/${i.checklist.length}</button>` : ''}
+        ${i.checklist.length ? `<button class="sub-toggle" data-sub title="Unteraufgaben auf-/zuklappen">☑ ${checkDone}/${i.checklist.length}${nextSubDue(i)}</button>` : ''}
         ${!showMode && i.comments.some(c => !c.system) ? `<span title="Updates">💬 ${i.comments.filter(c => !c.system).length}</span>` : ''}
       </span>
     </div>
-    ${expanded.has(i.id) && i.checklist.length ? `<ul class="sub-list">${i.checklist.map(c => `<li class="${c.done ? 'done' : ''}"><label><input type="checkbox" data-subid="${c.id}" ${c.done ? 'checked' : ''}><span>${esc(c.text)}</span></label></li>`).join('')}</ul>` : ''}
+    ${expanded.has(i.id) && i.checklist.length ? `<ul class="sub-list">${i.checklist.map(c => `<li class="${c.done ? 'done' : ''}"><label><input type="checkbox" data-subid="${c.id}" ${c.done ? 'checked' : ''}><span>${esc(c.text)}</span>${subDueHTML(c)}</label></li>`).join('')}</ul>` : ''}
     ${g ? `<div class="card-goal">${goalAv(g, 'sm')}<span>${esc(g.name)}</span></div>` : ''}
   </div>`;
 }
@@ -1403,9 +1465,9 @@ function renderBoard() {
     const shown = items.filter(matches);
     return `<div class="col" data-status="${c.id}">
       <div class="col-head">${STATUS_ICONS[c.id]}<span>${c.name}</span><span class="col-count">${active ? shown.length + '/' : ''}${items.length}</span>
-        <button class="icon-btn col-add" data-qa-top="${c.id}" title="Add ticket to ${c.name}"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        <button class="icon-btn col-add" data-qa-top="${c.id}" title="Ticket in „${c.name}“ anlegen"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
       <div class="col-list">${shown.map(cardHTML).join('')}</div>
-      <div class="quick-add"><button data-qa="${c.id}">+ Create</button></div>
+      <div class="quick-add"><button data-qa="${c.id}">+ Erstellen</button></div>
     </div>`;
   }).join('');
 }
@@ -1415,16 +1477,16 @@ function setOptions(el, opts, first) {
   el.value = opts.some(o => o[0] === v) ? v : (first ? '' : opts[0]?.[0] ?? '');
 }
 function renderFilterOptions() {
-  setOptions($('#fType'), Object.entries(TYPES).map(([k, t]) => [k, t.n]), 'All types');
-  setOptions($('#fImp'), Object.entries(IMPS).map(([k, p]) => [k, p.n]), 'Any importance');
-  setOptions($('#fGoal'), [...state.goals.map(g => [g.id, g.name]), ['__none', '— no goal —']], 'All goals');
-  setOptions($('#fMeet'), state.meetings.map(m => [m.id, 'Agenda: ' + m.name]), 'All meetings');
+  setOptions($('#fType'), Object.entries(TYPES).map(([k, t]) => [k, t.n]), 'Alle Typen');
+  setOptions($('#fImp'), Object.entries(IMPS).map(([k, p]) => [k, p.n]), 'Jede Wichtigkeit');
+  setOptions($('#fGoal'), [...state.goals.map(g => [g.id, g.name]), ['__none', '— ohne Ziel —']], 'Alle Ziele');
+  setOptions($('#fMeet'), state.meetings.map(m => [m.id, 'Agenda: ' + m.name]), 'Alle Meetings');
   filters.meet = $('#fMeet').value;
-  const uniq = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'en'));
-  $('#personList').innerHTML = uniq(state.issues.map(i => i.waitingFor)).map(v => `<option value="${esc(v)}">`).join('');
+  const uniq = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
+  $('#personList').innerHTML = uniq(state.issues.flatMap(i => [i.waitingFor, ...(i.stakeholders || [])])).map(v => `<option value="${esc(v)}">`).join('');
   $('#sourceList').innerHTML = uniq([...state.meetings.map(m => m.name), ...state.issues.map(i => i.source)]).map(v => `<option value="${esc(v)}">`).join('');
   const labels = allLabels();
-  setOptions($('#fLabel'), labels.map(l => [l, l]), 'All labels');
+  setOptions($('#fLabel'), labels.map(l => [l, l]), 'Alle Labels');
   filters.label = $('#fLabel').value; filters.goal = $('#fGoal').value;
   $('#labelList').innerHTML = labels.map(l => `<option value="${esc(l)}">`).join('');
 }
@@ -1432,15 +1494,15 @@ function renderSidebar() {
   const active = TASK_VIEWS.includes(currentView) ? filters.goal : '';
   $('#sideGoals').innerHTML = state.goals.map(g => {
     const open = visIssues().filter(i => i.goalId === g.id && !isClosed(i)).length;
-    return `<button class="side-goal ${active === g.id ? 'active' : ''}" data-gid="${g.id}" title="Filter board by this goal">${goalAv(g)}<span class="n">${esc(g.name || 'New goal')}</span>${open ? `<small>${open}</small>` : ''}<span class="side-del" role="button" title="Delete goal">✕</span></button>`;
-  }).join('') || '<div class="side-empty">No goals yet</div>';
+    return `<button class="side-goal ${active === g.id ? 'active' : ''}" data-gid="${g.id}" title="Board nach diesem Ziel filtern">${goalAv(g)}<span class="n">${esc(g.name || 'Neues Ziel')}</span>${open ? `<small>${open}</small>` : ''}<span class="side-del" role="button" title="Ziel löschen">✕</span></button>`;
+  }).join('') || '<div class="side-empty">Noch keine Ziele</div>';
 }
 $('#sideGoals').addEventListener('click', e => {
   const b = e.target.closest('[data-gid]'); if (!b) return;
   const id = b.dataset.gid;
   if (e.target.closest('.side-del')) {
     const g = getGoal(id);
-    if (!confirm(`Delete goal "${g.name}"? The tickets are kept, only the assignment is removed.`)) return;
+    if (!confirm(`Ziel „${g.name}“ löschen? Die Tickets bleiben erhalten, nur die Zuordnung wird entfernt.`)) return;
     if (filters.goal === id) { filters.goal = ''; $('#fGoal').value = ''; }
     deleteGoal(id); renderAll(); return;
   }
@@ -1473,7 +1535,7 @@ boardEl.addEventListener('click', e => {
   const cb = e.target.closest('[data-subid]');
   if (cb) {
     const i = getIssue(cb.closest('.card').dataset.id), c = i?.checklist.find(x => x.id === cb.dataset.subid);
-    if (c) { c.done = cb.checked; i.updated = now(); save(); renderBoard(); }
+    if (c) { c.done = cb.checked; c.doneAt = c.done ? now() : null; i.updated = now(); save(); renderBoard(); }
     return;
   }
   if (e.target.closest('.sub-list')) return; // Klick aufs Label löst den Checkbox-Klick aus
@@ -1485,9 +1547,9 @@ boardEl.addEventListener('click', e => {
   if (top) openQuickAdd($('.quick-add', top.closest('.col')), top.dataset.qaTop);
 });
 function openQuickAdd(wrap, status) {
-  wrap.innerHTML = `<textarea placeholder="What needs to be done?"></textarea><div class="qa-hint">Enter = create · Esc = cancel</div>`;
+  wrap.innerHTML = `<textarea placeholder="Was ist zu tun?"></textarea><div class="qa-hint">Enter = anlegen · Esc = abbrechen</div>`;
   const ta = $('textarea', wrap); ta.focus();
-  const close = () => { wrap.innerHTML = `<button data-qa="${status}">+ Create</button>`; };
+  const close = () => { wrap.innerHTML = `<button data-qa="${status}">+ Erstellen</button>`; };
   ta.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -1511,6 +1573,7 @@ function createIssue(fields) {
     id: uid(), key: `${state.prefix}-${state.nextNum++}`, title: '', desc: '', status, type: 'task', importance: '',
     goalId: null, recurId: null, meetingId: null, private: false, labels: [], target: '', deadline: '',
     waitingFor: '', followUp: '', source: '', sourceDate: '', sourceLink: '', cancelReason: '', checklist: [], comments: [],
+    stakeholders: [], role: '', did: '', impact: '',
     order: maxOrder + 1, created: t, updated: t, statusAt: t, ...fields,
   };
   state.issues.push(issue); save();
@@ -1570,11 +1633,11 @@ function setStatus(issue, status, opts = {}) {
   if (issue.status === status) return true;
   if (status === 'cancelled') {
     let reason = opts.reason;
-    if (reason === undefined) { reason = prompt('Why is this ticket being cancelled?', issue.cancelReason || ''); if (reason === null) return false; }
+    if (reason === undefined) { reason = prompt('Warum wird das Ticket gestrichen?', issue.cancelReason || ''); if (reason === null) return false; }
     issue.cancelReason = reason.trim(); issue.cancelledAt = now();
   }
   if (status === 'waiting' && !issue.waitingFor && opts.ask !== false) {
-    const who = prompt('Who or what are you waiting for? (optional)', '');
+    const who = prompt('Auf wen oder was wartest du? (optional)', '');
     if (who === null) return false;
     issue.waitingFor = who.trim();
   }
@@ -1582,20 +1645,20 @@ function setStatus(issue, status, opts = {}) {
   const from = statusName(issue.status), to = statusName(status);
   issue.status = status; issue.updated = issue.statusAt = now();
   if (status === 'done') issue.doneAt = now();
-  const extra = status === 'cancelled' && issue.cancelReason ? ` (reason: ${issue.cancelReason})` : status === 'waiting' && issue.waitingFor ? ` (waiting for ${issue.waitingFor})` : '';
+  const extra = status === 'cancelled' && issue.cancelReason ? ` (Grund: ${issue.cancelReason})` : status === 'waiting' && issue.waitingFor ? ` (wartet auf ${issue.waitingFor})` : '';
   issue.comments.unshift({ id: uid(), text: `Status: ${from} → ${to}${extra}`, at: now(), system: true });
   return true;
 }
 
 /* Filter */
 $('#q').addEventListener('input', e => { filters.q = e.target.value.trim(); renderBoard(); });
-$('#fArchive').addEventListener('change', e => { showArchive = e.target.checked; safeSet('jiratype-en.archive', showArchive ? '1' : '0'); renderBoard(); });
+$('#fArchive').addEventListener('change', e => { showArchive = e.target.checked; safeSet('jiratype.archive', showArchive ? '1' : '0'); renderBoard(); });
 [['#fType', 'type'], ['#fImp', 'imp'], ['#fLabel', 'label'], ['#fGoal', 'goal'], ['#fMeet', 'meet']].forEach(([s, k]) => $(s).addEventListener('change', e => { filters[k] = e.target.value; renderBoard(); renderSidebar(); }));
 $('#fReset').onclick = () => { Object.keys(filters).forEach(k => filters[k] = ''); $('#q').value = ''; ['#fType', '#fImp', '#fLabel', '#fGoal', '#fMeet'].forEach(s => $(s).value = ''); renderBoard(); renderSidebar(); };
 
 /* ================= Kalender ================= */
 let calY = new Date().getFullYear(), calM = new Date().getMonth();
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 function renderCal() {
   $('#calTitle').textContent = `${MONTHS[calM]} ${calY}`;
   const first = new Date(calY, calM, 1);
@@ -1622,13 +1685,13 @@ function renderCal() {
     const rank = { meet: 0, hard: 1, follow: 2, soft: 3, ghost: 4 };
     const items = (byDay[d] || []).sort((a, b) => rank[a.kind] - rank[b.kind]);
     html += `<div class="cal-cell ${dt.getMonth() !== calM ? 'other' : ''} ${d === t ? 'today' : ''}">
-      ${k % 7 === 0 ? `<span class="cal-kw">Wk ${isoWeek(d)[0]}</span>` : ''}<span class="cal-day">${dt.getDate()}</span>
+      ${k % 7 === 0 ? `<span class="cal-kw">KW ${isoWeek(d)[0]}</span>` : ''}<span class="cal-day">${dt.getDate()}</span>
       <div class="cal-items">${items.map(it => {
-        if (it.kind === 'ghost') { const g = getGoal(it.r.tpl?.goalId); return `<div class="cal-chip ghost" ${g ? `style="--g:${esc(g.color)}"` : ''} title="Planned (${freqText(it.r)}) – created as a ticket ${it.r.lead || 0} day(s) in advance">🔁 ${esc(it.r.tpl?.title || 'Series')}</div>`; }
-        if (it.kind === 'meet') { const n = agendaItems(it.m).length; return `<div class="cal-chip meet" data-meet="${it.m.id}" title="Meeting${n ? ` – ${n} open agenda items` : ''}">🗣 ${esc(it.m.name)}${n ? ` · ${n}` : ''}</div>`; }
-        if (it.kind === 'follow') { const i = it.i; return `<div class="cal-chip follow" data-id="${i.id}" title="${i.status === 'waiting' ? 'Follow up' : 'Resume'}: ${esc(i.key)} ${esc(i.title)}">${i.status === 'waiting' ? '⏳' : '⏸'} ${esc(i.title || i.key)}</div>`; }
+        if (it.kind === 'ghost') { const g = getGoal(it.r.tpl?.goalId); return `<div class="cal-chip ghost" ${g ? `style="--g:${esc(g.color)}"` : ''} title="Geplant (${freqText(it.r)}) – wird ${it.r.lead || 0} Tag(e) vorher als Ticket angelegt">🔁 ${esc(it.r.tpl?.title || 'Serie')}</div>`; }
+        if (it.kind === 'meet') { const n = agendaItems(it.m).length; return `<div class="cal-chip meet" data-meet="${it.m.id}" title="Meeting${n ? ` – ${n} offene Agenda-Punkte` : ''}">🗣 ${esc(it.m.name)}${n ? ` · ${n}` : ''}</div>`; }
+        if (it.kind === 'follow') { const i = it.i; return `<div class="cal-chip follow" data-id="${i.id}" title="${i.status === 'waiting' ? 'Nachfassen' : 'Wieder aufnehmen'}: ${esc(i.key)} ${esc(i.title)}">${i.status === 'waiting' ? '⏳' : '⏸'} ${esc(i.title || i.key)}</div>`; }
         const i = it.i, g = getGoal(i.goalId);
-        return `<div class="cal-chip ${it.kind} ${isClosed(i) ? 'done' : ''}" data-id="${i.id}" ${g ? `style="--g:${esc(g.color)}"` : ''} title="${it.kind === 'hard' ? 'Deadline' : 'Target'}: ${esc(i.key)} ${esc(i.title)}">${it.kind === 'hard' ? '⚑' : '◎'} ${esc(i.title || i.key)}</div>`;
+        return `<div class="cal-chip ${it.kind} ${isClosed(i) ? 'done' : ''}" data-id="${i.id}" ${g ? `style="--g:${esc(g.color)}"` : ''} title="${it.kind === 'hard' ? 'Deadline' : 'Ziel'}: ${esc(i.key)} ${esc(i.title)}">${it.kind === 'hard' ? '⚑' : '◎'} ${esc(i.title || i.key)}</div>`;
       }).join('')}</div></div>`;
   }
   $('#calGrid').innerHTML = html;
@@ -1654,22 +1717,23 @@ function renderGoals() {
     const pct = counted.length ? Math.round(done / counted.length * 100) : 0;
     return `<div class="goal" data-gid="${g.id}" style="--g:${esc(g.color)}">
       <div class="goal-head">
-        <input type="color" class="g-color" value="${esc(g.color)}" title="Colour">
-        <input class="title-input g-name" value="${esc(g.name)}" placeholder="Goal name">
-        <button class="btn danger small g-del" title="Delete goal (tickets are kept)">Delete</button>
+        <input type="color" class="g-color" value="${esc(g.color)}" title="Farbe">
+        <input class="title-input g-name" value="${esc(g.name)}" placeholder="Name des Ziels">
+        <button class="btn small g-flow" type="button">📈 Verlauf</button>
+        <button class="btn danger small g-del" title="Ziel löschen (Tickets bleiben erhalten)">Löschen</button>
       </div>
       <div class="goal-meta">
-        <label>Due <input type="date" class="inline-input g-target" value="${esc(g.target || '')}"></label>
-        ${g.target && g.target < t && pct < 100 ? '<span class="date late">overdue</span>' : ''}
-        <span style="margin-left:auto"><b>${done}/${counted.length}</b> done · ${pct}%</span>
+        <label>Bis <input type="date" class="inline-input g-target" value="${esc(g.target || '')}"></label>
+        ${g.target && g.target < t && pct < 100 ? '<span class="date late">überfällig</span>' : ''}
+        <span style="margin-left:auto"><b>${done}/${counted.length}</b> erledigt · ${pct} %</span>
       </div>
       <div class="progress big"><div style="width:${pct}%"></div></div>
-      <textarea class="g-desc" placeholder="Why? When is the goal reached?">${esc(g.desc || '')}</textarea>
+      <textarea class="g-desc" placeholder="Warum? Wann ist das Ziel erreicht?">${esc(g.desc || '')}</textarea>
       <ul class="goal-issues">${items.map(i => `<li data-id="${i.id}" class="${isClosed(i) ? 'done' : ''}">
-        <span class="st st-${i.status}">${statusName(i.status)}</span><span class="t">${esc(i.title || '(untitled)')}</span>${impChip(i.importance)}${dateHTML(i)}</li>`).join('')}</ul>
-      <button class="btn ghost small g-add" style="align-self:flex-start">+ Ticket for this goal</button>
+        <span class="st st-${i.status}">${statusName(i.status)}</span><span class="t">${esc(i.title || '(ohne Titel)')}</span>${impChip(i.importance)}${dateHTML(i)}</li>`).join('')}</ul>
+      <button class="btn ghost small g-add" style="align-self:flex-start">+ Ticket zu diesem Ziel</button>
     </div>`;
-  }).join('') : `<div class="empty" style="grid-column:1/-1">No goals yet. A goal groups several tickets, e.g. "Moving house" or "Get fit Q4".</div>`;
+  }).join('') : `<div class="empty" style="grid-column:1/-1">Noch keine Ziele. Ein Ziel bündelt mehrere Tickets, z. B. „Umzug“ oder „Fit werden Q4“.</div>`;
   renderRecurrences();
 }
 function renderRecurrences() {
@@ -1677,13 +1741,13 @@ function renderRecurrences() {
   $('#recList').innerHTML = rules.length ? rules.map(r => {
     const nx = nextOcc(r);
     return `<div class="rec-row ${r.active ? '' : 'paused'}" data-rid="${r.id}">
-      <b>🔁 ${esc(r.tpl?.title || '(untitled)')}</b>
+      <b>🔁 ${esc(r.tpl?.title || '(ohne Titel)')}</b>
       <select class="r-freq">${Object.entries(FREQS).map(([k, n]) => `<option value="${k}" ${k === r.freq ? 'selected' : ''}>${n}</option>`).join('')}</select>
-      <span class="info">${!['weekly', 'biweekly', 'monthly', 'quarterly'].includes(r.freq) ? esc(freqText(r)) + ' · ' : ''}${r.active && nx ? `next: ◎ ${fmtDate(nx)} · ⚑ +${r.buffer || 0} day(s)` : 'paused'}</span>
-      <button class="btn ghost small r-pause">${r.active ? '⏸ Pause' : '▶ Resume'}</button>
-      <button class="x r-del" title="Delete series">✕</button>
+      <span class="info">${!['weekly', 'biweekly', 'monthly', 'quarterly'].includes(r.freq) ? esc(freqText(r)) + ' · ' : ''}${r.active && nx ? `nächstes: ◎ ${fmtDate(nx)} · ⚑ +${r.buffer || 0} Tag(e)` : 'pausiert'}</span>
+      <button class="btn ghost small r-pause">${r.active ? '⏸ Pausieren' : '▶ Fortsetzen'}</button>
+      <button class="x r-del" title="Serie löschen">✕</button>
     </div>`;
-  }).join('') : `<div class="empty" style="padding:16px;text-align:left">None yet. Open a ticket and choose a rhythm under "🔁 Repeat" on the right.</div>`;
+  }).join('') : `<div class="empty" style="padding:16px;text-align:left">Noch keine. Öffne ein Ticket und wähle rechts unter „🔁 Wiederholung“ einen Rhythmus.</div>`;
 }
 $('#newGoalBtn').onclick = () => {
   const g = createGoal('');
@@ -1715,7 +1779,7 @@ $('#view-goals').addEventListener('change', e => {
 $('#view-goals').addEventListener('focusout', e => {
   if (e.target.matches('.g-name') && !e.target.value.trim()) {
     const g = getGoal(e.target.closest('.goal').dataset.gid);
-    if (g) { g.name = 'New goal'; save(); }
+    if (g) { g.name = 'Neues Ziel'; save(); }
   }
   if (e.target.matches('.g-name, .g-desc')) setTimeout(() => { renderFilterOptions(); renderBoard(); renderGoals(); }, 0);
 });
@@ -1724,9 +1788,10 @@ $('#view-goals').addEventListener('click', e => {
   if (gEl) {
     const g = getGoal(gEl.dataset.gid);
     if (e.target.closest('.g-del')) {
-      if (!confirm(`Delete goal "${g.name}"? The tickets are kept, only the assignment is removed.`)) return;
+      if (!confirm(`Ziel „${g.name}“ löschen? Die Tickets bleiben erhalten, nur die Zuordnung wird entfernt.`)) return;
       deleteGoal(g.id); renderAll(); return;
     }
+    if (e.target.closest('.g-flow')) { openFlow({ goal: g }); return; }
     if (e.target.closest('.g-add')) { const i = createIssue({ goalId: g.id, status: 'todo' }); openIssue(i.id, true); return; }
     const li = e.target.closest('li[data-id]'); if (li) openIssue(li.dataset.id);
     return;
@@ -1742,7 +1807,7 @@ $('#view-goals').addEventListener('click', e => {
     }
     save(); renderAll();
   } else if (e.target.closest('.r-del')) {
-    if (!confirm(`Delete series "${r.tpl?.title || ''}"? Tickets already created are kept.`)) return;
+    if (!confirm(`Serie „${r.tpl?.title || ''}“ löschen? Bereits angelegte Tickets bleiben erhalten.`)) return;
     deleteRule(r.id); renderAll();
   }
 });
@@ -1774,20 +1839,24 @@ function fillModal() {
   if (act !== $('#mDesc')) { $('#mDesc').value = i.desc; autosize($('#mDesc')); }
   $('#mStatus').value = i.status; $('#mStatus').className = 'status-select s-' + i.status;
   $('#mType').value = i.type; $('#mImp').value = i.importance;
-  $('#mGoal').innerHTML = `<option value="">— no goal —</option>` + state.goals.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('') + `<option value="__new">+ New goal…</option>`;
+  $('#mGoal').innerHTML = `<option value="">— kein Ziel —</option>` + state.goals.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('') + `<option value="__new">+ Neues Ziel…</option>`;
   $('#mGoal').value = i.goalId || '';
   $('#mTarget').value = i.target || ''; $('#mDeadline').value = i.deadline || '';
   if (act !== $('#mLabels')) $('#mLabels').value = i.labels.join(', ');
   $('#mPrivate').checked = i.private;
   fillState(i);
   if (act !== $('#mKW')) { $('#mKW').value = i.deadline ? isoWeek(i.deadline)[0] : ''; $('#mKW').classList.remove('bad'); }
-  $('#mMeet').innerHTML = `<option value="">— none —</option>` + state.meetings.map(m => `<option value="${m.id}">${esc(m.name)}</option>`).join('') + `<option value="__new">+ New meeting…</option>`;
+  $('#mMeet').innerHTML = `<option value="">— keins —</option>` + state.meetings.map(m => `<option value="${m.id}">${esc(m.name)}</option>`).join('') + `<option value="__new">+ Neues Meeting…</option>`;
   $('#mMeet').value = i.meetingId || '';
   if (act !== $('#mSource')) $('#mSource').value = i.source;
   $('#mSourceDate').value = i.sourceDate || '';
   if (act !== $('#mSourceLink')) $('#mSourceLink').value = i.sourceLink;
   fillRecur();
-  $('#mDates').innerHTML = `Created: ${fmtDateTime(i.created)}<br>Updated: ${fmtDateTime(i.updated)}`;
+  $('#mDates').innerHTML = `Erstellt: ${fmtDateTime(i.created)}<br>Aktualisiert: ${fmtDateTime(i.updated)}`;
+  if (act !== $('#mStake')) $('#mStake').value = i.stakeholders.join(', ');
+  if (act !== $('#mDid')) { $('#mDid').value = i.did; fitTA($('#mDid')); }
+  if (act !== $('#mImpact')) { $('#mImpact').value = i.impact; fitTA($('#mImpact')); }
+  $('#mRole').value = i.role || '';
   renderChecklist(); renderComments();
 }
 function fillState(i) {
@@ -1796,7 +1865,7 @@ function fillState(i) {
   box.className = 'state-box s-' + st;
   $('#mWaitWrap').hidden = st !== 'waiting';
   $('#mFollowWrap').hidden = st !== 'waiting' && st !== 'paused';
-  $('#mFollowLabel').textContent = st === 'paused' ? '⏸ Resume on' : '⏰ Follow up on';
+  $('#mFollowLabel').textContent = st === 'paused' ? '⏸ Wieder aufnehmen am' : '⏰ Nachfassen am';
   $('#mReasonWrap').hidden = st !== 'cancelled';
   const act = document.activeElement;
   if (act !== $('#mWaitFor')) $('#mWaitFor').value = i.waitingFor;
@@ -1807,7 +1876,7 @@ function fillRecur() {
   const i = cur(); const r = getRule(i.recurId);
   $('#mRecur').value = r ? r.freq : '';
   $('#mRecurOpts').hidden = !r;
-  $('#mRecurBadge').textContent = r ? `· 🔁 ${freqText(r)}${r.active ? '' : ' (paused)'}` : '';
+  $('#mRecurBadge').textContent = r ? `· 🔁 ${freqText(r)}${r.active ? '' : ' (pausiert)'}` : '';
   $('#mDays').hidden = !r || r.freq !== 'weekdays';
   $('#mNthRow').hidden = !r || r.freq !== 'nthweekday';
   $('#mWorkRow').hidden = !r || r.freq !== 'nthworkday';
@@ -1819,8 +1888,8 @@ function fillRecur() {
   if (document.activeElement !== $('#mLead')) $('#mLead').value = r.lead ?? 0;
   const nx = nextOcc(r);
   $('#mRecurInfo').innerHTML = r.active && nx
-    ? `Next ticket: <b>◎ ${fmtDate(nx)}</b>, ⚑ ${fmtDate(addDays(nx, r.buffer || 0))}<br>appears on ${fmtDate(addDays(nx, -(r.lead || 0)))}`
-    : 'Series paused (resume it under "Goals")';
+    ? `Nächstes Ticket: <b>◎ ${fmtDate(nx)}</b>, ⚑ ${fmtDate(addDays(nx, r.buffer || 0))}<br>erscheint am ${fmtDate(addDays(nx, -(r.lead || 0)))}`
+    : 'Serie pausiert (unter „Ziele“ fortsetzen)';
 }
 function renderChecklist() {
   const i = cur(); const done = i.checklist.filter(c => c.done).length;
@@ -1828,16 +1897,17 @@ function renderChecklist() {
   $('#mProgress').hidden = !i.checklist.length;
   $('#mProgress').firstElementChild.style.width = i.checklist.length ? (done / i.checklist.length * 100) + '%' : '0';
   $('#mChecklist').innerHTML = i.checklist.map(c => `<li class="${c.done ? 'done' : ''}" data-cid="${c.id}">
-    <input type="checkbox" ${c.done ? 'checked' : ''} aria-label="done">
+    <input type="checkbox" ${c.done ? 'checked' : ''} aria-label="erledigt">
     <input type="text" value="${esc(c.text)}">
-    <button class="x" title="Remove">✕</button></li>`).join('');
+    <input type="date" class="sub-due ${c.due ? (c.done ? '' : c.due < today() ? 'late' : c.due === today() ? 'soft' : '') : 'empty'}" value="${esc(c.due || '')}" title="Frist der Unteraufgabe">
+    <button class="x" title="Entfernen">✕</button></li>`).join('');
 }
 function renderComments() {
   const i = cur(); if (!i) return;
   $('#mComments').innerHTML = i.comments.map(c => c.system
     ? `<li class="comment" style="font-size:12px;color:var(--subtle);align-items:center"><span class="avatar" style="background:var(--chip);color:var(--muted);width:20px;height:20px;font-size:10px;margin:0 4px">↻</span><span>${esc(c.text)} · ${relTime(c.at)}</span></li>`
-    : `<li class="comment" data-cid="${c.id}"><div class="avatar">Me</div><div class="comment-body">
-        <div class="comment-meta"><b style="color:var(--text)">Me</b><span title="${fmtDateTime(c.at)}">${relTime(c.at)}</span><button class="x" title="Delete">✕</button></div>
+    : `<li class="comment" data-cid="${c.id}"><div class="avatar">Ich</div><div class="comment-body">
+        <div class="comment-meta"><b style="color:var(--text)">Ich</b><span title="${fmtDateTime(c.at)}">${relTime(c.at)}</span><button class="x" title="Löschen">✕</button></div>
         <div class="comment-text">${esc(c.text)}</div></div></li>`).join('');
 }
 function touch() { const i = cur(); if (i) { i.updated = now(); save(); } }
@@ -1866,7 +1936,7 @@ $('#mKW').addEventListener('change', e => {
 $('#mMeet').addEventListener('change', e => {
   let v = e.target.value;
   if (v === '__new') {
-    const name = prompt('Meeting name (e.g. weekly sync with team lead):');
+    const name = prompt('Name des Meetings (z. B. Jour fixe mit Teamlead):');
     if (!name || !name.trim()) { e.target.value = cur().meetingId || ''; return; }
     v = createMeeting(name.trim()).id; renderFilterOptions();
   }
@@ -1882,7 +1952,7 @@ $('#mImp').addEventListener('change', e => { cur().importance = e.target.value; 
 $('#mGoal').addEventListener('change', e => {
   let v = e.target.value;
   if (v === '__new') {
-    const name = prompt('Name of the new goal:');
+    const name = prompt('Name des neuen Ziels:');
     if (!name || !name.trim()) { e.target.value = cur().goalId || ''; return; }
     v = createGoal(name.trim()).id; renderFilterOptions();
   }
@@ -1894,12 +1964,21 @@ $('#mLabels').addEventListener('input', e => {
   cur().labels = [...new Set(e.target.value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean))]; touch();
 });
 $('#mLabels').addEventListener('change', () => { renderFilterOptions(); renderBoard(); });
+const fitTA = el => { el.style.height = 'auto'; el.style.height = Math.max(54, el.scrollHeight + 2) + 'px'; };
+$('#mStake').addEventListener('input', e => {
+  cur().stakeholders = [...new Set(e.target.value.split(',').map(x => x.trim()).filter(Boolean))]; touch();
+});
+$('#mStake').addEventListener('change', () => { renderFilterOptions(); renderBoard(); });
+$('#mDid').addEventListener('input', e => { cur().did = e.target.value; fitTA(e.target); touch(); });
+$('#mImpact').addEventListener('input', e => { cur().impact = e.target.value; fitTA(e.target); touch(); });
+$('#mRole').addEventListener('change', e => { cur().role = e.target.value; touch(); });
+$('#mFlow').onclick = () => openFlow({ issue: cur() });
 $('#mPrivate').addEventListener('change', e => { cur().private = e.target.checked; touch(); renderBoard(); });
 
 $('#mRecur').addEventListener('change', e => {
   const i = cur(), v = e.target.value, r = getRule(i.recurId);
   if (!v) {
-    if (r && confirm('Stop repeating? Tickets already created are kept.')) deleteRule(r.id);
+    if (r && confirm('Wiederholung beenden? Bereits angelegte Tickets bleiben erhalten.')) deleteRule(r.id);
   } else if (r) {
     r.freq = v; ruleDefaults(r); save();
   } else {
@@ -1912,7 +1991,7 @@ $('#mDays').addEventListener('click', e => {
   const r = getRule(cur().recurId); if (!r) return;
   const d = +b.dataset.d, days = new Set(r.days || []);
   days.has(d) ? days.delete(d) : days.add(d);
-  if (!days.size) return; // at least one day
+  if (!days.size) return; // mindestens ein Tag
   r.days = [...days].sort((a, b) => a - b); save(); fillRecur(); renderBoard();
 });
 $('#mNthWd').innerHTML = WD_LONG.map((n, k) => `<option value="${k}">${n}</option>`).join('');
@@ -1933,9 +2012,13 @@ $('#mCheckNew').addEventListener('keydown', e => {
   touch(); renderChecklist(); renderBoard();
 });
 $('#mChecklist').addEventListener('change', e => {
+  if (e.target.classList.contains('sub-due')) {
+    cur().checklist.find(c => c.id === e.target.closest('li').dataset.cid).due = e.target.value;
+    touch(); renderChecklist(); renderBoard(); return;
+  }
   if (e.target.type !== 'checkbox') return;
   const item = cur().checklist.find(c => c.id === e.target.closest('li').dataset.cid);
-  item.done = e.target.checked; touch(); renderChecklist(); renderBoard();
+  item.done = e.target.checked; item.doneAt = item.done ? now() : null; touch(); renderChecklist(); renderBoard();
 });
 $('#mChecklist').addEventListener('input', e => {
   if (e.target.type !== 'text') return;
@@ -1956,13 +2039,13 @@ $('#mCommentBtn').onclick = addComment;
 $('#mComment').addEventListener('keydown', e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); addComment(); } });
 $('#mComments').addEventListener('click', e => {
   if (!e.target.classList.contains('x')) return;
-  if (!confirm('Delete this update?')) return;
+  if (!confirm('Dieses Update löschen?')) return;
   const id = e.target.closest('li').dataset.cid;
   cur().comments = cur().comments.filter(c => c.id !== id); touch(); renderComments(); renderBoard();
 });
 $('#mDelete').onclick = () => {
   const i = cur();
-  if (!confirm(`Really delete ${i.key} "${i.title || 'untitled'}"?` + (getRule(i.recurId) ? '\n(The repeat keeps running – you can stop it under "Goals".)' : ''))) return;
+  if (!confirm(`${i.key} „${i.title || 'ohne Titel'}“ wirklich löschen?` + (getRule(i.recurId) ? '\n(Die Wiederholung läuft weiter – beenden kannst du sie unter „Ziele“.)' : ''))) return;
   state.issues = state.issues.filter(x => x.id !== i.id); save(); closeModal(true);
 };
 function closeModal(skipCleanup) {
@@ -1985,12 +2068,156 @@ $('#newIssueBtn').onclick = () => {
 };
 
 /* ================= Liste (Tabelle mit Excel-Filtern) ================= */
-const TABLE_KEY = 'jiratype-en.table';
+/* ================= Verlauf (Flow) ================= */
+const FL = {"lt1h": "< 1 Std", "h": "Std", "d": "T", "created": "Erstellt", "sofar": "bisher", "total": "Dauer gesamt", "nowSt": "Status", "subs": "Unteraufgaben", "people": "Beteiligte", "phases": "Statuswechsel", "where": "Wo ging die Zeit hin?", "timeline": "Zeitstrahl", "flow": "Ablauf", "rowStatus": "Status", "rowSubs": "Unteraufgaben", "rowUpd": "Updates", "noChanges": "Keine Statuswechsel aufgezeichnet – Ablauf nur grob (Erstellt → jetzt).", "today": "heute", "deadline": "Deadline", "target": "Ziel-Datum", "subDone": "erledigt", "subDue": "Frist", "venn": "Überschneidung der Stakeholder", "vennHint": "Zahl = Tickets in dieser Schnittmenge (Maus drüber zeigt welche)", "noPeople": "Keine Stakeholder eingetragen.", "tickets": "Tickets", "done": "erledigt", "span": "Zeitraum", "goalEmpty": "Diesem Ziel sind noch keine Tickets zugeordnet.", "impactBox": "Beitrag & Impact", "waitFor": "wartet auf", "openTicket": "Klick öffnet das Ticket", "title": "📈 Verlauf"};
+const flowModal = $('#flowModal');
+const STATUS_BY_NAME = Object.fromEntries(COLS.map(c => [c.name, c.id]));
+const fmtDur = ms => { const h = ms / 3600000; return h < 1 ? FL.lt1h : h < 24 ? `${Math.round(h)} ${FL.h}` : `${Math.round(h / 24)} ${FL.d}`; };
+const tsShort = ts => fmtShort(isoOf(new Date(ts)));
+const isoMs = iso => parseISO(iso).getTime() + 12 * 3600000;
+// Phasen aus den System-Updates „Status: A → B (Zusatz)“ rekonstruieren
+function phasesOf(i) {
+  const ch = i.comments.filter(c => c.system && c.text.includes('→')).slice().sort((a, b) => a.at - b.at).map(c => {
+    const m = /:\s*(.+?)\s*→\s*(.+?)(?:\s*\((.*)\))?\s*$/.exec(c.text);
+    return m && STATUS_BY_NAME[m[2].trim()] ? { at: c.at, from: STATUS_BY_NAME[m[1].trim()], to: STATUS_BY_NAME[m[2].trim()], note: m[3] || '' } : null;
+  }).filter(Boolean);
+  const out = []; let st = ch[0]?.from || i.status, t = i.created, note = '';
+  for (const c of ch) { const at = Math.max(t, c.at); out.push({ status: st, from: t, to: at, note }); st = c.to; t = at; note = c.note; }
+  const end = isClosed(i) ? t : Math.max(t, now());
+  if (!ch.length && isClosed(i)) { const e = Math.max(i.created, i.doneAt || i.cancelledAt || i.statusAt || i.created); out.push({ status: 'doing', from: i.created, to: e, note: '', guess: true }); t = e; }
+  if (st === 'waiting' && !note && i.waitingFor) note = `${FL.waitFor} ${i.waitingFor}`;
+  out.push({ status: st, from: isClosed(i) ? t : t, to: isClosed(i) ? t : end, note, final: true });
+  return { phases: out.filter(p => p.to > p.from || p.final), recorded: ch.length > 0 };
+}
+function splitHTML(phaseLists) {
+  const tot = {};
+  phaseLists.flat().forEach(p => { if (p.to > p.from && !p.guess) tot[p.status] = (tot[p.status] || 0) + (p.to - p.from); });
+  const sum = Object.values(tot).reduce((a, b) => a + b, 0);
+  if (!sum) return `<div class="fl-muted">–</div>`;
+  const seg = COLS.filter(c => tot[c.id]).map(c => ({ c, v: tot[c.id] }));
+  return `<div class="fl-split">${seg.map(x => `<div style="flex:${x.v};background:var(--s-${x.c.id})" title="${esc(x.c.name)}: ${fmtDur(x.v)}"></div>`).join('')}</div>
+    <div class="fl-legend">${seg.map(x => `<span><i style="background:var(--s-${x.c.id})"></i>${esc(x.c.name)} <b>${Math.round(x.v / sum * 100)} %</b> · ${fmtDur(x.v)}</span>`).join('')}</div>`;
+}
+function chainHTML(i, ph) {
+  const nodes = [`<div class="fl-node"><b>${FL.created}</b><small>${tsShort(i.created)}${i.source ? '<br>📍 ' + esc(i.source) : ''}</small></div>`];
+  ph.forEach(p => nodes.push(`<div class="fl-node" style="--c:var(--s-${p.status})"><b>${esc(statusName(p.status))}${p.guess ? ' ?' : ''}</b><small>${
+    p.final && isClosed(i) ? tsShort(p.from) : fmtDur(p.to - p.from) + (p.final ? ' · ' + FL.sofar : '')}${p.note ? '<br>' + esc(p.note) : ''}</small></div>`));
+  return `<div class="fl-chain">${nodes.join('<span class="fl-arrow">→</span>')}</div>`;
+}
+// Zeitstrahl: rows = [{ label, id?, phases, marks: [{ at, kind, title }] }], lines = [{ at, cls, title }]
+function ganttSVG(rows, lines) {
+  const all = rows.flatMap(r => [...r.phases.flatMap(p => [p.from, p.to]), ...r.marks.map(m => m.at)]).concat(lines.map(l => l.at)).filter(Number.isFinite);
+  let t0 = Math.min(...all), t1 = Math.max(...all, now());
+  if (t1 - t0 < 86400000) t1 = t0 + 86400000;
+  const pad = (t1 - t0) * 0.03; t0 -= pad; t1 += pad;
+  const W = 880, LW = 170, RH = 24, TOP = 26, H = TOP + rows.length * RH + 8;
+  const x = t => LW + (t - t0) / (t1 - t0) * (W - LW - 10);
+  const ticks = Array.from({ length: 6 }, (_, k) => t0 + (t1 - t0) * (k + 0.5) / 6);
+  const cut = (txt, n) => txt.length > n ? txt.slice(0, n - 1) + '…' : txt;
+  const COLOR = { done: 'var(--ok)', due: 'var(--warn)', late: 'var(--danger)', upd: 'var(--subtle)', dl: 'var(--danger)' };
+  return `<svg class="fl-svg" viewBox="0 0 ${W} ${H}" role="img">
+    ${ticks.map(t => `<text x="${x(t)}" y="14" text-anchor="middle">${tsShort(t)}</text><line x1="${x(t)}" x2="${x(t)}" y1="${TOP - 6}" y2="${H}" style="stroke:var(--border)" stroke-dasharray="2 3"/>`).join('')}
+    ${rows.map((r, k) => { const y = TOP + k * RH; return `<g class="${r.id ? 'fl-row' : ''}" ${r.id ? `data-id="${r.id}"` : ''}>
+      <rect class="bg" x="0" y="${y}" width="${W}" height="${RH}" rx="4" style="fill:transparent"/>
+      <text x="4" y="${y + RH / 2 + 4}">${esc(cut(r.label, 26))}<title>${esc(r.label)}${r.id ? ' – ' + FL.openTicket : ''}</title></text>
+      ${r.phases.filter(p => p.to > p.from).map(p => `<rect x="${x(p.from)}" y="${y + 6}" width="${Math.max(2, x(p.to) - x(p.from))}" height="${RH - 12}" rx="3" style="fill:var(--s-${p.status});opacity:${p.guess ? .4 : 1}"><title>${esc(statusName(p.status))}: ${tsShort(p.from)} – ${tsShort(p.to)} (${fmtDur(p.to - p.from)})${p.note ? ' · ' + esc(p.note) : ''}</title></rect>`).join('')}
+      ${r.phases.filter(p => p.final && p.status === 'done').map(p => `<circle cx="${x(p.from)}" cy="${y + RH / 2}" r="5" style="fill:var(--s-done)"><title>${esc(statusName('done'))} ${tsShort(p.from)}</title></circle>`).join('')}
+      ${r.marks.map(m => m.kind === 'upd'
+        ? `<line x1="${x(m.at)}" x2="${x(m.at)}" y1="${y + 5}" y2="${y + RH - 5}" style="stroke:${COLOR.upd};stroke-width:2"><title>${esc(m.title)}</title></line>`
+        : m.kind === 'done' ? `<circle cx="${x(m.at)}" cy="${y + RH / 2}" r="4.5" style="fill:${COLOR.done}"><title>${esc(m.title)}</title></circle>`
+        : `<path d="M${x(m.at)} ${y + RH / 2 - 6}l6 6-6 6-6-6z" style="fill:none;stroke:${COLOR[m.kind]};stroke-width:2"><title>${esc(m.title)}</title></path>`).join('')}
+    </g>`; }).join('')}
+    ${lines.map(l => `<line x1="${x(l.at)}" x2="${x(l.at)}" y1="${TOP - 8}" y2="${H}" style="stroke:${l.color};stroke-width:1.5" ${l.dash ? 'stroke-dasharray="4 3"' : ''}><title>${esc(l.title)}</title></line>`).join('')}
+  </svg>`;
+}
+function peopleHTML(items) {
+  const cnt = {};
+  items.forEach(i => new Set([...(i.stakeholders || []), i.status === 'waiting' ? i.waitingFor : ''].filter(Boolean)).forEach(p => cnt[p] = (cnt[p] || 0) + 1));
+  const list = Object.entries(cnt).sort((a, b) => b[1] - a[1]);
+  if (!list.length) return `<div class="fl-muted">${FL.noPeople}</div>`;
+  const max = list[0][1];
+  return `<div class="fl-people">${list.map(([p, n]) => { const d = Math.round(48 + 44 * n / max); return `<div class="fl-bub" style="width:${d}px;height:${d}px" title="${esc(p)}: ${n}"><span>${esc(p)}</span>${items.length > 1 ? `<b>${n}</b>` : ''}</div>`; }).join('')}</div>`;
+}
+function vennSVG(items) {
+  const cnt = {};
+  items.forEach(i => (i.stakeholders || []).forEach(p => cnt[p] = (cnt[p] || 0) + 1));
+  const top = Object.entries(cnt).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
+  if (top.length < 2) return '';
+  const three = top.length === 3, R = 82;
+  const C = three ? [[160, 105], [250, 105], [205, 180]] : [[160, 115], [250, 115]];
+  const POS = three
+    ? { '100': [125, 85], '010': [285, 85], '001': [205, 225], '110': [205, 80], '101': [162, 160], '011': [248, 160], '111': [205, 132] }
+    : { '10': [120, 120], '01': [290, 120], '11': [205, 120] };
+  const reg = {};
+  items.forEach(i => { const k = top.map(p => (i.stakeholders || []).includes(p) ? '1' : '0').join(''); if (k.includes('1')) (reg[k] ||= []).push(i.title || i.key); });
+  const COL = ['var(--accent)', 'var(--s-waiting)', 'var(--s-done)'];
+  const H = three ? 290 : 225;
+  return `<svg class="fl-svg" viewBox="0 0 410 ${H}" style="max-width:460px">
+    ${C.map(([cx, cy], k) => `<circle cx="${cx}" cy="${cy}" r="${R}" style="fill:${COL[k]};fill-opacity:.16;stroke:${COL[k]};stroke-width:1.5"/>`).join('')}
+    ${C.map(([cx, cy], k) => { const below = three && k === 2; return `<text x="${below ? cx + R + 6 : cx + (k ? 30 : -30)}" y="${below ? cy + R - 4 : cy - R - 6}" text-anchor="${below ? 'start' : 'middle'}" style="font-weight:600;fill:var(--text)">${esc(top[k])}</text>`; }).join('')}
+    ${Object.entries(POS).map(([k, [px, py]]) => reg[k] ? `<text x="${px}" y="${py + 5}" text-anchor="middle" style="font-size:15px;font-weight:700;fill:var(--text)">${reg[k].length}<title>${esc(reg[k].join('\n'))}</title></text>` : '').join('')}
+  </svg><div class="fl-muted">${FL.vennHint}</div>`;
+}
+const kpi = (label, val) => `<div class="fl-kpi"><small>${label}</small><b>${val}</b></div>`;
+function openFlow({ issue, goal }) {
+  let html = '';
+  if (issue) {
+    const i = issue, { phases, recorded } = phasesOf(i);
+    const end = isClosed(i) ? phases[phases.length - 1].from : now();
+    const subDone = i.checklist.filter(c => c.done).length;
+    $('#flowTitle').textContent = `${FL.title} · ${i.key} ${i.title || ''}`;
+    const marks = [];
+    i.checklist.forEach(c => {
+      if (c.done && c.doneAt) marks.push({ at: c.doneAt, kind: 'done', title: `☑ ${c.text} – ${FL.subDone} ${tsShort(c.doneAt)}` });
+      if (c.due) marks.push({ at: isoMs(c.due), kind: !c.done && c.due < today() ? 'late' : 'due', title: `⚑ ${c.text} – ${FL.subDue} ${fmtShort(c.due)}` });
+    });
+    const upd = showMode ? [] : i.comments.filter(c => !c.system).map(c => ({ at: c.at, kind: 'upd', title: `${tsShort(c.at)}: ${c.text.slice(0, 140)}` }));
+    const rows = [{ label: FL.rowStatus, phases, marks: [] }];
+    if (marks.length) rows.push({ label: FL.rowSubs, phases: [], marks });
+    if (upd.length) rows.push({ label: FL.rowUpd, phases: [], marks: upd });
+    const lines = [{ at: now(), color: 'var(--accent)', dash: true, title: FL.today }];
+    if (i.deadline) lines.push({ at: isoMs(i.deadline), color: 'var(--danger)', title: `${FL.deadline} ${fmtShort(i.deadline)}` });
+    if (i.target) lines.push({ at: isoMs(i.target), color: 'var(--warn)', dash: true, title: `${FL.target} ${fmtShort(i.target)}` });
+    html = `<div class="fl-kpis">${kpi(FL.total, fmtDur(end - i.created))}${kpi(FL.nowSt, esc(statusName(i.status)))}${kpi(FL.subs, i.checklist.length ? `${subDone}/${i.checklist.length}` : '–')}${kpi(FL.phases, Math.max(0, phases.length - 1))}</div>
+      <h4>${FL.flow}</h4>${chainHTML(i, phases)}${recorded ? '' : `<div class="fl-muted">${FL.noChanges}</div>`}
+      <h4>${FL.where}</h4>${splitHTML([phases])}
+      <h4>${FL.timeline}</h4>${ganttSVG(rows, lines)}
+      <h4>${FL.people}</h4>${peopleHTML([i])}
+      ${i.did || i.impact ? `<h4>${FL.impactBox}</h4><div class="fl-impact">${esc([i.did, i.impact].filter(Boolean).join('\n\n'))}</div>` : ''}`;
+  } else {
+    const g = goal, items = visIssues().filter(i => i.goalId === g.id).sort((a, b) => a.created - b.created);
+    $('#flowTitle').textContent = `${FL.title} · ${g.name}`;
+    if (!items.length) html = `<div class="empty">${FL.goalEmpty}</div>`;
+    else {
+      const ph = items.map(i => phasesOf(i).phases);
+      const counted = items.filter(i => i.status !== 'cancelled'), done = counted.filter(i => i.status === 'done').length;
+      const rows = items.map((i, k) => ({ id: i.id, label: `${i.status === 'cancelled' ? '✖ ' : ''}${i.title || i.key}`, phases: ph[k],
+        marks: i.deadline ? [{ at: isoMs(i.deadline), kind: i.deadline < today() && !isClosed(i) ? 'late' : 'due', title: `⚑ ${FL.deadline} ${fmtShort(i.deadline)}` }] : [] }));
+      const lines = [{ at: now(), color: 'var(--accent)', dash: true, title: FL.today }];
+      if (g.target) lines.push({ at: isoMs(g.target), color: 'var(--danger)', title: `${FL.target} ${fmtShort(g.target)}` });
+      const start = items[0].created, last = Math.max(...items.map(i => isClosed(i) ? (i.doneAt || i.cancelledAt || i.updated) : now()));
+      html = `<div class="fl-kpis">${kpi(FL.tickets, `${done}/${counted.length} ${FL.done}`)}${kpi(FL.span, `${tsShort(start)} – ${g.target ? fmtShort(g.target) : tsShort(last)}`)}${kpi(FL.total, fmtDur(last - start))}${kpi(FL.people, new Set(items.flatMap(i => [...(i.stakeholders || []), i.status === 'waiting' ? i.waitingFor : ''].filter(Boolean))).size)}</div>
+        <h4>${FL.where}</h4>${splitHTML(ph)}
+        <h4>${FL.timeline}</h4>${ganttSVG(rows, lines)}
+        <h4>${FL.venn}</h4>${vennSVG(items) || ''}${peopleHTML(items)}`;
+    }
+  }
+  $('#flowBody').innerHTML = html;
+  flowModal.hidden = false;
+}
+$('#flowBody').addEventListener('click', e => {
+  const r = e.target.closest('[data-id]'); if (!r) return;
+  flowModal.hidden = true; openIssue(r.dataset.id);
+});
+flowModal.addEventListener('mousedown', e => { if (e.target === flowModal) flowModal.hidden = true; });
+$('[data-close="flowModal"]').onclick = () => { flowModal.hidden = true; };
+
+const TABLE_KEY = 'jiratype.table';
 const tbl = (() => { try { return JSON.parse(safeGet(TABLE_KEY)) || {}; } catch { return {}; } })();
 tbl.sort ??= { col: 'key', dir: 1 }; tbl.ex ??= {}; tbl.hidden ??= ['type', 'updated', 'followUp', 'source', 'reason', 'meeting']; tbl.hideDone ??= false;
 const saveTbl = () => safeSet(TABLE_KEY, JSON.stringify(tbl));
 const IMP_ORDER = { must: 0, worth: 1, nice: 2, '': 3 };
-const dateText = s => s ? parseISO(s).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
+const dateText = s => s ? parseISO(s).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
 const opts = (list, val) => list.map(([k, n]) => `<option value="${esc(k)}" ${k === val ? 'selected' : ''}>${esc(n)}</option>`).join('');
 function dateCell(i, f) {
   const v = i[f], t = today(), done = !isActive(i) && f !== 'followUp';
@@ -1999,47 +2226,49 @@ function dateCell(i, f) {
 }
 const LCOLS = [
   { id: 'key', n: 'Key', fixed: true, text: i => i.key, sortv: i => parseInt(String(i.key).split('-').pop(), 10) || 0, cell: i => `<td class="mono">${esc(i.key)}</td>` },
-  { id: 'title', n: 'Title', fixed: true, nofilter: true, text: i => i.title, sortv: i => i.title.toLowerCase(), cell: i => `<td class="title" data-open>${esc(i.title) || '<i>(untitled)</i>'}</td>` },
+  { id: 'title', n: 'Titel', fixed: true, nofilter: true, text: i => i.title, sortv: i => i.title.toLowerCase(), cell: i => `<td class="title" data-open>${esc(i.title) || '<i>(ohne Titel)</i>'}</td>` },
   { id: 'status', n: 'Status', text: i => statusName(i.status), sortv: i => COLS.findIndex(c => c.id === i.status),
     cell: i => `<td><select class="cell-in status-pill s-${i.status}" data-f="status">${opts(COLS.map(c => [c.id, c.name]), i.status)}</select></td>` },
-  { id: 'waitingFor', n: '⏳ Waiting for', text: i => i.status === 'waiting' ? i.waitingFor : '', sortv: i => i.status === 'waiting' ? i.waitingFor.toLowerCase() : '',
+  { id: 'waitingFor', n: '⏳ Wartet auf', text: i => i.status === 'waiting' ? i.waitingFor : '', sortv: i => i.status === 'waiting' ? i.waitingFor.toLowerCase() : '',
     cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
-  { id: 'followUp', n: '⏰ Follow-up', text: i => dateText(i.followUp), sortv: i => i.followUp, cell: i => `<td>${dateCell(i, 'followUp')}</td>` },
-  { id: 'importance', n: 'Importance', text: i => IMPS[i.importance]?.n || '', sortv: i => IMP_ORDER[i.importance],
+  { id: 'stakeholders', n: "👥 Stakeholder", text: i => (i.stakeholders || []).join(', '), vals: i => i.stakeholders?.length ? i.stakeholders : ['(leer)'], sortv: i => (i.stakeholders || []).join(',').toLowerCase(),
+    cell: function (i) { return `<td title="${esc(this.text(i))}">${esc(this.text(i))}</td>`; } },
+  { id: 'followUp', n: '⏰ Wiedervorlage', text: i => dateText(i.followUp), sortv: i => i.followUp, cell: i => `<td>${dateCell(i, 'followUp')}</td>` },
+  { id: 'importance', n: 'Wichtigkeit', text: i => IMPS[i.importance]?.n || '', sortv: i => IMP_ORDER[i.importance],
     cell: i => `<td><select class="cell-in" data-f="importance">${opts([['', '—'], ...Object.entries(IMPS).map(([k, p]) => [k, p.n])], i.importance)}</select></td>` },
-  { id: 'goal', n: 'Goal', text: i => getGoal(i.goalId)?.name || '', sortv: i => (getGoal(i.goalId)?.name || '').toLowerCase(),
+  { id: 'goal', n: 'Ziel', text: i => getGoal(i.goalId)?.name || '', sortv: i => (getGoal(i.goalId)?.name || '').toLowerCase(),
     cell: i => `<td><select class="cell-in" data-f="goalId">${opts([['', '—'], ...state.goals.map(g => [g.id, g.name])], i.goalId || '')}</select></td>` },
-  { id: 'labels', n: 'Labels', text: i => i.labels.join(', '), vals: i => i.labels.length ? i.labels : ['(empty)'], sortv: i => i.labels.join(','),
+  { id: 'labels', n: 'Labels', text: i => i.labels.join(', '), vals: i => i.labels.length ? i.labels : ['(leer)'], sortv: i => i.labels.join(','),
     cell: i => `<td>${i.labels.map(l => `<span class="label">${esc(l)}</span>`).join(' ')}</td>` },
-  { id: 'target', n: '◎ Target date', text: i => dateText(i.target), sortv: i => i.target, cell: i => `<td>${dateCell(i, 'target')}</td>` },
+  { id: 'target', n: '◎ Ziel-Datum', text: i => dateText(i.target), sortv: i => i.target, cell: i => `<td>${dateCell(i, 'target')}</td>` },
   { id: 'deadline', n: '⚑ Deadline', text: i => dateText(i.deadline), sortv: i => i.deadline, cell: i => `<td>${dateCell(i, 'deadline')}</td>` },
-  { id: 'kw', n: 'Week', text: i => i.deadline ? 'Wk ' + String(isoWeek(i.deadline)[0]).padStart(2, '0') : '', sortv: i => i.deadline, cell: function (i) { return `<td>${this.text(i)}</td>`; } },
+  { id: 'kw', n: 'KW', text: i => i.deadline ? 'KW ' + String(isoWeek(i.deadline)[0]).padStart(2, '0') : '', sortv: i => i.deadline, cell: function (i) { return `<td>${this.text(i)}</td>`; } },
   { id: 'meeting', n: '🗣 Agenda', text: i => getMeet(i.meetingId)?.name || '', sortv: i => (getMeet(i.meetingId)?.name || '').toLowerCase(),
     cell: i => `<td><select class="cell-in" data-f="meetingId">${opts([['', '—'], ...state.meetings.map(m => [m.id, m.name])], i.meetingId || '')}</select></td>` },
-  { id: 'source', n: '📍 Source', text: i => i.source + (i.sourceDate ? ` (${dateText(i.sourceDate)})` : ''), vals: i => [i.source || '(empty)'], sortv: i => i.source.toLowerCase(),
+  { id: 'source', n: '📍 Quelle', text: i => i.source + (i.sourceDate ? ` (${dateText(i.sourceDate)})` : ''), vals: i => [i.source || '(leer)'], sortv: i => i.source.toLowerCase(),
     cell: function (i) { return `<td title="${esc(this.text(i))}">${esc(this.text(i))}</td>`; } },
-  { id: 'reason', n: '✖ Reason', text: i => i.status === 'cancelled' ? i.cancelReason : '', sortv: i => i.status === 'cancelled' ? i.cancelReason.toLowerCase() : '',
+  { id: 'reason', n: '✖ Grund', text: i => i.status === 'cancelled' ? i.cancelReason : '', sortv: i => i.status === 'cancelled' ? i.cancelReason.toLowerCase() : '',
     cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
-  { id: 'type', n: 'Type', text: i => TYPES[i.type].n, sortv: i => TYPES[i.type].n,
+  { id: 'type', n: 'Typ', text: i => TYPES[i.type].n, sortv: i => TYPES[i.type].n,
     cell: i => `<td><select class="cell-in" data-f="type">${opts(Object.entries(TYPES).map(([k, t]) => [k, t.n]), i.type)}</select></td>` },
-  { id: 'recur', n: '🔁 Repeat', text: i => { const r = getRule(i.recurId); return r ? freqText(r) : ''; }, sortv: i => getRule(i.recurId)?.freq || '', cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
-  { id: 'check', n: '☑ Sub-tasks', nofilter: true, text: i => i.checklist.length ? `${i.checklist.filter(c => c.done).length}/${i.checklist.length}` : '',
+  { id: 'recur', n: '🔁 Wiederholung', text: i => { const r = getRule(i.recurId); return r ? freqText(r) : ''; }, sortv: i => getRule(i.recurId)?.freq || '', cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
+  { id: 'check', n: '☑ Unteraufgaben', nofilter: true, text: i => i.checklist.length ? `${i.checklist.filter(c => c.done).length}/${i.checklist.length}` : '',
     sortv: i => i.checklist.length ? i.checklist.filter(c => c.done).length / i.checklist.length : '', cell: function (i) { return `<td>${this.text(i)}</td>`; } },
-  { id: 'private', n: '🔒 Private', privOnly: true, text: i => i.private ? 'private' : '', sortv: i => i.private ? 0 : 1,
+  { id: 'private', n: '🔒 Privat', privOnly: true, text: i => i.private ? 'privat' : '', sortv: i => i.private ? 0 : 1,
     cell: i => `<td style="text-align:center"><input type="checkbox" class="cell-in" data-f="private" ${i.private ? 'checked' : ''}></td>` },
-  { id: 'updated', n: 'Updated', nofilter: true, text: i => fmtDateTime(i.updated), sortv: i => i.updated, cell: i => `<td title="${fmtDateTime(i.updated)}">${relTime(i.updated)}</td>` },
+  { id: 'updated', n: 'Aktualisiert', nofilter: true, text: i => fmtDateTime(i.updated), sortv: i => i.updated, cell: i => `<td title="${fmtDateTime(i.updated)}">${relTime(i.updated)}</td>` },
 ];
 const colById = id => LCOLS.find(c => c.id === id);
 // Neue Spalten in bestehenden Tabellen-Einstellungen sinnvoll vorbelegen
 tbl.known ??= ['key', 'title', 'status', 'importance', 'goal', 'labels', 'target', 'deadline', 'type', 'recur', 'check', 'private', 'updated'];
 LCOLS.forEach(c => { if (!tbl.known.includes(c.id)) { if (['followUp', 'source', 'reason', 'meeting'].includes(c.id) && !tbl.hidden.includes(c.id)) tbl.hidden.push(c.id); tbl.known.push(c.id); } });
 saveTbl();
-const colVals = (c, i) => c.vals ? c.vals(i) : [c.text(i) || '(empty)'];
+const colVals = (c, i) => c.vals ? c.vals(i) : [c.text(i) || '(leer)'];
 const visCols = () => LCOLS.filter(c => !tbl.hidden.includes(c.id) && !(c.privOnly && showMode));
 function cmpVals(a, b) {
   const ea = a === '' || a == null, eb = b === '' || b == null;
   if (ea || eb) return ea && eb ? 0 : ea ? 1 : -1; // Leere immer ans Ende
-  return typeof a === 'number' && typeof b === 'number' ? a - b : String(a).localeCompare(String(b), 'en', { numeric: true });
+  return typeof a === 'number' && typeof b === 'number' ? a - b : String(a).localeCompare(String(b), 'de', { numeric: true });
 }
 function tableRows() {
   const q = ($('#lq').value || '').trim().toLowerCase();
@@ -2066,13 +2295,13 @@ function renderList() {
   const anyFilter = Object.values(tbl.ex).some(a => a.length) || tbl.hideDone || $('#lq').value.trim();
   $('#lReset').hidden = !anyFilter;
   $('#lHideDone').checked = tbl.hideDone;
-  $('#lCount').textContent = `${rows.length} of ${visIssues().length} tickets`;
+  $('#lCount').textContent = `${rows.length} von ${visIssues().length} Tickets`;
   $('#lTable').innerHTML = `<thead><tr>${cols.map(c => `<th data-col="${c.id}"><div class="th-inner">
-      <span class="th-sort ${tbl.sort.col === c.id ? 'sorted' : ''}" title="Sort">${c.n}${tbl.sort.col === c.id ? (tbl.sort.dir > 0 ? ' ↑' : ' ↓') : ''}</span>
-      ${c.nofilter ? '' : `<button class="th-filter ${tbl.ex[c.id]?.length ? 'on' : ''}" title="Filter"><svg class="ico" viewBox="0 0 24 24"><path d="M3 5h18l-7 8.5V19l-4 2v-7.5z"/></svg></button>`}
+      <span class="th-sort ${tbl.sort.col === c.id ? 'sorted' : ''}" title="Sortieren">${c.n}${tbl.sort.col === c.id ? (tbl.sort.dir > 0 ? ' ↑' : ' ↓') : ''}</span>
+      ${c.nofilter ? '' : `<button class="th-filter ${tbl.ex[c.id]?.length ? 'on' : ''}" title="Filtern"><svg class="ico" viewBox="0 0 24 24"><path d="M3 5h18l-7 8.5V19l-4 2v-7.5z"/></svg></button>`}
     </div></th>`).join('')}</tr></thead>
     <tbody>${rows.map(i => { const ds = dueState(i); return `<tr data-id="${i.id}" class="${ds ? 'due-' + ds : ''} ${isClosed(i) ? 'done' : ''}">${cols.map(c => c.cell(i)).join('')}</tr>`; }).join('')
-      || `<tr><td colspan="${cols.length}" class="empty" style="height:auto">No tickets match these filters.</td></tr>`}</tbody>`;
+      || `<tr><td colspan="${cols.length}" class="empty" style="height:auto">Keine Tickets für diese Filter.</td></tr>`}</tbody>`;
 }
 const lTable = $('#lTable');
 lTable.addEventListener('click', e => {
@@ -2104,7 +2333,7 @@ $('#lNew').onclick = () => { const i = createIssue({ status: 'todo' }); openIssu
 $('#lCsv').onclick = () => {
   const cols = visCols(), rows = tableRows();
   const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const csv = [cols.map(c => cell(c.n)).join(','), ...rows.map(i => cols.map(c => cell(c.text(i))).join(','))].join('\r\n');
+  const csv = [cols.map(c => cell(c.n)).join(';'), ...rows.map(i => cols.map(c => cell(c.text(i))).join(';'))].join('\r\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
   a.download = `tickets-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
@@ -2125,17 +2354,17 @@ function openFilterPop(colId, anchor) {
   closePop();
   const c = colById(colId);
   const counts = new Map(), sorts = new Map();
-  visIssues().forEach(i => colVals(c, i).forEach(v => { counts.set(v, (counts.get(v) || 0) + 1); if (!sorts.has(v)) sorts.set(v, c.vals ? (v === '(empty)' ? '' : v) : c.sortv(i)); }));
+  visIssues().forEach(i => colVals(c, i).forEach(v => { counts.set(v, (counts.get(v) || 0) + 1); if (!sorts.has(v)) sorts.set(v, c.vals ? (v === '(leer)' ? '' : v) : c.sortv(i)); }));
   const values = [...counts.keys()].sort((a, b) => cmpVals(sorts.get(a), sorts.get(b)));
   const ex = () => tbl.ex[colId] || [];
   const el = document.createElement('div'); el.className = 'pop'; el.dataset.col = colId;
   el.innerHTML = `<div class="pop-row"><button class="btn small" data-s="1">↑ A→Z</button><button class="btn small" data-s="-1">↓ Z→A</button></div>
-    <input type="text" placeholder="Search values…">
+    <input type="text" placeholder="Werte suchen…">
     <div class="pop-list">
-      <label><input type="checkbox" data-all> <b>(Select all)</b></label>
+      <label><input type="checkbox" data-all> <b>(Alle auswählen)</b></label>
       ${values.map((v, k) => `<label data-txt="${esc(v.toLowerCase())}"><input type="checkbox" data-i="${k}" ${ex().includes(v) ? '' : 'checked'}> ${esc(v)} <small>${counts.get(v)}</small></label>`).join('')}
     </div>
-    <div class="pop-row"><button class="btn small ghost" data-clear>Clear filter</button><button class="btn small primary" data-close>OK</button></div>`;
+    <div class="pop-row"><button class="btn small ghost" data-clear>Filter löschen</button><button class="btn small primary" data-close>OK</button></div>`;
   const syncAll = () => { const all = $('[data-all]', el); all.checked = !ex().length; all.indeterminate = ex().length > 0 && ex().length < values.length; };
   const apply = list => { tbl.ex[colId] = list; if (!list.length) delete tbl.ex[colId]; saveTbl(); renderList(); syncAll(); };
   el.addEventListener('change', e => {
@@ -2162,7 +2391,7 @@ $('#lColsBtn').onclick = e => {
   if (pop?.dataset.col === '__cols') return closePop();
   closePop();
   const el = document.createElement('div'); el.className = 'pop'; el.dataset.col = '__cols';
-  el.innerHTML = `<b>Visible columns</b><div class="pop-list">${LCOLS.filter(c => !c.fixed && !(c.privOnly && showMode)).map(c =>
+  el.innerHTML = `<b>Sichtbare Spalten</b><div class="pop-list">${LCOLS.filter(c => !c.fixed && !(c.privOnly && showMode)).map(c =>
     `<label><input type="checkbox" data-c="${c.id}" ${tbl.hidden.includes(c.id) ? '' : 'checked'}> ${c.n}</label>`).join('')}</div>`;
   el.addEventListener('change', ev => {
     const id = ev.target.dataset.c;
@@ -2173,20 +2402,20 @@ $('#lColsBtn').onclick = e => {
 };
 
 /* ================= Prompts (KI-Vorlagen + Import) ================= */
-const PROMPT_KEY = 'jiratype-en.prompt';
+const PROMPT_KEY = 'jiratype.prompt';
 let curPromptId = safeGet(PROMPT_KEY);
 let pendingImport = [];
 const curPrompt = () => state.prompts.find(p => p.id === curPromptId);
 function renderPrompts() {
   if (!curPrompt()) curPromptId = state.prompts[0]?.id || null;
-  $('#promptList').innerHTML = state.prompts.map(p => `<div class="note-item ${p.id === curPromptId ? 'active' : ''}" data-pid="${p.id}"><b>${esc(p.name) || 'Untitled'}</b><small>${esc(p.text.slice(0, 60))}</small></div>`).join('')
-    || '<div class="empty">No templates</div>';
+  $('#promptList').innerHTML = state.prompts.map(p => `<div class="note-item ${p.id === curPromptId ? 'active' : ''}" data-pid="${p.id}"><b>${esc(p.name) || 'Ohne Namen'}</b><small>${esc(p.text.slice(0, 60))}</small></div>`).join('')
+    || '<div class="empty">Keine Vorlagen</div>';
   const p = curPrompt();
   if (document.activeElement !== $('#pName')) $('#pName').value = p?.name || '';
   if (document.activeElement !== $('#pText')) $('#pText').value = p?.text || '';
   $('#pName').disabled = $('#pText').disabled = $('#pDel').disabled = !p;
   const sel = $('#pNote'), v = sel.value;
-  sel.innerHTML = `<option value="">— Use a note (optional) —</option>` + [...state.notes].sort((a, b) => b.updated - a.updated).map(n => `<option value="${n.id}">${esc(n.title || 'Untitled')}</option>`).join('');
+  sel.innerHTML = `<option value="">— Notiz übernehmen (optional) —</option>` + [...state.notes].sort((a, b) => b.updated - a.updated).map(n => `<option value="${n.id}">${esc(n.title || 'Ohne Titel')}</option>`).join('');
   sel.value = state.notes.some(n => n.id === v) ? v : '';
 }
 $('#promptList').addEventListener('click', e => {
@@ -2194,13 +2423,13 @@ $('#promptList').addEventListener('click', e => {
   curPromptId = it.dataset.pid; safeSet(PROMPT_KEY, curPromptId); renderPrompts();
 });
 $('#newPromptBtn').onclick = () => {
-  const p = { id: uid(), name: 'New template', text: 'Today is {{TODAY}}.\n\n…\n\n' + JSON_FORMAT + '\n\n"""\n{{NOTE}}\n"""' };
+  const p = { id: uid(), name: 'Neue Vorlage', text: 'Heute ist {{HEUTE}}.\n\n…\n\n' + JSON_FORMAT + '\n\n"""\n{{NOTIZ}}\n"""' };
   state.prompts.push(p); curPromptId = p.id; safeSet(PROMPT_KEY, p.id); save(); renderPrompts(); $('#pName').select();
 };
-$('#pName').addEventListener('input', e => { const p = curPrompt(); if (!p) return; p.name = e.target.value; save(); const b = $(`[data-pid="${p.id}"] b`); if (b) b.textContent = p.name || 'Untitled'; });
+$('#pName').addEventListener('input', e => { const p = curPrompt(); if (!p) return; p.name = e.target.value; save(); const b = $(`[data-pid="${p.id}"] b`); if (b) b.textContent = p.name || 'Ohne Namen'; });
 $('#pText').addEventListener('input', e => { const p = curPrompt(); if (p) { p.text = e.target.value; save(); } });
 $('#pDel').onclick = () => {
-  const p = curPrompt(); if (!p || !confirm(`Delete template "${p.name}"?`)) return;
+  const p = curPrompt(); if (!p || !confirm(`Vorlage „${p.name}“ löschen?`)) return;
   state.prompts = state.prompts.filter(x => x.id !== p.id); curPromptId = null; save(); renderPrompts();
 };
 $$('.ph-chips [data-ph]').forEach(b => b.onclick = () => {
@@ -2218,18 +2447,18 @@ function fillPrompt(text, input) {
     ...(i.status === 'waiting' ? { waitingFor: i.waitingFor, followUp: i.followUp } : {}),
   }));
   const map = {
-    '{{NOTE}}': input.trim() || '(none)',
-    '{{TODAY}}': `${today()} (${new Date().toLocaleDateString('en-GB', { weekday: 'long' })})`,
-    '{{GOALS}}': state.goals.map(g => `"${g.name}"`).join(', ') || '(none)',
-    '{{LABELS}}': [...new Set(state.issues.flatMap(i => i.labels))].join(', ') || '(none)',
-    '{{OPEN_TICKETS}}': JSON.stringify(open, null, 1),
+    '{{NOTIZ}}': input.trim() || '(keine)',
+    '{{HEUTE}}': `${today()} (${new Date().toLocaleDateString('de-DE', { weekday: 'long' })})`,
+    '{{ZIELE}}': state.goals.map(g => `"${g.name}"`).join(', ') || '(keine)',
+    '{{LABELS}}': [...new Set(state.issues.flatMap(i => i.labels))].join(', ') || '(keine)',
+    '{{OFFENE_TICKETS}}': JSON.stringify(open, null, 1),
   };
   return Object.entries(map).reduce((t, [k, v]) => t.split(k).join(v), text);
 }
 $('#pCopy').onclick = async () => {
   const p = curPrompt(); if (!p) return;
   const text = fillPrompt(p.text, $('#pInput').value);
-  await copyText(text, $('#pCopyMsg'), `✓ Copied (${text.length.toLocaleString('en-GB')} characters)`);
+  await copyText(text, $('#pCopyMsg'), `✓ Kopiert (${text.length.toLocaleString('de-DE')} Zeichen)`);
 };
 
 // KI-Antwort einlesen: JSON (auch in ```-Blöcken) oder einfache Liste
@@ -2294,7 +2523,7 @@ function applyItem({ p, existing }) {
     if (p.checklist) p.checklist.forEach(text => { if (!existing.checklist.some(c => c.text === text)) existing.checklist.push({ id: uid(), text, done: false }); });
     if (p.status) setStatus(existing, p.status, { reason: '', ask: false });
     existing.updated = now();
-    existing.comments.unshift({ id: uid(), text: 'Updated via AI import', at: now(), system: true });
+    existing.comments.unshift({ id: uid(), text: 'Per KI-Import aktualisiert', at: now(), system: true });
     if (p.repeat && !getRule(existing.recurId)) makeRule(existing, p.repeat, p.days);
   } else {
     const i = createIssue({ ...fields, status: p.status || 'todo', ...(p.status === 'waiting' && !fields.followUp ? { followUp: addWorkdays(today(), 3) } : {}), checklist: (p.checklist || []).map(text => ({ id: uid(), text, done: false })) });
@@ -2303,24 +2532,24 @@ function applyItem({ p, existing }) {
 }
 $('#pParse').onclick = () => {
   const out = $('#pPreview'), text = $('#pAnswer').value.trim();
-  if (!text) { out.innerHTML = '<p class="err-msg">Please paste the AI answer first.</p>'; return; }
+  if (!text) { out.innerHTML = '<p class="err-msg">Bitte erst die KI-Antwort einfügen.</p>'; return; }
   pendingImport = extractItems(text).map(mapItem).filter(Boolean).filter(x => x.existing || x.p.title);
-  if (!pendingImport.length) { out.innerHTML = '<p class="err-msg">No tasks found. Tip: ask the AI for a JSON array (see template).</p>'; return; }
+  if (!pendingImport.length) { out.innerHTML = '<p class="err-msg">Keine Aufgaben gefunden. Tipp: die KI um ein JSON-Array bitten (siehe Vorlage).</p>'; return; }
   out.innerHTML = `<div class="table-wrap" style="margin:4px 0;max-height:360px"><table class="grid"><thead><tr>
-      <th><div class="th-inner"><input type="checkbox" id="pAll" checked></div></th><th><div class="th-inner">Action</div></th><th><div class="th-inner">Title</div></th>
-      <th><div class="th-inner">Status</div></th><th><div class="th-inner">Importance</div></th><th><div class="th-inner">Goal</div></th>
+      <th><div class="th-inner"><input type="checkbox" id="pAll" checked></div></th><th><div class="th-inner">Aktion</div></th><th><div class="th-inner">Titel</div></th>
+      <th><div class="th-inner">Status</div></th><th><div class="th-inner">Wichtigkeit</div></th><th><div class="th-inner">Ziel</div></th>
       <th><div class="th-inner">◎ / ⚑</div></th><th><div class="th-inner">Labels</div></th><th><div class="th-inner">☑</div></th></tr></thead>
     <tbody>${pendingImport.map((x, k) => { const p = x.p; return `<tr>
       <td><input type="checkbox" data-k="${k}" checked></td>
-      <td>${x.existing ? `<span class="st st-doing">Update ${esc(x.existing.key)}</span>` : (x.key ? `<span class="st" title="Key ${esc(x.key)} not found">New</span>` : '<span class="st st-done">New</span>')}</td>
+      <td>${x.existing ? `<span class="st st-doing">Update ${esc(x.existing.key)}</span>` : (x.key ? `<span class="st" title="Key ${esc(x.key)} nicht gefunden">Neu</span>` : '<span class="st st-done">Neu</span>')}</td>
       <td style="white-space:normal;min-width:200px">${esc(p.title || x.existing?.title || '')}${p.repeat ? ` <small class="muted">🔁 ${esc(freqText({ freq: p.repeat, days: p.days || [] }))}</small>` : ''}${p.desc ? `<br><small class="muted">${esc(p.desc.slice(0, 120))}</small>` : ''}</td>
       <td>${p.status ? statusName(p.status) : (x.existing ? '' : 'To Do')}</td>
       <td>${impChip(p.importance || '')}</td>
-      <td>${p.goal ? esc(p.goal) + (state.goals.some(g => g.name.toLowerCase() === p.goal.toLowerCase()) ? '' : ' <small class="muted">(new)</small>') : ''}</td>
+      <td>${p.goal ? esc(p.goal) + (state.goals.some(g => g.name.toLowerCase() === p.goal.toLowerCase()) ? '' : ' <small class="muted">(neu)</small>') : ''}</td>
       <td>${p.target ? '◎ ' + fmtShort(p.target) : ''} ${p.deadline ? '⚑ ' + fmtShort(p.deadline) : ''}</td>
       <td>${(p.labels || []).map(l => `<span class="label">${esc(l)}</span>`).join(' ')}</td>
       <td>${p.checklist?.length || ''}</td></tr>`; }).join('')}</tbody></table></div>
-    <div class="ph-chips"><button class="btn primary" id="pImport">Import selected</button><label class="check-field"><input type="checkbox" id="pPriv"> mark new tickets as 🔒 private</label></div>`;
+    <div class="ph-chips"><button class="btn primary" id="pImport">Ausgewählte übernehmen</button><label class="check-field"><input type="checkbox" id="pPriv"> neue Tickets als 🔒 privat</label></div>`;
   $('#pAll').onchange = e => $$('[data-k]', out).forEach(cb => cb.checked = e.target.checked);
   $('#pImport').onclick = () => {
     const chosen = $$('[data-k]', out).filter(cb => cb.checked).map(cb => pendingImport[cb.dataset.k]);
@@ -2330,13 +2559,13 @@ $('#pParse').onclick = () => {
     chosen.forEach(x => { if (priv && !x.existing && x.p.private === undefined) x.p.private = true; applyItem(x); x.existing ? updated++ : created++; });
     save(); renderFilterOptions(); renderBoard();
     pendingImport = []; $('#pAnswer').value = '';
-    out.innerHTML = `<p class="ok-msg">✓ ${created} ticket(s) created${updated ? `, ${updated} updated` : ''}. <button class="btn small" id="pToBoard">Go to board</button> <button class="btn small" id="pToList">Go to list</button></p>`;
+    out.innerHTML = `<p class="ok-msg">✓ ${created} Ticket(s) angelegt${updated ? `, ${updated} aktualisiert` : ''}. <button class="btn small" id="pToBoard">Zum Board</button> <button class="btn small" id="pToList">Zur Liste</button></p>`;
     $('#pToBoard').onclick = () => showView('board');
     $('#pToList').onclick = () => showView('list');
   };
 };
 
-async function copyText(text, msgEl, msg = '✓ Copied') {
+async function copyText(text, msgEl, msg = '✓ Kopiert') {
   try { await navigator.clipboard.writeText(text); }
   catch {
     const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
@@ -2353,14 +2582,14 @@ const short = s => s ? fmtShort(s) : '';
 // Eine Zeile für Text-Exporte (Wochenrückblick, Agenda, Sync-Vorbereitung)
 function exportLine(i, o = {}, extra = '') {
   const g = getGoal(i.goalId);
-  let line = `• ${o.keys ? i.key + ' ' : ''}${i.title || '(untitled)'}${o.goals && g ? ` [${g.name}]` : ''}${extra ? ' – ' + extra : ''}`;
+  let line = `• ${o.keys ? i.key + ' ' : ''}${i.title || '(ohne Titel)'}${o.goals && g ? ` [${g.name}]` : ''}${extra ? ' – ' + extra : ''}`;
   if (o.subs) i.checklist.filter(c => !c.done).forEach(c => { line += `\n    ◦ ${c.text}`; });
   return line;
 }
-const waitExtra = i => `waiting for ${i.waitingFor || '?'} (${sinceText(i.statusAt || i.updated)}${i.followUp ? `, follow up ${short(i.followUp)}` : ''})`;
-const doingExtra = i => [i.deadline ? `Deadline ${short(i.deadline)}` : '', i.checklist.length ? `${i.checklist.filter(c => c.done).length}/${i.checklist.length} sub-tasks` : ''].filter(Boolean).join(', ');
-const dateExtra = i => [i.importance === 'must' ? 'Must' : '', i.target ? `◎ ${short(i.target)}` : '', i.deadline ? `⚑ ${short(i.deadline)}` : ''].filter(Boolean).join(', ');
-const cancelledAtOf = i => i.cancelledAt || i.comments.find(c => c.system && /→ Cancelled/.test(c.text))?.at || i.updated;
+const waitExtra = i => `wartet auf ${i.waitingFor || '?'} (${sinceText(i.statusAt || i.updated)}${i.followUp ? `, nachfassen ${short(i.followUp)}` : ''})`;
+const doingExtra = i => [i.deadline ? `Deadline ${short(i.deadline)}` : '', i.checklist.length ? `${i.checklist.filter(c => c.done).length}/${i.checklist.length} Unteraufgaben` : ''].filter(Boolean).join(', ');
+const dateExtra = i => [i.importance === 'must' ? 'Pflicht' : '', i.target ? `◎ ${short(i.target)}` : '', i.deadline ? `⚑ ${short(i.deadline)}` : ''].filter(Boolean).join(', ');
+const cancelledAtOf = i => i.cancelledAt || i.comments.find(c => c.system && /→ Gestrichen/.test(c.text))?.at || i.updated;
 const tsIn = (ts, from, to) => { if (!ts) return false; const d = isoOf(new Date(ts)); return d >= from && d <= to; };
 function section(title, items, fn) { return items.length ? `${title} (${items.length})\n${items.map(fn).join('\n')}\n\n` : ''; }
 
@@ -2398,7 +2627,7 @@ const agendaItems = m => visIssues().filter(i => i.meetingId === m.id && !isClos
 const fromMeeting = m => visIssues().filter(i => !isClosed(i) && i.source && i.source.trim().toLowerCase() === m.name.trim().toLowerCase());
 function agendaText(m) {
   const items = agendaItems(m).filter(i => !i.private);
-  return `Agenda: ${m.name}${m.next ? ' – ' + fmtDate(m.next) : ''}\n\n` + (items.length ? items.map(i => exportLine(i, {}, i.status === 'waiting' ? waitExtra(i) : [statusName(i.status), dateExtra(i)].filter(Boolean).join(', '))).join('\n') : '(no open items)');
+  return `Agenda: ${m.name}${m.next ? ' – ' + fmtDate(m.next) : ''}\n\n` + (items.length ? items.map(i => exportLine(i, {}, i.status === 'waiting' ? waitExtra(i) : [statusName(i.status), dateExtra(i)].filter(Boolean).join(', '))).join('\n') : '(keine offenen Punkte)');
 }
 function renderMeetings() {
   const wrap = $('#view-meetings');
@@ -2407,29 +2636,29 @@ function renderMeetings() {
   $('#meetGrid').innerHTML = state.meetings.length ? state.meetings.map(m => {
     const items = agendaItems(m), src = fromMeeting(m);
     const li = (i, ok) => `<li data-id="${i.id}" class="${isClosed(i) ? 'done' : ''}"><span class="st st-${i.status}">${statusName(i.status)}</span>
-      <span class="t">${esc(i.title || '(untitled)')}${i.status === 'waiting' && i.waitingFor ? ` <small class="muted">⏳ ${esc(i.waitingFor)}</small>` : ''}</span>${dateHTML(i)}
-      ${ok ? `<button class="btn small m-ok" data-ok="${i.id}" title="Discussed in the meeting – remove from agenda">✓ discussed</button>` : ''}</li>`;
+      <span class="t">${esc(i.title || '(ohne Titel)')}${i.status === 'waiting' && i.waitingFor ? ` <small class="muted">⏳ ${esc(i.waitingFor)}</small>` : ''}</span>${dateHTML(i)}
+      ${ok ? `<button class="btn small m-ok" data-ok="${i.id}" title="Im Meeting besprochen – von der Agenda nehmen">✓ besprochen</button>` : ''}</li>`;
     return `<div class="goal" data-mid="${m.id}" style="--g:var(--accent)">
       <div class="goal-head">
         <span class="goal-av" style="--g:var(--accent)"><svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.3M15.5 4.7a3.5 3.5 0 0 1 0 6.6"/></svg></span>
-        <input class="title-input m-name" value="${esc(m.name)}" placeholder="Meeting name">
-        <button class="btn danger small m-del" title="Delete meeting (tickets are kept)">Delete</button>
+        <input class="title-input m-name" value="${esc(m.name)}" placeholder="Name des Meetings">
+        <button class="btn danger small m-del" title="Meeting löschen (Tickets bleiben erhalten)">Löschen</button>
       </div>
       <div class="goal-meta">
-        <label>Next meeting <input type="date" class="inline-input m-next" value="${esc(m.next || '')}"></label>
+        <label>Nächster Termin <input type="date" class="inline-input m-next" value="${esc(m.next || '')}"></label>
         <select class="inline-input m-freq" style="height:30px">${Object.entries(MEET_FREQS).map(([k, n]) => `<option value="${k}" ${k === m.freq ? 'selected' : ''}>${n}</option>`).join('')}</select>
       </div>
-      <div class="sec-label" style="margin:2px 0 0">Agenda <small>${items.length} open items</small></div>
-      <ul class="goal-issues">${items.map(i => li(i, true)).join('') || '<li style="cursor:default;color:var(--subtle)">No items – choose "🗣 On agenda for" in a ticket or use "+ Item".</li>'}</ul>
+      <div class="sec-label" style="margin:2px 0 0">Agenda <small>${items.length} offene Punkte</small></div>
+      <ul class="goal-issues">${items.map(i => li(i, true)).join('') || '<li style="cursor:default;color:var(--subtle)">Keine Punkte – im Ticket „🗣 Auf Agenda für“ wählen oder „+ Punkt“.</li>'}</ul>
       <div class="ph-chips">
-        <button class="btn ghost small m-add">+ Item</button>
-        <button class="btn small m-copy">📋 Copy agenda</button>
-        <button class="btn primary small m-prep" title="Ready-made text for the meeting: agenda, done, in progress, blockers, next steps">📝 Sync prep</button>
+        <button class="btn ghost small m-add">+ Punkt</button>
+        <button class="btn small m-copy">📋 Agenda kopieren</button>
+        <button class="btn primary small m-prep" title="Fertiger Text für das Meeting: Agenda, Erledigtes, In Arbeit, Blocker, Nächste Schritte">📝 Sync-Vorbereitung</button>
         <span class="m-msg"></span>
       </div>
-      ${src.length ? `<details><summary>📍 ${src.length} open task(s) from this meeting</summary><ul class="goal-issues" style="margin-top:6px">${src.map(i => li(i, false)).join('')}</ul></details>` : ''}
+      ${src.length ? `<details><summary>📍 ${src.length} offene Aufgabe(n) aus diesem Meeting</summary><ul class="goal-issues" style="margin-top:6px">${src.map(i => li(i, false)).join('')}</ul></details>` : ''}
     </div>`;
-  }).join('') : `<div class="empty" style="grid-column:1/-1">No meetings yet. Add e.g. your weekly sync – open items then show up for the next meeting.</div>`;
+  }).join('') : `<div class="empty" style="grid-column:1/-1">Noch keine Meetings. Lege z. B. deinen Jour fixe an – offene Punkte tauchen dann beim nächsten Termin auf.</div>`;
 }
 $('#newMeetBtn').onclick = () => { const m = createMeeting(''); renderMeetings(); renderFilterOptions(); $(`[data-mid="${m.id}"] .m-name`)?.focus(); };
 $('#view-meetings').addEventListener('input', e => {
@@ -2439,7 +2668,7 @@ $('#view-meetings').addEventListener('input', e => {
 $('#view-meetings').addEventListener('focusout', e => {
   if (!e.target.matches('.m-name')) return;
   const m = getMeet(e.target.closest('[data-mid]').dataset.mid);
-  if (m && !m.name.trim()) { m.name = 'New meeting'; save(); }
+  if (m && !m.name.trim()) { m.name = 'Neues Meeting'; save(); }
   setTimeout(() => { renderFilterOptions(); renderBoard(); renderMeetings(); }, 0);
 });
 $('#view-meetings').addEventListener('change', e => {
@@ -2455,18 +2684,18 @@ $('#view-meetings').addEventListener('click', e => {
   if (ok) {
     const i = getIssue(ok.dataset.ok);
     i.meetingId = null; i.updated = now();
-    i.comments.unshift({ id: uid(), text: `Discussed in meeting "${m.name}"`, at: now(), system: true });
+    i.comments.unshift({ id: uid(), text: `Im Meeting „${m.name}“ besprochen`, at: now(), system: true });
     save(); renderMeetings(); return;
   }
   if (e.target.closest('.m-del')) {
-    if (!confirm(`Delete meeting "${m.name}"? The tickets are kept, only the agenda assignment is removed.`)) return;
+    if (!confirm(`Meeting „${m.name}“ löschen? Die Tickets bleiben erhalten, nur die Agenda-Zuordnung wird entfernt.`)) return;
     state.meetings = state.meetings.filter(x => x.id !== m.id);
     state.issues.forEach(i => { if (i.meetingId === m.id) i.meetingId = null; });
     if (filters.meet === m.id) filters.meet = '';
     save(); renderAll(); return;
   }
   if (e.target.closest('.m-add')) { const i = createIssue({ meetingId: m.id, status: 'todo' }); openIssue(i.id, true); return; }
-  if (e.target.closest('.m-copy')) { copyText(agendaText(m), $('.m-msg', card), '✓ Agenda copied'); return; }
+  if (e.target.closest('.m-copy')) { copyText(agendaText(m), $('.m-msg', card), '✓ Agenda kopiert'); return; }
   if (e.target.closest('.m-prep')) { openPrep(m); return; }
   const li = e.target.closest('li[data-id]'); if (li) openIssue(li.dataset.id);
 });
@@ -2477,7 +2706,7 @@ function openPrep(m) {
   prepMeet = m;
   const ref = m.next || today();
   $('#prepSince').value = m.freq === 'none' ? addDays(today(), -7) : stepMeetBack(ref, m.freq);
-  $('#prepTitle').textContent = `📝 Sync prep: ${m.name}`;
+  $('#prepTitle').textContent = `📝 Sync-Vorbereitung: ${m.name}`;
   renderPrep(); $('#prepModal').hidden = false;
 }
 function renderPrep() {
@@ -2488,22 +2717,22 @@ function renderPrep() {
   const agenda = agendaItems(m).filter(i => !i.private);
   const agendaIds = new Set(agenda.map(i => i.id));
   const rest = pool.filter(i => !agendaIds.has(i.id));
-  let out = `Sync prep: ${m.name}${m.next ? ' – ' + fmtDate(m.next) : ''}\nPeriod: since ${fmtDate(since)}\n\n`;
-  out += section('🗣 Agenda / to discuss', agenda, i => exportLine(i, o, i.status === 'waiting' ? waitExtra(i) : [statusName(i.status), dateExtra(i)].filter(Boolean).join(', ')));
-  out += section(`✅ Done since ${short(since)}`, rest.filter(i => i.status === 'done' && tsIn(i.doneAt, since, t)), i => exportLine(i, { ...o, subs: false }));
-  out += section('🔄 In progress', rest.filter(i => i.status === 'doing'), i => exportLine(i, o, doingExtra(i)));
-  out += section('⏳ Blockers / waiting for', rest.filter(i => i.status === 'waiting'), i => exportLine(i, o, waitExtra(i)));
-  out += section('⚠ Overdue', rest.filter(i => isActive(i) && i.status !== 'waiting' && i.deadline && i.deadline < t), i => exportLine(i, o, `deadline was ${short(i.deadline)}`));
-  out += section(`📅 Coming up – until ${short(until)}`, rest.filter(i => isActive(i) && i.status !== 'doing' && i.status !== 'waiting' && ((i.target && i.target >= t && i.target <= until) || (i.deadline && i.deadline >= t && i.deadline <= until))), i => exportLine(i, o, dateExtra(i)));
-  out += section(`✖ Cancelled since ${short(since)}`, rest.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), since, t)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'reason: ' + i.cancelReason : ''));
+  let out = `Sync-Vorbereitung: ${m.name}${m.next ? ' – ' + fmtDate(m.next) : ''}\nZeitraum: seit ${fmtDate(since)}\n\n`;
+  out += section('🗣 Agenda / zu besprechen', agenda, i => exportLine(i, o, i.status === 'waiting' ? waitExtra(i) : [statusName(i.status), dateExtra(i)].filter(Boolean).join(', ')));
+  out += section(`✅ Erledigt seit ${short(since)}`, rest.filter(i => i.status === 'done' && tsIn(i.doneAt, since, t)), i => exportLine(i, { ...o, subs: false }));
+  out += section('🔄 In Arbeit', rest.filter(i => i.status === 'doing'), i => exportLine(i, o, doingExtra(i)));
+  out += section('⏳ Blocker / warte auf', rest.filter(i => i.status === 'waiting'), i => exportLine(i, o, waitExtra(i)));
+  out += section('⚠ Überfällig', rest.filter(i => isActive(i) && i.status !== 'waiting' && i.deadline && i.deadline < t), i => exportLine(i, o, `Deadline war ${short(i.deadline)}`));
+  out += section(`📅 Als Nächstes – bis ${short(until)}`, rest.filter(i => isActive(i) && i.status !== 'doing' && i.status !== 'waiting' && ((i.target && i.target >= t && i.target <= until) || (i.deadline && i.deadline >= t && i.deadline <= until))), i => exportLine(i, o, dateExtra(i)));
+  out += section(`✖ Gestrichen seit ${short(since)}`, rest.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), since, t)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'Grund: ' + i.cancelReason : ''));
   $('#prepOut').value = out.trim() + '\n';
 }
 ['#prepKeys', '#prepSubs', '#prepSince'].forEach(sel => $(sel).addEventListener('change', renderPrep));
 $('#prepCopy').onclick = () => copyText($('#prepOut').value, $('#prepMsg'));
-$('#prepDownload').onclick = () => downloadText($('#prepOut').value, `sync-prep-${(prepMeet?.name || 'meeting').toLowerCase().replace(/[^a-z0-9äöüß]+/gi, '-')}-${today()}.txt`);
+$('#prepDownload').onclick = () => downloadText($('#prepOut').value, `sync-vorbereitung-${(prepMeet?.name || 'meeting').toLowerCase().replace(/[^a-z0-9äöüß]+/gi, '-')}-${today()}.txt`);
 
 /* ================= Wochenrückblick ================= */
-const REV_KEY = 'jiratype-en.review';
+const REV_KEY = 'jiratype.review';
 const rev = (() => { try { return JSON.parse(safeGet(REV_KEY)) || {}; } catch { return {}; } })();
 rev.sec ??= { done: true, doing: true, waiting: true, late: true, next: true, cancelled: false, paused: false };
 rev.opt ??= { keys: false, goals: true, subs: false, priv: false };
@@ -2515,17 +2744,17 @@ function renderReview() {
   const mon = isoOf(new Date(base.getFullYear(), base.getMonth(), base.getDate() - ((base.getDay() + 6) % 7) + revOffset * 7));
   const sun = addDays(mon, 6), nMon = addDays(mon, 7), nSun = addDays(mon, 13), t = today();
   const [kw] = isoWeek(mon);
-  $('#revTitle').textContent = `Wk ${kw} · ${short(mon)}–${short(sun)}`;
+  $('#revTitle').textContent = `KW ${kw} · ${short(mon)}–${short(sun)}`;
   const o = rev.opt, sec = rev.sec;
   const pool = state.issues.filter(i => !i.private || (o.priv && !showMode));
-  let out = `Weekly review Wk ${kw} (${dateText(mon)} – ${dateText(sun)})\n\n`;
-  if (sec.done) out += section('✅ Done', pool.filter(i => i.status === 'done' && tsIn(i.doneAt, mon, sun)), i => exportLine(i, { ...o, subs: false }));
-  if (sec.doing) out += section('🔄 In progress', pool.filter(i => i.status === 'doing'), i => exportLine(i, o, doingExtra(i)));
-  if (sec.waiting) out += section('⏳ Waiting for', pool.filter(i => i.status === 'waiting'), i => exportLine(i, o, waitExtra(i)));
-  if (sec.late) out += section('⚠ Overdue', pool.filter(i => isActive(i) && i.status !== 'waiting' && i.deadline && i.deadline < t), i => exportLine(i, o, `deadline was ${short(i.deadline)}`));
-  if (sec.next) out += section(`📅 Next week · Wk ${isoWeek(nMon)[0]}`, pool.filter(i => isActive(i) && ((i.target >= nMon && i.target <= nSun) || (i.deadline >= nMon && i.deadline <= nSun))), i => exportLine(i, o, dateExtra(i)));
-  if (sec.cancelled) out += section('✖ Cancelled', pool.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), mon, sun)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'reason: ' + i.cancelReason : ''));
-  if (sec.paused) out += section('⏸ Paused', pool.filter(i => i.status === 'paused'), i => exportLine(i, { ...o, subs: false }, i.followUp ? 'resume on ' + short(i.followUp) : ''));
+  let out = `Wochenrückblick KW ${kw} (${dateText(mon)} – ${dateText(sun)})\n\n`;
+  if (sec.done) out += section('✅ Erledigt', pool.filter(i => i.status === 'done' && tsIn(i.doneAt, mon, sun)), i => exportLine(i, { ...o, subs: false }));
+  if (sec.doing) out += section('🔄 In Arbeit', pool.filter(i => i.status === 'doing'), i => exportLine(i, o, doingExtra(i)));
+  if (sec.waiting) out += section('⏳ Warten auf', pool.filter(i => i.status === 'waiting'), i => exportLine(i, o, waitExtra(i)));
+  if (sec.late) out += section('⚠ Überfällig', pool.filter(i => isActive(i) && i.status !== 'waiting' && i.deadline && i.deadline < t), i => exportLine(i, o, `Deadline war ${short(i.deadline)}`));
+  if (sec.next) out += section(`📅 Nächste Woche · KW ${isoWeek(nMon)[0]}`, pool.filter(i => isActive(i) && ((i.target >= nMon && i.target <= nSun) || (i.deadline >= nMon && i.deadline <= nSun))), i => exportLine(i, o, dateExtra(i)));
+  if (sec.cancelled) out += section('✖ Gestrichen', pool.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), mon, sun)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'Grund: ' + i.cancelReason : ''));
+  if (sec.paused) out += section('⏸ Pausiert', pool.filter(i => i.status === 'paused'), i => exportLine(i, { ...o, subs: false }, i.followUp ? 'wieder ab ' + short(i.followUp) : ''));
   $('#revOut').value = out.trim() + '\n';
 }
 $('#view-review').addEventListener('change', e => {
@@ -2542,11 +2771,12 @@ $('#revCopy').onclick = () => copyText($('#revOut').value, $('#revMsg'));
 
 /* ================= Liste einfügen (Aktionspunkte → Tickets) ================= */
 function parseBulkLine(raw) {
-  const it = { labels: [], importance: '', deadline: '', waitingFor: '', toks: [] };
+  const it = { labels: [], importance: '', deadline: '', waitingFor: '', stakeholders: [], toks: [] };
   let s = raw.replace(/^\s*(?:--+|->|[-*•–·▪◦]|o(?=\s)|\d+[.)]|\[[ xX]?\]|☐|☑|□)\s*/, '').trim();
   s = s.replace(/(^|\s)#([\p{L}\p{N}_-]+)/gu, (m, a, l) => { it.labels.push(l.toLowerCase()); it.toks.push('#' + l.toLowerCase()); return a; });
+  s = s.replace(/(^|\s)\+([\p{L}][\p{L}\p{N}._-]*)/gu, (m, a, p) => { it.stakeholders.push(p); it.toks.push('👥 ' + p); return a; });
   s = s.replace(/(^|\s)@([\p{L}][\p{L}\p{N}._-]*)/u, (m, a, p) => { it.waitingFor = p; it.toks.push('⏳ ' + p); return a; });
-  s = s.replace(/(?:\b(?:bis|by)\s+)?\b(?:KW|CW|wk|week)\s?(\d{1,2})(?:\s?\/\s?(\d{4}))?\b/i, (m, w, y) => { const d = kwFriday(+w, y ? +y : 0); if (!d) return m; it.deadline = d; it.toks.push(`⚑ Wk${w}`); return ''; });
+  s = s.replace(/(?:\b(?:bis|by)\s+)?\b(?:KW|CW|wk|week)\s?(\d{1,2})(?:\s?\/\s?(\d{4}))?\b/i, (m, w, y) => { const d = kwFriday(+w, y ? +y : 0); if (!d) return m; it.deadline = d; it.toks.push(`⚑ KW${w}`); return ''; });
   if (!it.deadline) s = s.replace(/(?:\b(?:bis|by)\s+(?:zum\s+)?)?\b(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})?(?!\d)/i, (m, d, mo, y) => {
     let yy = y ? (y.length === 2 ? 2000 + +y : +y) : new Date().getFullYear();
     let dt = new Date(yy, +mo - 1, +d);
@@ -2554,7 +2784,7 @@ function parseBulkLine(raw) {
     if (!y && isoOf(dt) < addDays(today(), -180)) dt = new Date(yy + 1, +mo - 1, +d);
     it.deadline = isoOf(dt); it.toks.push('⚑ ' + fmtShort(it.deadline)); return '';
   });
-  s = s.replace(/(^|\s)!+(?=\s|$)|\((?:pflicht|wichtig|dringend|must|important|urgent)\)/i, (m, a) => { it.importance = 'must'; it.toks.push('Must'); return a || ''; });
+  s = s.replace(/(^|\s)!+(?=\s|$)|\((?:pflicht|wichtig|dringend|must|important|urgent)\)/i, (m, a) => { it.importance = 'must'; it.toks.push('Pflicht'); return a || ''; });
   it.title = s.replace(/\s{2,}/g, ' ').replace(/[\s,;:–-]+$/, '').trim();
   return it;
 }
@@ -2566,7 +2796,7 @@ function parseBulk(text) {
     if (!sub && /:\s*$/.test(raw.trim())) continue; // Überschrift
     const it = parseBulkLine(raw);
     if (!it.title) continue;
-    if (sub && items.length) items[items.length - 1].subs.push(it.title);
+    if (sub && items.length) items[items.length - 1].subs.push({ text: it.title, due: it.deadline });
     else items.push({ ...it, subs: [] });
   }
   return items;
@@ -2575,8 +2805,8 @@ let bulkItems = [];
 function openBulk() {
   setOptions($('#bulkStatus'), COLS.filter(c => ['backlog', 'todo', 'doing', 'waiting'].includes(c.id)).map(c => [c.id, c.name]));
   $('#bulkStatus').value = 'todo';
-  setOptions($('#bulkGoal'), state.goals.map(g => [g.id, g.name]), '— no goal —');
-  setOptions($('#bulkMeet'), state.meetings.map(m => [m.id, m.name]), '— none —');
+  setOptions($('#bulkGoal'), state.goals.map(g => [g.id, g.name]), '— kein Ziel —');
+  setOptions($('#bulkMeet'), state.meetings.map(m => [m.id, m.name]), '— keins —');
   if (!$('#bulkSourceDate').value) $('#bulkSourceDate').value = today();
   $('#bulkModal').hidden = false; $('#bulkText').focus(); renderBulk();
 }
@@ -2584,9 +2814,9 @@ function renderBulk() {
   bulkItems = parseBulk($('#bulkText').value);
   const subs = bulkItems.reduce((n, i) => n + i.subs.length, 0);
   $('#bulkCreate').disabled = !bulkItems.length;
-  $('#bulkCreate').textContent = bulkItems.length ? `Create ${bulkItems.length} ticket(s)${subs ? ` (+${subs} sub-tasks)` : ''}` : 'Create tickets';
+  $('#bulkCreate').textContent = bulkItems.length ? `${bulkItems.length} Ticket(s) anlegen${subs ? ` (+${subs} Unteraufgaben)` : ''}` : 'Tickets anlegen';
   $('#bulkPreview').innerHTML = bulkItems.length ? `<div class="table-wrap" style="max-height:260px"><table class="grid"><tbody>${bulkItems.map((it, k) => `<tr><td class="mono" style="width:30px">${k + 1}</td>
-    <td style="white-space:normal">${esc(it.title)}${it.toks.map(t => `<span class="tok">${esc(t)}</span>`).join('')}${it.subs.map(s => `<span class="bulk-sub">◦ ${esc(s)}</span>`).join('')}</td></tr>`).join('')}</tbody></table></div>` : '';
+    <td style="white-space:normal">${esc(it.title)}${it.toks.map(t => `<span class="tok">${esc(t)}</span>`).join('')}${it.subs.map(s => `<span class="bulk-sub">◦ ${esc(s.text)}${s.due ? ` <span class="tok">⚑ ${fmtShort(s.due)}</span>` : ''}</span>`).join('')}</td></tr>`).join('')}</tbody></table></div>` : '';
 }
 $('#bulkText').addEventListener('input', renderBulk);
 $('#bulkBtn').onclick = openBulk;
@@ -2602,17 +2832,18 @@ $('#bulkCreate').onclick = () => {
       followUp: status === 'waiting' ? addWorkdays(today(), 3) : '',
       goalId: $('#bulkGoal').value || null, meetingId: $('#bulkMeet').value || null,
       source, sourceDate: source ? $('#bulkSourceDate').value : '', private: $('#bulkPriv').checked,
-      checklist: it.subs.map(text => ({ id: uid(), text, done: false })),
+      stakeholders: it.stakeholders,
+      checklist: it.subs.map(x => ({ id: uid(), text: x.text, done: false, due: x.due || '', doneAt: null })),
     });
   });
   const n = bulkItems.length;
   $('#bulkText').value = ''; bulkItems = []; $('#bulkModal').hidden = true;
   if (!TASK_VIEWS.includes(currentView)) showView('board');
-  renderAll(); saveEl.textContent = `✓ ${n} ticket(s) created`;
+  renderAll(); saveEl.textContent = `✓ ${n} Ticket(s) angelegt`;
 };
 
 /* ================= Datensicherheit ================= */
-const SID_KEY = 'jiratype-en.sid', RT_KEY = 'jiratype-en.restartTest';
+const SID_KEY = 'jiratype.sid', RT_KEY = 'jiratype.restartTest';
 let sid = null;
 try { sid = sessionStorage.getItem(SID_KEY); if (!sid) { sid = uid(); sessionStorage.setItem(SID_KEY, sid); } } catch { sid = uid(); }
 // Neustart-Test: in einer neuen Browser-Sitzung geöffnet und die Daten sind noch da → bestanden
@@ -2622,47 +2853,47 @@ const kb = n => n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))} KB` : `$
 async function renderSafety() {
   const row = (ico, title, text, btn = '') => `<div class="check-row"><div class="check-ico">${ico}</div><div><b>${title}</b><p>${text}</p>${btn}</div></div>`;
   let ok = false;
-  try { localStorage.setItem('jiratype-en.selftest', '1'); ok = localStorage.getItem('jiratype-en.selftest') === '1'; localStorage.removeItem('jiratype-en.selftest'); } catch {}
+  try { localStorage.setItem('jiratype.selftest', '1'); ok = localStorage.getItem('jiratype.selftest') === '1'; localStorage.removeItem('jiratype.selftest'); } catch {}
   let est = null, pers = null;
   try { est = await navigator.storage?.estimate?.(); } catch {}
   try { pers = await navigator.storage?.persisted?.(); } catch {}
   const size = (safeGet(STORE_KEY) || '').length;
-  const lastSync = +safeGet('jiratype-en.lastSync') || 0, lastBackup = +safeGet('jiratype-en.lastBackup') || 0;
+  const lastSync = +safeGet('jiratype.lastSync') || 0, lastBackup = +safeGet('jiratype.lastBackup') || 0;
   const rt = JSON.parse(safeGet(RT_KEY) || 'null');
   let h = '';
-  h += row(ok ? '✅' : '❌', 'Saving in the browser', ok ? `Writing and reading works. Your data: ${kb(size)}${est?.quota ? ` · free space: ${kb(est.quota - (est.usage || 0))}` : ''}.` : 'The browser blocks saving (e.g. a company policy or an InPrivate window). Make sure to use the auto-sync file and export backups.');
-  h += row(pers ? '✅' : 'ℹ️', 'Storage protected from automatic clean-up', pers ? 'Edge has marked the storage as persistent – it will not be cleared on its own.' : 'Edge could clear the storage when disk space is extremely low (rare). The auto-sync file protects you from that.', pers ? '' : '<button class="btn small" data-safe="persist">Request protection</button>');
+  h += row(ok ? '✅' : '❌', 'Speichern im Browser', ok ? `Schreiben und Lesen funktioniert. Deine Daten: ${kb(size)}${est?.quota ? ` · Platz frei: ${kb(est.quota - (est.usage || 0))}` : ''}.` : 'Der Browser blockiert das Speichern (z. B. durch eine Firmenrichtlinie oder ein InPrivate-Fenster). Nutze unbedingt die Auto-Sync-Datei und exportiere Backups.');
+  h += row(pers ? '✅' : 'ℹ️', 'Speicher vor automatischem Aufräumen geschützt', pers ? 'Edge hat den Speicher als dauerhaft markiert – er wird nicht von selbst geleert.' : 'Edge könnte den Speicher bei extremem Platzmangel leeren (selten). Die Auto-Sync-Datei schützt dich davor.', pers ? '' : '<button class="btn small" data-safe="persist">Schutz anfordern</button>');
   h += fsSupported
-    ? (fileHandle ? row('✅', 'Auto-sync to file', `Active: <b>${esc(fileHandle.name)}</b>${lastSync ? ` · last written ${relTime(lastSync)}` : ''}. Every change is also written to this file.`)
-      : pendingHandle ? row('⚠️', 'Auto-sync to file', `Paused (<b>${esc(pendingHandle.name)}</b>) – after a restart Edge needs your permission once.`, '<button class="btn small primary" data-safe="resume">Resume</button>')
-      : row('❌', 'Auto-sync to file', 'Not set up. Recommendation: put the file in your <b>OneDrive</b> folder – then it is backed up automatically and even survives a PC change.', '<button class="btn small primary" data-safe="sync">Set up auto-sync</button>'))
-    : row('❌', 'Auto-sync to file', 'This browser does not support a sync file. Please open the app in Microsoft Edge or export backups regularly.');
-  h += row(lastBackup && now() - lastBackup < 14 * 86400000 ? '✅' : '⚠️', 'Backup (JSON export)', lastBackup ? `Last backup: ${fmtDateTime(lastBackup)}.` : 'Never exported. You can restore a backup at any time (⋯ → Import backup).', '<button class="btn small" data-safe="export">Export backup now</button>');
-  h += row(rt?.passed ? '✅' : rt ? '⏳' : '❔', 'Restart test', rt?.passed
-    ? `Passed on ${fmtDateTime(rt.passed)}: your data was still there after closing Edge.`
-    : rt ? 'Test running: now close <b>all Edge windows</b>, restart Edge and open this file again by double-clicking it. Then check here again.'
-    : 'Checks whether Edge keeps your data when it is closed (company PCs sometimes delete browser data on exit).', rt?.passed ? '<button class="btn small" data-safe="restart">Test again</button>' : rt ? '' : '<button class="btn small" data-safe="restart">Start test</button>');
-  h += row('🔧', 'Check the Edge setting', 'Open <code>edge://settings/clearBrowsingDataOnClose</code> in Edge – the switch <b>"Cookies and other site data"</b> must be <b>off</b>. And do not open the app in an InPrivate window.');
+    ? (fileHandle ? row('✅', 'Auto-Sync in Datei', `Aktiv: <b>${esc(fileHandle.name)}</b>${lastSync ? ` · zuletzt geschrieben ${relTime(lastSync)}` : ''}. Jede Änderung landet zusätzlich in dieser Datei.`)
+      : pendingHandle ? row('⚠️', 'Auto-Sync in Datei', `Pausiert (<b>${esc(pendingHandle.name)}</b>) – Edge braucht nach dem Neustart einmal deine Erlaubnis.`, '<button class="btn small primary" data-safe="resume">Fortsetzen</button>')
+      : row('❌', 'Auto-Sync in Datei', 'Nicht eingerichtet. Empfehlung: Datei in deinen <b>OneDrive</b>-Ordner legen – dann ist sie automatisch gesichert und überlebt auch einen PC-Wechsel.', '<button class="btn small primary" data-safe="sync">Auto-Sync einrichten</button>'))
+    : row('❌', 'Auto-Sync in Datei', 'Dieser Browser unterstützt keine Sync-Datei. Bitte in Microsoft Edge öffnen oder regelmäßig Backups exportieren.');
+  h += row(lastBackup && now() - lastBackup < 14 * 86400000 ? '✅' : '⚠️', 'Backup (JSON-Export)', lastBackup ? `Letztes Backup: ${fmtDateTime(lastBackup)}.` : 'Noch nie exportiert. Ein Backup kannst du jederzeit wieder einspielen (⋯ → Backup importieren).', '<button class="btn small" data-safe="export">Backup jetzt exportieren</button>');
+  h += row(rt?.passed ? '✅' : rt ? '⏳' : '❔', 'Neustart-Test', rt?.passed
+    ? `Bestanden am ${fmtDateTime(rt.passed)}: Deine Daten waren nach dem Schließen von Edge noch da.`
+    : rt ? 'Test läuft: Schließe jetzt <b>alle Edge-Fenster</b>, starte Edge neu und öffne diese Datei wieder per Doppelklick. Danach hier erneut prüfen.'
+    : 'Prüft, ob Edge deine Daten beim Schließen behält (Firmenrechner löschen manchmal Browserdaten beim Beenden).', rt?.passed ? '<button class="btn small" data-safe="restart">Erneut testen</button>' : rt ? '' : '<button class="btn small" data-safe="restart">Test starten</button>');
+  h += row('🔧', 'Edge-Einstellung prüfen', 'Öffne in Edge die Adresse <code>edge://settings/clearBrowsingDataOnClose</code> – der Schalter <b>„Cookies und andere Websitedaten“</b> muss <b>aus</b> sein. Und die App nicht im InPrivate-Fenster öffnen.');
   $('#safeBody').innerHTML = h;
 }
 function openSafety() { $('#safeModal').hidden = false; renderSafety(); }
 $('#safeBody').addEventListener('click', async e => {
   const act = e.target.closest('[data-safe]')?.dataset.safe; if (!act) return;
   try {
-    if (act === 'persist') { const ok = await navigator.storage?.persist?.(); if (!ok) alert('Edge has not granted the protection (yet). That is common for local files – the auto-sync file is the more important safeguard.'); }
+    if (act === 'persist') { const ok = await navigator.storage?.persist?.(); if (!ok) alert('Edge hat den Schutz (noch) nicht gewährt. Das ist bei lokalen Dateien üblich – die Auto-Sync-Datei ist der wichtigere Schutz.'); }
     else if (act === 'resume') $('#fileResumeBtn').click();
     else if (act === 'sync') await menuAction('file-new');
     else if (act === 'export') await menuAction('export');
     else if (act === 'restart') safeSet(RT_KEY, JSON.stringify({ at: now(), sid }));
-  } catch (err) { if (err.name !== 'AbortError') alert('Error: ' + err.message); }
+  } catch (err) { if (err.name !== 'AbortError') alert('Fehler: ' + err.message); }
   setTimeout(renderSafety, 300);
 });
 function checkBackupBanner() {
-  const snooze = +safeGet('jiratype-en.backupSnooze') || 0, lastBackup = +safeGet('jiratype-en.lastBackup') || 0;
+  const snooze = +safeGet('jiratype.backupSnooze') || 0, lastBackup = +safeGet('jiratype.lastBackup') || 0;
   $('#backupBanner').hidden = !!(fileHandle || pendingHandle || now() - lastBackup < 14 * 86400000 || now() - snooze < 3 * 86400000);
 }
 $('#backupBannerBtn').onclick = openSafety;
-$('#backupBannerClose').onclick = () => { safeSet('jiratype-en.backupSnooze', String(now())); checkBackupBanner(); };
+$('#backupBannerClose').onclick = () => { safeSet('jiratype.backupSnooze', String(now())); checkBackupBanner(); };
 $$('[data-close]').forEach(b => b.onclick = () => { $('#' + b.dataset.close).hidden = true; });
 $$('#bulkModal, #safeModal, #prepModal').forEach(m => m.addEventListener('mousedown', e => { if (e.target === m) m.hidden = true; }));
 
@@ -2675,31 +2906,31 @@ function renderNotes() {
     .filter(n => !q || (n.title + ' ' + n.body).toLowerCase().includes(q));
   if (!curNoteId || !state.notes.some(n => n.id === curNoteId)) curNoteId = notes[0]?.id || null;
   $('#notesList').innerHTML = notes.length ? notes.map(n => `<div class="note-item ${n.id === curNoteId ? 'active' : ''}" data-nid="${n.id}">
-      <b>${esc(n.title) || 'Untitled'}</b><small>${relTime(n.updated)} · ${esc(n.body.slice(0, 60)) || '…'}</small></div>`).join('')
-    : `<div class="empty">${q ? 'Nothing found' : 'No notes yet'}</div>`;
+      <b>${esc(n.title) || 'Ohne Titel'}</b><small>${relTime(n.updated)} · ${esc(n.body.slice(0, 60)) || '…'}</small></div>`).join('')
+    : `<div class="empty">${q ? 'Nichts gefunden' : 'Noch keine Notizen'}</div>`;
   renderNoteEditor();
 }
 function renderNoteEditor() {
   const ed = $('#noteEditor');
   const n = state.notes.find(x => x.id === curNoteId);
-  if (!n) { ed.innerHTML = `<div class="empty">Pick a note on the left or create a new one with <b>+</b>.</div>`; delete ed.dataset.nid; return; }
-  if (ed.dataset.nid === n.id && ed.contains(document.activeElement)) { $('#noteMeta').textContent = `Last edited: ${fmtDateTime(n.updated)}`; return; }
+  if (!n) { ed.innerHTML = `<div class="empty">Wähle links eine Notiz oder erstelle eine neue mit <b>+</b>.</div>`; delete ed.dataset.nid; return; }
+  if (ed.dataset.nid === n.id && ed.contains(document.activeElement)) { $('#noteMeta').textContent = `Zuletzt bearbeitet: ${fmtDateTime(n.updated)}`; return; }
   ed.dataset.nid = n.id;
-  ed.innerHTML = `<input class="title-input" id="noteTitle" placeholder="Title" value="${esc(n.title)}">
-    <textarea id="noteBody" placeholder="Start writing…">${esc(n.body)}</textarea>
-    <div class="note-foot"><span id="noteMeta">Last edited: ${fmtDateTime(n.updated)}</span><button class="btn danger" id="noteDel">Delete</button></div>`;
+  ed.innerHTML = `<input class="title-input" id="noteTitle" placeholder="Titel" value="${esc(n.title)}">
+    <textarea id="noteBody" placeholder="Schreib los…">${esc(n.body)}</textarea>
+    <div class="note-foot"><span id="noteMeta">Zuletzt bearbeitet: ${fmtDateTime(n.updated)}</span><button class="btn danger" id="noteDel">Löschen</button></div>`;
   const upd = () => { n.updated = now(); save(); refreshNoteItem(n); };
   $('#noteTitle').addEventListener('input', e => { n.title = e.target.value; upd(); });
   $('#noteBody').addEventListener('input', e => { n.body = e.target.value; upd(); });
   $('#noteDel').onclick = () => {
-    if (!confirm(`Delete note "${n.title || 'Untitled'}"?`)) return;
+    if (!confirm(`Notiz „${n.title || 'Ohne Titel'}“ löschen?`)) return;
     state.notes = state.notes.filter(x => x.id !== n.id); curNoteId = null; delete ed.dataset.nid; save(); renderNotes();
   };
 }
 function refreshNoteItem(n) {
   const el = $(`.note-item[data-nid="${n.id}"]`);
-  if (el) el.innerHTML = `<b>${esc(n.title) || 'Untitled'}</b><small>just now · ${esc(n.body.slice(0, 60)) || '…'}</small>`;
-  $('#noteMeta').textContent = `Last edited: ${fmtDateTime(n.updated)}`;
+  if (el) el.innerHTML = `<b>${esc(n.title) || 'Ohne Titel'}</b><small>gerade eben · ${esc(n.body.slice(0, 60)) || '…'}</small>`;
+  $('#noteMeta').textContent = `Zuletzt bearbeitet: ${fmtDateTime(n.updated)}`;
 }
 $('#notesList').addEventListener('click', e => {
   const it = e.target.closest('.note-item'); if (!it) return;
@@ -2715,21 +2946,21 @@ $('#newNoteBtn').onclick = () => {
 let currentView = 'board';
 const TASK_VIEWS = ['board', 'list', 'cal'];
 const PAGE = {
-  tasks:   ['My Tasks', 'All your tickets – as a board, a list or in the calendar.'],
-  meetings: ['Meetings', 'Agenda per meeting: open items show up at the right meeting.'],
-  review:  ['Weekly review', 'What happened this week – ready to copy for your status update.'],
-  goals:   ['Goals', 'Bigger goals with progress, plus your recurring tasks.'],
-  notes:   ['Notes', 'Free-form notes – saved automatically.'],
-  prompts: ['Prompts', 'AI templates: let an AI process your notes and import them as tickets.'],
+  tasks:   ['Meine Aufgaben', 'Alle deine Tickets – als Board, Liste oder im Kalender.'],
+  meetings: ['Meetings', 'Agenda pro Meeting: offene Punkte tauchen beim passenden Termin auf.'],
+  review:  ['Wochenrückblick', 'Was diese Woche passiert ist – fertig zum Kopieren fürs Status-Update.'],
+  goals:   ['Ziele', 'Größere Ziele mit Fortschritt und deine wiederkehrenden Aufgaben.'],
+  notes:   ['Notizen', 'Freie Notizen – werden automatisch gespeichert.'],
+  prompts: ['Prompts', 'KI-Vorlagen: Notizen verarbeiten lassen und als Tickets übernehmen.'],
 };
-let lastTaskView = safeGet('jiratype-en.taskView') || 'board';
+let lastTaskView = safeGet('jiratype.taskView') || 'board';
 function showView(v) {
   if (v === 'tasks') v = TASK_VIEWS.includes(lastTaskView) ? lastTaskView : 'board';
   if ((v === 'notes' || v === 'prompts') && showMode) v = 'board';
   closePop();
   currentView = v;
   const isTask = TASK_VIEWS.includes(v);
-  if (isTask) { lastTaskView = v; safeSet('jiratype-en.taskView', v); }
+  if (isTask) { lastTaskView = v; safeSet('jiratype.taskView', v); }
   $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === v || (isTask && t.dataset.view === 'tasks')));
   $$('.view').forEach(s => s.hidden = s.id !== 'view-' + v);
   $('#segWrap').hidden = !isTask;
@@ -2772,7 +3003,7 @@ menu.addEventListener('click', async e => {
   const act = e.target.closest('button')?.dataset.act; if (!act) return;
   menu.hidden = true;
   try { await menuAction(act); }
-  catch (err) { if (err.name !== 'AbortError') alert('Error: ' + err.message); }
+  catch (err) { if (err.name !== 'AbortError') alert('Fehler: ' + err.message); }
 });
 async function menuAction(act) {
   {
@@ -2781,41 +3012,52 @@ async function menuAction(act) {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `board-backup-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-      safeSet('jiratype-en.lastBackup', String(now())); checkBackupBanner();
+      safeSet('jiratype.lastBackup', String(now())); checkBackupBanner();
+    } else if (act === 'csv-wins') {
+      const wins = state.issues.filter(i => i.status === 'done' && !(showMode && i.private)).sort((a, b) => (a.doneAt || 0) - (b.doneAt || 0));
+      if (!wins.length) return alert("Noch keine erledigten Tickets.");
+      const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const roleN = Object.fromEntries([["", "— Rolle —"], ["lead", "Lead"], ["contrib", "Mitarbeit"], ["support", "Support"]]);
+      const rows = wins.map(i => [i.doneAt ? dateText(isoOf(new Date(i.doneAt))) : '', getGoal(i.goalId)?.name || '', i.title, i.did, i.role ? roleN[i.role] : '',
+        IMPS[i.importance]?.n || '', i.impact, i.stakeholders.join(', '), i.source + (i.sourceDate ? ` (${dateText(i.sourceDate)})` : '')]);
+      const csv = [["Datum", "Projekt / Ziel", "Ticket", "Was ich gemacht habe", "Rolle", "Wichtigkeit", "Impact", "Stakeholder", "Quelle"], ...rows].map(r => r.map(cell).join(';')).join('\r\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
+      a.download = `erfolge-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     } else if (act === 'csv-all') {
       const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-      const head = ['Key', 'Title', 'Description', 'Status', 'Waiting for', 'Follow-up', 'Reason (cancelled)', 'Importance', 'Type', 'Goal', 'Agenda', 'Source', 'Source date', 'Link', 'Labels', 'Target date (soft)', 'Deadline (hard)', 'Week', 'Repeat', 'Private', 'Sub-tasks', 'Updates', 'Created', 'Updated'];
+      const head = ['Key', 'Titel', 'Beschreibung', 'Status', 'Wartet auf', 'Wiedervorlage', 'Grund (gestrichen)', 'Wichtigkeit', 'Typ', 'Ziel', 'Agenda', 'Quelle', 'Quelle am', 'Link', 'Labels', 'Ziel-Datum (soft)', 'Deadline (hard)', 'KW', 'Wiederholung', 'Privat', 'Unteraufgaben', 'Updates', 'Erstellt', 'Aktualisiert'];
       const rows = [...state.issues].sort((a, b) => (parseInt(a.key.split('-').pop(), 10) || 0) - (parseInt(b.key.split('-').pop(), 10) || 0)).map(i => [
         i.key, i.title, i.desc, statusName(i.status), i.waitingFor, dateText(i.followUp), i.cancelReason, IMPS[i.importance]?.n || '', TYPES[i.type].n, getGoal(i.goalId)?.name || '',
         getMeet(i.meetingId)?.name || '', i.source, dateText(i.sourceDate), i.sourceLink, i.labels.join(', '),
-        dateText(i.target), dateText(i.deadline), i.deadline ? isoWeek(i.deadline)[0] : '', getRule(i.recurId) ? freqText(getRule(i.recurId)) : '', i.private ? 'yes' : '',
+        dateText(i.target), dateText(i.deadline), i.deadline ? isoWeek(i.deadline)[0] : '', getRule(i.recurId) ? freqText(getRule(i.recurId)) : '', i.private ? 'ja' : '',
         i.checklist.map(c => (c.done ? '[x] ' : '[ ] ') + c.text).join('\n'),
         i.comments.filter(c => !c.system).map(c => `${fmtDateTime(c.at)}: ${c.text}`).join('\n'),
         fmtDateTime(i.created), fmtDateTime(i.updated),
       ]);
-      const csv = [head, ...rows].map(r => r.map(cell).join(',')).join('\r\n');
+      const csv = [head, ...rows].map(r => r.map(cell).join(';')).join('\r\n');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
-      a.download = `all-tickets-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      a.download = `alle-tickets-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     } else if (act === 'import') {
       $('#importInput').click();
     } else if (act === 'file-new') {
-      const h = await window.showSaveFilePicker({ suggestedName: 'board-data.json', types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
+      const h = await window.showSaveFilePicker({ suggestedName: 'board-daten.json', types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
       pendingHandle = null; await attachHandle(h, { preferFile: false }); checkBackupBanner();
     } else if (act === 'file-open') {
       const [h] = await window.showOpenFilePicker({ types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
       if (await h.requestPermission({ mode: 'readwrite' }) !== 'granted') return;
-      if (!confirm('Load data from this file? The current state in the browser will be replaced (export a backup first if needed).')) return;
+      if (!confirm('Daten aus dieser Datei laden? Der aktuelle Stand im Browser wird ersetzt (vorher ggf. Backup exportieren).')) return;
       pendingHandle = null; await attachHandle(h, { preferFile: true }); generateRecurring();
     } else if (act === 'file-off') {
       fileHandle = null; pendingHandle = null; await idbSet('fileHandle', undefined); updateFileUI(); saveNow();
     } else if (act === 'rename') {
-      const n = prompt('Board name:', state.name);
+      const n = prompt('Name des Boards:', state.name);
       if (n && n.trim()) { state.name = n.trim(); save(); renderAll(); }
     } else if (act === 'clear-done') {
       const n = state.issues.filter(i => i.status === 'done').length;
-      if (!n) return alert('There are no done tickets.');
-      if (!confirm(`Permanently delete ${n} done ticket(s)?`)) return;
+      if (!n) return alert('Keine erledigten Tickets vorhanden.');
+      if (!confirm(`${n} erledigte Ticket(s) endgültig löschen?`)) return;
       state.issues = state.issues.filter(i => i.status !== 'done'); save(); renderAll();
     }
   }
@@ -2824,23 +3066,23 @@ $('#importInput').addEventListener('change', async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   try {
     const data = normalize(JSON.parse(await f.text()));
-    if (!confirm(`Load backup (${data.issues.length} tickets, ${data.goals.length} goals, ${data.notes.length} notes)? The current state will be replaced.`)) return;
+    if (!confirm(`Backup laden (${data.issues.length} Tickets, ${data.goals.length} Ziele, ${data.notes.length} Notizen)? Der aktuelle Stand wird ersetzt.`)) return;
     state = data; saveNow(); generateRecurring(); renderAll();
-  } catch (err) { alert('Import failed: ' + err.message); }
+  } catch (err) { alert('Import fehlgeschlagen: ' + err.message); }
 });
 
 /* ================= Tastatur ================= */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if (pop) { closePop(); return; }
-    const dlg = ['#prepModal', '#bulkModal', '#safeModal'].map(s => $(s)).find(m => !m.hidden);
+    const dlg = ['#flowModal', '#prepModal', '#bulkModal', '#safeModal'].map(s => $(s)).find(m => !m.hidden);
     if (dlg) { dlg.hidden = true; return; }
     if (!modal.hidden) { e.preventDefault(); closeModal(); }
     else if (!menu.hidden) menu.hidden = true;
     return;
   }
   const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName);
-  if (typing || e.metaKey || e.ctrlKey || e.altKey || !modal.hidden || !$('#bulkModal').hidden || !$('#safeModal').hidden || !$('#prepModal').hidden) return;
+  if (typing || e.metaKey || e.ctrlKey || e.altKey || !modal.hidden || !$('#bulkModal').hidden || !$('#safeModal').hidden || !$('#prepModal').hidden || !$('#flowModal').hidden) return;
   const k = e.key.toLowerCase();
   if (k === 'c') { e.preventDefault(); $('#newIssueBtn').click(); }
   else if (k === '/') { e.preventDefault(); showView('board'); $('#q').focus(); }
