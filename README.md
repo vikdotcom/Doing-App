@@ -59,6 +59,9 @@ A personal to-do board in the style of Jira, packed into **one single HTML file*
 - **Sub-task due dates:** every sub-task can have its own date. Overdue open sub-tasks turn the card red; the card shows the next due date next to the sub-task counter.
 - **Contribution & impact** per ticket: *what I did*, *role* (Lead / Contributor / Support) and *impact*. **Menu > Wins as CSV (brag sheet)** exports all done tickets with date, project/goal, what you did, role, importance, impact, stakeholders and source – ready for performance reviews, salary talks or your CV.
 
+### Features on/off
+**Menu > Features on/off** hides stakeholders, sub-task due dates, contribution & impact or the timeline view. This only affects the display: data you entered stays saved and reappears as soon as you switch the feature back on. Turned-off sub-task dates also stop turning cards red. The setting is saved with your data (and in backups).
+
 ### Timeline (flow view)
 **📈 Timeline** in a ticket or on a goal card opens a visual history:
 - **Ticket:** flow chain of all status phases with durations (e.g. *To Do 3 d → In progress 3 d → Waiting 4 d, waiting for X → …*), a "where did the time go?" bar, a timeline with sub-task completions, sub-task due dates, updates, target/deadline and today, plus the people involved and the impact text.

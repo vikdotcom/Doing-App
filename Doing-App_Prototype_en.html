@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Board</title>
+<title>Doing-App</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -169,7 +169,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .card-foot{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);flex-wrap:wrap}
 .card-key{font-weight:500;font-size:12px}
 .col[data-status="done"] .card-key{text-decoration:line-through}
-.card-meta{margin-left:auto;display:flex;gap:8px;align-items:center}
+.card-meta{margin-left:auto;display:flex;gap:4px 8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.card-meta > *{white-space:nowrap}
 .card-goal{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;margin-top:8px;min-width:0}
 .card-goal span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .date{white-space:nowrap}
@@ -333,6 +334,12 @@ textarea.desc{width:100%;min-height:90px;border:1px solid var(--border);border-r
 .checklist li .sub-due.late{color:var(--danger);font-weight:600}
 .checklist li .sub-due.soft{color:var(--warn);font-weight:600}
 .sub-list label .date{margin-left:auto;font-size:11px;padding-left:6px}
+body.no-f-stake .f-stake,body.no-f-subdue .f-subdue,body.no-f-wins .f-wins,body.no-f-flow .f-flow{display:none!important}
+.feat-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.feat-list label{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
+.feat-list label:hover{background:var(--surface)}
+.feat-list input{margin-top:3px;width:16px;height:16px}
+.feat-list small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 .wins-grid{display:flex;flex-direction:column;gap:8px}
 .wins-grid textarea{width:100%;min-height:54px;resize:vertical;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);padding:8px 10px;font:inherit;font-size:14px}
 .wins-grid select{align-self:flex-start;height:30px}
@@ -505,8 +512,9 @@ input.bad{outline:2px solid var(--danger)!important}
           <button data-act="export">⬇ Export backup (JSON)</button>
           <button data-act="import">⬆ Import backup…</button>
           <button data-act="csv-all">📊 All tickets as CSV (Excel)</button>
-          <button data-act="csv-wins">🏆 Wins as CSV (brag sheet)</button>
+          <button data-act="csv-wins" class="f-wins">🏆 Wins as CSV (brag sheet)</button>
           <hr>
+          <button data-act="features">⚙ Features on/off</button>
           <button data-act="rename">✎ Rename board</button>
           <button data-act="clear-done">🧹 Delete done tickets</button>
         </div>
@@ -715,6 +723,14 @@ input.bad{outline:2px solid var(--danger)!important}
 </div><!-- /main -->
 
 <!-- Ticket-Detail -->
+<!-- Funktionen ein/aus -->
+<div class="backdrop" id="featModal" hidden style="z-index:110">
+  <div class="modal" role="dialog" aria-modal="true" style="max-width:560px">
+    <div class="modal-head"><b style="color:var(--text);font-size:15px">⚙ Features on/off</b><span class="grow"></span><button class="icon-btn" data-close="featModal" title="Esc">✕</button></div>
+    <div class="fl-body"><ul class="feat-list" id="featList"><li><label><input type="checkbox" data-feat="stake"><span><b>👥 Stakeholders</b><small>Ticket field, line on the card, list column, Venn diagram in the timeline</small></span></label></li><li><label><input type="checkbox" data-feat="subdue"><span><b>⚑ Sub-task due dates</b><small>Date per sub-task, red card when a sub-task is overdue</small></span></label></li><li><label><input type="checkbox" data-feat="wins"><span><b>🏆 Contribution & impact</b><small>Ticket fields and "Wins as CSV" in the menu</small></span></label></li><li><label><input type="checkbox" data-feat="flow"><span><b>📈 Timeline</b><small>Button in the ticket and on goal cards</small></span></label></li></ul><div class="fl-muted">Only the display changes. Entered data stays saved and is back as soon as you switch the feature on again.</div></div>
+  </div>
+</div>
+
 <!-- Verlauf -->
 <div class="backdrop" id="flowModal" hidden style="z-index:110">
   <div class="modal" role="dialog" aria-modal="true" style="max-width:920px">
@@ -729,7 +745,7 @@ input.bad{outline:2px solid var(--danger)!important}
       <span class="type-icon" id="mTypeIcon"></span>
       <span id="mKey"></span>
       <span id="mRecurBadge"></span>
-      <button class="btn small" id="mFlow" type="button">📈 Timeline</button>
+      <button class="btn small f-flow" id="mFlow" type="button">📈 Timeline</button>
       <span class="grow"></span>
       <button class="icon-btn" id="mClose" title="Close (Esc)">✕</button>
     </div>
@@ -743,8 +759,8 @@ input.bad{outline:2px solid var(--danger)!important}
         <ul class="checklist" id="mChecklist"></ul>
         <input class="check-new" id="mCheckNew" placeholder="+ Add sub-task (Enter)">
 
-        <div class="sec-label">🏆 Contribution & impact <small>for reviews, salary talks, CV</small></div>
-        <div class="wins-grid">
+        <div class="sec-label f-wins">🏆 Contribution & impact <small>for reviews, salary talks, CV</small></div>
+        <div class="wins-grid f-wins">
           <textarea id="mDid" placeholder="What exactly did I do?"></textarea>
           <select id="mRole" class="inline-input" title="Role"><option value="">— Role —</option><option value="lead">Lead</option><option value="contrib">Contributor</option><option value="support">Support</option></select>
           <textarea id="mImpact" placeholder="What did it achieve? (numbers, feedback, decision)"></textarea>
@@ -768,7 +784,7 @@ input.bad{outline:2px solid var(--danger)!important}
         </div>
         <datalist id="personList"></datalist>
         <label class="field"><span>Goal</span><select id="mGoal"></select></label>
-        <label class="field"><span>👥 Stakeholders <small class="hint">comma-separated</small></span><input id="mStake" list="personList" placeholder="e.g. Anna, Ben"></label>
+        <label class="field f-stake"><span>👥 Stakeholders <small class="hint">comma-separated</small></span><input id="mStake" list="personList" placeholder="e.g. Anna, Ben"></label>
         <div class="field-row">
           <label class="field"><span>Importance</span><select id="mImp"></select></label>
           <label class="field"><span>Type</span><select id="mType"></select></label>
@@ -1113,6 +1129,7 @@ function normalize(d) {
   d.goals = Array.isArray(d.goals) ? d.goals : [];
   d.recurrences = Array.isArray(d.recurrences) ? d.recurrences : [];
   d.meetings = Array.isArray(d.meetings) ? d.meetings : [];
+  d.features = { stake: true, subdue: true, wins: true, flow: true, ...(d.features && typeof d.features === 'object' ? d.features : {}) };
   if (!Array.isArray(d.prompts)) d.prompts = DEFAULT_PROMPTS.map(p => ({ id: uid(), ...p }));
   d.issues.forEach(i => {
     // Migration v1 → v2
@@ -1256,6 +1273,8 @@ const getIssue = id => state.issues.find(i => i.id === id);
 const getGoal = id => state.goals.find(g => g.id === id);
 const getRule = id => state.recurrences.find(r => r.id === id);
 const getMeet = id => state.meetings.find(m => m.id === id);
+const F = k => state.features?.[k] !== false;
+function applyFeatures() { ['stake', 'subdue', 'wins', 'flow'].forEach(k => document.body.classList.toggle('no-f-' + k, !F(k))); }
 const statusName = s => COLS.find(c => c.id === s)?.name || s;
 
 function createGoal(name) {
@@ -1399,7 +1418,7 @@ function dueState(i) {
   if ((i.status === 'waiting' || i.status === 'paused') && i.followUp && i.followUp <= t) return 'follow';
   if (i.status === 'paused') return '';
   if (i.deadline && i.deadline < t) return 'late';
-  if (i.checklist.some(c => !c.done && c.due && c.due < t)) return 'late';
+  if (F('subdue') && i.checklist.some(c => !c.done && c.due && c.due < t)) return 'late';
   if ((i.target && i.target < t) || i.deadline === t) return 'soft';
   return '';
 }
@@ -1422,9 +1441,10 @@ const goalAv = (g, cls = '') => `<span class="goal-av ${cls}" style="--g:${esc(g
 function subDueHTML(c) {
   if (!c.due) return '';
   const t = today(), cls = c.done ? '' : c.due < t ? 'late' : c.due === t ? 'soft' : '';
-  return `<span class="date ${cls}">⚑ ${fmtShort(c.due)}</span>`;
+  return `<span class="date f-subdue ${cls}">⚑ ${fmtShort(c.due)}</span>`;
 }
 function nextSubDue(i) {
+  if (!F('subdue')) return '';
   const d = i.checklist.filter(c => !c.done && c.due).map(c => c.due).sort()[0];
   return d ? ` · ⚑ ${fmtShort(d)}` : '';
 }
@@ -1440,7 +1460,7 @@ function cardHTML(i) {
     ${tags ? `<div class="card-tags">${tags}</div>` : ''}
     ${stateHTML(i)}
     ${i.source ? `<div class="card-src" title="Source">📍 ${esc(i.source)}${i.sourceDate ? ' · ' + fmtShort(i.sourceDate) : ''}</div>` : ''}
-    ${i.stakeholders?.length ? `<div class="card-src">👥 ${esc(i.stakeholders.join(', '))}</div>` : ''}
+    ${i.stakeholders?.length ? `<div class="card-src f-stake">👥 ${esc(i.stakeholders.join(', '))}</div>` : ''}
     <div class="sep"></div>
     <div class="card-foot">
       <span class="type-icon" style="background:${t.c}" title="${t.n}">${t.i}</span>
@@ -1516,6 +1536,7 @@ $('#hamburger').onclick = () => document.body.classList.add('side-open');
 $('#scrim').onclick = () => document.body.classList.remove('side-open');
 
 function renderAll() {
+  applyFeatures();
   $('#boardName').textContent = state.name;
   renderSidebar();
   document.title = state.name;
@@ -1720,7 +1741,7 @@ function renderGoals() {
       <div class="goal-head">
         <input type="color" class="g-color" value="${esc(g.color)}" title="Colour">
         <input class="title-input g-name" value="${esc(g.name)}" placeholder="Goal name">
-        <button class="btn small g-flow" type="button">📈 Timeline</button>
+        <button class="btn small g-flow f-flow" type="button">📈 Timeline</button>
         <button class="btn danger small g-del" title="Delete goal (tickets are kept)">Delete</button>
       </div>
       <div class="goal-meta">
@@ -1900,7 +1921,7 @@ function renderChecklist() {
   $('#mChecklist').innerHTML = i.checklist.map(c => `<li class="${c.done ? 'done' : ''}" data-cid="${c.id}">
     <input type="checkbox" ${c.done ? 'checked' : ''} aria-label="done">
     <input type="text" value="${esc(c.text)}">
-    <input type="date" class="sub-due ${c.due ? (c.done ? '' : c.due < today() ? 'late' : c.due === today() ? 'soft' : '') : 'empty'}" value="${esc(c.due || '')}" title="Sub-task due date">
+    <input type="date" class="f-subdue sub-due ${c.due ? (c.done ? '' : c.due < today() ? 'late' : c.due === today() ? 'soft' : '') : 'empty'}" value="${esc(c.due || '')}" title="Sub-task due date">
     <button class="x" title="Remove">✕</button></li>`).join('');
 }
 function renderComments() {
@@ -2072,6 +2093,13 @@ $('#newIssueBtn').onclick = () => {
 /* ================= Verlauf (Flow) ================= */
 const FL = {"lt1h": "< 1 h", "h": "h", "d": "d", "created": "Created", "sofar": "so far", "total": "Total duration", "nowSt": "Status", "subs": "Sub-tasks", "people": "People involved", "phases": "Status changes", "where": "Where did the time go?", "timeline": "Timeline", "flow": "Flow", "rowStatus": "Status", "rowSubs": "Sub-tasks", "rowUpd": "Updates", "noChanges": "No status changes recorded – flow is approximate (created → now).", "today": "today", "deadline": "Deadline", "target": "Target date", "subDone": "done", "subDue": "due", "venn": "Stakeholder overlap", "vennHint": "Number = tickets in that overlap (hover to see which)", "noPeople": "No stakeholders entered.", "tickets": "Tickets", "done": "done", "span": "Period", "goalEmpty": "No tickets assigned to this goal yet.", "impactBox": "Contribution & impact", "waitFor": "waiting for", "openTicket": "Click to open the ticket", "title": "📈 Timeline"};
 const flowModal = $('#flowModal');
+function openFeat() { $$('#featList [data-feat]').forEach(cb => cb.checked = F(cb.dataset.feat)); $('#featModal').hidden = false; }
+$('#featList').addEventListener('change', e => {
+  const k = e.target.dataset.feat; if (!k) return;
+  state.features[k] = e.target.checked; save(); renderAll();
+  if (!modal.hidden) fillModal();
+});
+$('#featModal').addEventListener('mousedown', e => { if (e.target === $('#featModal')) $('#featModal').hidden = true; });
 const STATUS_BY_NAME = Object.fromEntries(COLS.map(c => [c.name, c.id]));
 const fmtDur = ms => { const h = ms / 3600000; return h < 1 ? FL.lt1h : h < 24 ? `${Math.round(h)} ${FL.h}` : `${Math.round(h / 24)} ${FL.d}`; };
 const tsShort = ts => fmtShort(isoOf(new Date(ts)));
@@ -2133,7 +2161,7 @@ function ganttSVG(rows, lines) {
 }
 function peopleHTML(items) {
   const cnt = {};
-  items.forEach(i => new Set([...(i.stakeholders || []), i.status === 'waiting' ? i.waitingFor : ''].filter(Boolean)).forEach(p => cnt[p] = (cnt[p] || 0) + 1));
+  items.forEach(i => new Set([...(F('stake') ? i.stakeholders || [] : []), i.status === 'waiting' ? i.waitingFor : ''].filter(Boolean)).forEach(p => cnt[p] = (cnt[p] || 0) + 1));
   const list = Object.entries(cnt).sort((a, b) => b[1] - a[1]);
   if (!list.length) return `<div class="fl-muted">${FL.noPeople}</div>`;
   const max = list[0][1];
@@ -2170,7 +2198,7 @@ function openFlow({ issue, goal }) {
     const marks = [];
     i.checklist.forEach(c => {
       if (c.done && c.doneAt) marks.push({ at: c.doneAt, kind: 'done', title: `☑ ${c.text} – ${FL.subDone} ${tsShort(c.doneAt)}` });
-      if (c.due) marks.push({ at: isoMs(c.due), kind: !c.done && c.due < today() ? 'late' : 'due', title: `⚑ ${c.text} – ${FL.subDue} ${fmtShort(c.due)}` });
+      if (c.due && F('subdue')) marks.push({ at: isoMs(c.due), kind: !c.done && c.due < today() ? 'late' : 'due', title: `⚑ ${c.text} – ${FL.subDue} ${fmtShort(c.due)}` });
     });
     const upd = showMode ? [] : i.comments.filter(c => !c.system).map(c => ({ at: c.at, kind: 'upd', title: `${tsShort(c.at)}: ${c.text.slice(0, 140)}` }));
     const rows = [{ label: FL.rowStatus, phases, marks: [] }];
@@ -2184,7 +2212,7 @@ function openFlow({ issue, goal }) {
       <h4>${FL.where}</h4>${splitHTML([phases])}
       <h4>${FL.timeline}</h4>${ganttSVG(rows, lines)}
       <h4>${FL.people}</h4>${peopleHTML([i])}
-      ${i.did || i.impact ? `<h4>${FL.impactBox}</h4><div class="fl-impact">${esc([i.did, i.impact].filter(Boolean).join('\n\n'))}</div>` : ''}`;
+      ${F('wins') && (i.did || i.impact) ? `<h4>${FL.impactBox}</h4><div class="fl-impact">${esc([i.did, i.impact].filter(Boolean).join('\n\n'))}</div>` : ''}`;
   } else {
     const g = goal, items = visIssues().filter(i => i.goalId === g.id).sort((a, b) => a.created - b.created);
     $('#flowTitle').textContent = `${FL.title} · ${g.name}`;
@@ -2200,7 +2228,7 @@ function openFlow({ issue, goal }) {
       html = `<div class="fl-kpis">${kpi(FL.tickets, `${done}/${counted.length} ${FL.done}`)}${kpi(FL.span, `${tsShort(start)} – ${g.target ? fmtShort(g.target) : tsShort(last)}`)}${kpi(FL.total, fmtDur(last - start))}${kpi(FL.people, new Set(items.flatMap(i => [...(i.stakeholders || []), i.status === 'waiting' ? i.waitingFor : ''].filter(Boolean))).size)}</div>
         <h4>${FL.where}</h4>${splitHTML(ph)}
         <h4>${FL.timeline}</h4>${ganttSVG(rows, lines)}
-        <h4>${FL.venn}</h4>${vennSVG(items) || ''}${peopleHTML(items)}`;
+        ${F('stake') ? `<h4>${FL.venn}</h4>${vennSVG(items)}` : `<h4>${FL.people}</h4>`}${peopleHTML(items)}`;
     }
   }
   $('#flowBody').innerHTML = html;
@@ -2232,7 +2260,7 @@ const LCOLS = [
     cell: i => `<td><select class="cell-in status-pill s-${i.status}" data-f="status">${opts(COLS.map(c => [c.id, c.name]), i.status)}</select></td>` },
   { id: 'waitingFor', n: '⏳ Waiting for', text: i => i.status === 'waiting' ? i.waitingFor : '', sortv: i => i.status === 'waiting' ? i.waitingFor.toLowerCase() : '',
     cell: function (i) { return `<td>${esc(this.text(i))}</td>`; } },
-  { id: 'stakeholders', n: "👥 Stakeholders", text: i => (i.stakeholders || []).join(', '), vals: i => i.stakeholders?.length ? i.stakeholders : ['(leer)'], sortv: i => (i.stakeholders || []).join(',').toLowerCase(),
+  { id: 'stakeholders', feat: 'stake', n: "👥 Stakeholders", text: i => (i.stakeholders || []).join(', '), vals: i => i.stakeholders?.length ? i.stakeholders : ['(leer)'], sortv: i => (i.stakeholders || []).join(',').toLowerCase(),
     cell: function (i) { return `<td title="${esc(this.text(i))}">${esc(this.text(i))}</td>`; } },
   { id: 'followUp', n: '⏰ Follow-up', text: i => dateText(i.followUp), sortv: i => i.followUp, cell: i => `<td>${dateCell(i, 'followUp')}</td>` },
   { id: 'importance', n: 'Importance', text: i => IMPS[i.importance]?.n || '', sortv: i => IMP_ORDER[i.importance],
@@ -2265,7 +2293,8 @@ tbl.known ??= ['key', 'title', 'status', 'importance', 'goal', 'labels', 'target
 LCOLS.forEach(c => { if (!tbl.known.includes(c.id)) { if (['followUp', 'source', 'reason', 'meeting'].includes(c.id) && !tbl.hidden.includes(c.id)) tbl.hidden.push(c.id); tbl.known.push(c.id); } });
 saveTbl();
 const colVals = (c, i) => c.vals ? c.vals(i) : [c.text(i) || '(empty)'];
-const visCols = () => LCOLS.filter(c => !tbl.hidden.includes(c.id) && !(c.privOnly && showMode));
+const colOff = c => (c.privOnly && showMode) || (c.feat && !F(c.feat));
+const visCols = () => LCOLS.filter(c => !tbl.hidden.includes(c.id) && !colOff(c));
 function cmpVals(a, b) {
   const ea = a === '' || a == null, eb = b === '' || b == null;
   if (ea || eb) return ea && eb ? 0 : ea ? 1 : -1; // Leere immer ans Ende
@@ -2278,13 +2307,13 @@ function tableRows() {
     if (q && ![i.key, i.title, i.desc, i.labels.join(' '), getGoal(i.goalId)?.name || '', i.waitingFor, i.source].join(' ').toLowerCase().includes(q)) return false;
     for (const [cid, ex] of Object.entries(tbl.ex)) {
       const c = colById(cid);
-      if (!c || !ex.length || (c.privOnly && showMode)) continue;
+      if (!c || !ex.length || colOff(c)) continue;
       if (!colVals(c, i).some(v => !ex.includes(v))) return false;
     }
     return true;
   });
   const sc = colById(tbl.sort.col) || LCOLS[0];
-  const sortCol = sc.privOnly && showMode ? LCOLS[0] : sc;
+  const sortCol = colOff(sc) ? LCOLS[0] : sc;
   return rows.sort((a, b) => {
     const va = sortCol.sortv(a), vb = sortCol.sortv(b);
     if (va === '' || vb === '' || va == null || vb == null) return cmpVals(va, vb);
@@ -2392,7 +2421,7 @@ $('#lColsBtn').onclick = e => {
   if (pop?.dataset.col === '__cols') return closePop();
   closePop();
   const el = document.createElement('div'); el.className = 'pop'; el.dataset.col = '__cols';
-  el.innerHTML = `<b>Visible columns</b><div class="pop-list">${LCOLS.filter(c => !c.fixed && !(c.privOnly && showMode)).map(c =>
+  el.innerHTML = `<b>Visible columns</b><div class="pop-list">${LCOLS.filter(c => !c.fixed && !colOff(c)).map(c =>
     `<label><input type="checkbox" data-c="${c.id}" ${tbl.hidden.includes(c.id) ? '' : 'checked'}> ${c.n}</label>`).join('')}</div>`;
   el.addEventListener('change', ev => {
     const id = ev.target.dataset.c;
@@ -3014,6 +3043,8 @@ async function menuAction(act) {
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `board-backup-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
       safeSet('jiratype-en.lastBackup', String(now())); checkBackupBanner();
+    } else if (act === 'features') {
+      openFeat();
     } else if (act === 'csv-wins') {
       const wins = state.issues.filter(i => i.status === 'done' && !(showMode && i.private)).sort((a, b) => (a.doneAt || 0) - (b.doneAt || 0));
       if (!wins.length) return alert("No completed tickets yet.");
@@ -3027,7 +3058,7 @@ async function menuAction(act) {
       a.download = `erfolge-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     } else if (act === 'csv-all') {
       const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-      const head = ['Key', 'Title', 'Description', 'Status', 'Waiting for', 'Follow-up', 'Reason (cancelled)', 'Importance', 'Type', 'Goal', 'Agenda', 'Source', 'Source date', 'Link', 'Labels', 'Target date (soft)', 'Deadline (hard)', 'Week', 'Repeat', 'Private', 'Sub-tasks', 'Updates', 'Created', 'Updated'];
+      const head = ['Key', 'Title', 'Description', 'Status', 'Waiting for', 'Follow-up', 'Reason (cancelled)', 'Importance', 'Type', 'Goal', 'Agenda', 'Source', 'Source date', 'Link', 'Labels', 'Target date (soft)', 'Deadline (hard)', 'Week', 'Repeat', 'Private', 'Sub-tasks', 'Updates', 'Created', 'Updated', 'Stakeholders', 'What I did', 'Role', 'Impact', 'Done on'];
       const rows = [...state.issues].sort((a, b) => (parseInt(a.key.split('-').pop(), 10) || 0) - (parseInt(b.key.split('-').pop(), 10) || 0)).map(i => [
         i.key, i.title, i.desc, statusName(i.status), i.waitingFor, dateText(i.followUp), i.cancelReason, IMPS[i.importance]?.n || '', TYPES[i.type].n, getGoal(i.goalId)?.name || '',
         getMeet(i.meetingId)?.name || '', i.source, dateText(i.sourceDate), i.sourceLink, i.labels.join(', '),
@@ -3035,6 +3066,7 @@ async function menuAction(act) {
         i.checklist.map(c => (c.done ? '[x] ' : '[ ] ') + c.text).join('\n'),
         i.comments.filter(c => !c.system).map(c => `${fmtDateTime(c.at)}: ${c.text}`).join('\n'),
         fmtDateTime(i.created), fmtDateTime(i.updated),
+        i.stakeholders.join(', '), i.did, { lead: "Lead", contrib: "Contributor", support: "Support" }[i.role] || '', i.impact, i.doneAt ? dateText(isoOf(new Date(i.doneAt))) : '',
       ]);
       const csv = [head, ...rows].map(r => r.map(cell).join(',')).join('\r\n');
       const a = document.createElement('a');
@@ -3076,14 +3108,14 @@ $('#importInput').addEventListener('change', async e => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if (pop) { closePop(); return; }
-    const dlg = ['#flowModal', '#prepModal', '#bulkModal', '#safeModal'].map(s => $(s)).find(m => !m.hidden);
+    const dlg = ['#featModal', '#flowModal', '#prepModal', '#bulkModal', '#safeModal'].map(s => $(s)).find(m => !m.hidden);
     if (dlg) { dlg.hidden = true; return; }
     if (!modal.hidden) { e.preventDefault(); closeModal(); }
     else if (!menu.hidden) menu.hidden = true;
     return;
   }
   const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName);
-  if (typing || e.metaKey || e.ctrlKey || e.altKey || !modal.hidden || !$('#bulkModal').hidden || !$('#safeModal').hidden || !$('#prepModal').hidden || !$('#flowModal').hidden) return;
+  if (typing || e.metaKey || e.ctrlKey || e.altKey || !modal.hidden || !$('#bulkModal').hidden || !$('#safeModal').hidden || !$('#prepModal').hidden || !$('#flowModal').hidden || !$('#featModal').hidden) return;
   const k = e.key.toLowerCase();
   if (k === 'c') { e.preventDefault(); $('#newIssueBtn').click(); }
   else if (k === '/') { e.preventDefault(); showView('board'); $('#q').focus(); }
