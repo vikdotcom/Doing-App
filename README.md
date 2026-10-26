@@ -58,6 +58,8 @@ Single user, single device. No notifications while closed (recurring tickets app
 Plain HTML, CSS and vanilla JS in one file. No build step, no dependencies. Data in `localStorage`, file sync via File System Access API (handle kept in IndexedDB).
 
 ## Changelog
+**1.2.0 – 2026-10-26:** board filter by date range (soft target + hard deadline: today, this/next week, next 7/14/30 days, calendar weeks taken from your tickets, custom from–to), deadline turns red X days ahead (setting, default 7) and target orange X days ahead, collapsible sidebar and goal list, review with selectable period (week, 2 weeks, month, quarter, custom), "Outcome & role" section collapsed and only shown in private mode, export file names with time. Data stays compatible.
+
 **1.1.0 – 2026-10-22:** two-way Obsidian sync, 13 more feature toggles, *All tickets* filter in the sidebar. Fully compatible with 1.0 in both directions. To update, replace the HTML file *at the same path* (export a backup first to be safe).
 
 **1.0 – 2026-10-22:** board, list, calendar, goals, meetings, weekly review, notes & prompts, stakeholders, sub-task due dates, wins export, timeline, features on/off.

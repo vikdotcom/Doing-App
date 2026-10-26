@@ -365,6 +365,24 @@ body.no-f-stake .f-stake,body.no-f-subdue .f-subdue,body.no-f-wins .f-wins,body.
 .fl-bub{border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--text);font-size:12px;text-align:center;line-height:1.15;padding:4px;overflow:hidden}
 .fl-impact{background:var(--ok-soft);border-radius:8px;padding:10px 12px;white-space:pre-wrap;font-size:14px}
 .fl-muted{color:var(--subtle);font-size:12px}
+.wins-box{margin-top:14px}
+.wins-box>summary{cursor:pointer;font-size:12px;color:var(--subtle);list-style:none;display:flex;gap:6px;align-items:center;padding:4px 0;user-select:none}
+.wins-box>summary::-webkit-details-marker{display:none}
+.wins-box>summary::before{content:'▸'}
+.wins-box[open]>summary::before{content:'▾'}
+.wins-box>summary small{font-size:11px}
+.wins-box .wins-grid{margin-top:6px}
+.date-in{height:36px;padding:0 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font:inherit;font-size:13px}
+.set-row{display:flex;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
+.set-row>span{flex:1}
+.set-row small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.set-row input{width:72px;height:32px;text-align:right}
+.side-collapse{margin-left:auto;flex:none}
+#sideGoalsToggle{cursor:pointer;user-select:none}
+#sideGoalsToggle::before{content:'▾ '}
+body.goals-folded #sideGoalsToggle::before{content:'▸ '}
+body.goals-folded #sideGoals{display:none}
+@media (min-width:861px){body.side-collapsed .sidebar{display:none}body.side-collapsed .hamburger{display:grid!important}}
 .checklist li .x{visibility:hidden}
 .checklist li:hover .x{visibility:visible}
 .check-new{width:100%;border:1px dashed var(--border);border-radius:6px;padding:8px 10px;background:transparent;margin-top:4px}
@@ -480,18 +498,18 @@ input.bad{outline:2px solid var(--danger)!important}
 <body>
 
 <aside class="sidebar" id="sidebar">
-  <div class="logo"><div class="logo-mark"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span id="boardName">Mein Board</span></div>
+  <div class="logo"><div class="logo-mark"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span id="boardName">Mein Board</span><button class="icon-btn side-collapse" id="sideCollapse" title="Seitenleiste ausblenden"><svg class="ico" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/></svg></button></div>
   <div class="sep"></div>
   <nav class="side-nav">
     <button class="nav-item tab" data-view="tasks"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>Meine Aufgaben</button>
     <button class="nav-item tab f-meet" data-view="meetings"><svg class="ico" viewBox="0 0 24 24"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.3M15.5 4.7a3.5 3.5 0 0 1 0 6.6"/></svg>Meetings</button>
     <button class="nav-item tab f-goals" data-view="goals"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></svg>Ziele</button>
-    <button class="nav-item tab f-review" data-view="review"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17M8.5 15l2 2 4-4"/></svg>Wochenrückblick</button>
+    <button class="nav-item tab f-review" data-view="review"><svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17M8.5 15l2 2 4-4"/></svg>Rückblick</button>
     <button class="nav-item tab priv-only f-notes" data-view="notes"><svg class="ico" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h4.5"/></svg>Notizen</button>
     <button class="nav-item tab priv-only f-prompts" data-view="prompts"><svg class="ico" viewBox="0 0 24 24"><path d="M11 3.5l1.8 4.9 4.9 1.8-4.9 1.8L11 16.9l-1.8-4.9-4.9-1.8 4.9-1.8z"/><path d="M18.5 14.5v5M16 17h5"/></svg>Prompts</button>
   </nav>
   <div class="sep"></div>
-  <div class="f-goals side-label"><span>Ziele</span><button class="side-add" id="sideAddGoal" title="Neues Ziel">+</button></div>
+  <div class="f-goals side-label"><span id="sideGoalsToggle" title="Ziele ein-/ausklappen">Ziele</span><button class="side-add" id="sideAddGoal" title="Neues Ziel">+</button></div>
   <div id="sideGoals" class="f-goals"></div>
   <div class="side-bottom">
     <button class="btn mode-btn" id="modeBtn" title="Privat-/Show-Modus umschalten">🔒 Privat</button>
@@ -502,7 +520,7 @@ input.bad{outline:2px solid var(--danger)!important}
       <div class="menu-wrap">
         <button class="icon-btn" id="menuBtn" title="Daten &amp; Einstellungen"><svg class="ico" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
         <div class="menu" id="menu" hidden>
-          <div class="hint">Alles wird automatisch im Browser gespeichert.<br><small>Version 1.1.0 · 22.10.2026</small></div>
+          <div class="hint">Alles wird automatisch im Browser gespeichert.<br><small>Version 1.2.0 · 26.10.2026</small></div>
           <button data-act="safety">🛡 Datensicherheit prüfen</button>
           <hr>
           <button data-act="file-new" class="fs-only">💾 Auto-Sync in neue Datei…</button>
@@ -514,9 +532,9 @@ input.bad{outline:2px solid var(--danger)!important}
           <button data-act="csv-all">📊 Alle Tickets als CSV (Excel)</button>
           <button data-act="obs-sync" class="f-obs">⇄ Mit Obsidian abgleichen</button>
           <button data-act="obs-pick" class="f-obs">📁 Obsidian-Ordner wählen…</button>
-          <button data-act="csv-wins" class="f-wins">🏆 Erfolge als CSV (Brag Sheet)</button>
+          <button data-act="csv-wins" class="f-wins priv-only">📄 Erledigte mit Ergebnis (CSV)</button>
           <hr>
-          <button data-act="features">⚙ Funktionen ein/aus</button>
+          <button data-act="features">⚙ Einstellungen & Funktionen</button>
           <button data-act="rename">✎ Board umbenennen</button>
           <button data-act="clear-done">🧹 Erledigte Tickets löschen</button>
         </div>
@@ -570,6 +588,9 @@ input.bad{outline:2px solid var(--danger)!important}
     <select id="fType" class="f-type" aria-label="Typ"></select>
     <select id="fLabel" class="f-labels" aria-label="Label"></select>
     <select id="fMeet" class="f-meet" aria-label="Meeting"></select>
+    <select id="fRange" aria-label="Zeitraum" title="Nach Ziel-Datum (soft) und Deadline (hard) filtern"></select>
+    <select id="fDateKind" aria-label="Welche Frist" title="Welche Frist zählt" hidden><option value="">◎ + ⚑ Soft & Hard</option><option value="hard">⚑ nur Deadline</option><option value="soft">◎ nur Ziel-Datum</option></select>
+    <input type="date" id="fFrom" class="date-in" title="von" hidden><input type="date" id="fTo" class="date-in" title="bis" hidden>
     <label class="check-field" title="Spalten „Pausiert“ und „Gestrichen“ einblenden"><input type="checkbox" id="fArchive"> Pausiert & Gestrichen</label>
     <button class="btn ghost" id="fReset" hidden>Filter zurücksetzen</button>
   </div>
@@ -681,10 +702,12 @@ input.bad{outline:2px solid var(--danger)!important}
 <section class="view" id="view-review" hidden>
   <div class="toolbar">
     <div class="cal-nav">
-      <button class="icon-btn" id="revPrev" title="Vorherige Woche"><svg class="ico" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button class="icon-btn" id="revPrev" title="Vorheriger Zeitraum"><svg class="ico" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
       <span class="cal-title" id="revTitle"></span>
-      <button class="icon-btn" id="revNext" title="Nächste Woche"><svg class="ico" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="btn small" id="revNow">Diese Woche</button>
+      <button class="icon-btn" id="revNext" title="Nächster Zeitraum"><svg class="ico" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="btn small" id="revNow">Aktuell</button>
+      <select id="revSpan" class="inline-input" aria-label="Zeitraum"><option value="w">Woche</option><option value="2w">2 Wochen</option><option value="m">Monat</option><option value="q">Quartal</option><option value="c">Eigener Zeitraum</option></select>
+      <input type="date" id="revFrom" class="date-in" title="von" hidden><input type="date" id="revTo" class="date-in" title="bis" hidden>
     </div>
     <div class="spacer"></div>
     <span id="revMsg"></span>
@@ -698,7 +721,7 @@ input.bad{outline:2px solid var(--danger)!important}
       <label><input type="checkbox" data-sec="doing"> 🔄 In Arbeit</label>
       <label><input type="checkbox" data-sec="waiting"> ⏳ Warten auf</label>
       <label><input type="checkbox" data-sec="late"> ⚠ Überfällig</label>
-      <label><input type="checkbox" data-sec="next"> 📅 Nächste Woche</label>
+      <label><input type="checkbox" data-sec="next"> 📅 Als Nächstes (gleich langer Zeitraum)</label>
       <label><input type="checkbox" data-sec="cancelled"> ✖ Gestrichen</label>
       <label><input type="checkbox" data-sec="paused"> ⏸ Pausiert</label>
       <b style="margin-top:10px">Optionen</b>
@@ -740,8 +763,12 @@ input.bad{outline:2px solid var(--danger)!important}
 
 <div class="backdrop" id="featModal" hidden style="z-index:110">
   <div class="modal" role="dialog" aria-modal="true" style="max-width:560px">
-    <div class="modal-head"><b style="color:var(--text);font-size:15px">⚙ Funktionen ein/aus</b><span class="grow"></span><button class="icon-btn" data-close="featModal" title="Esc">✕</button></div>
-    <div class="fl-body"><ul class="feat-list" id="featList"><li><label><input type="checkbox" data-feat="stake"><span><b>👥 Stakeholder</b><small>Feld im Ticket, Zeile auf der Karte, Listenspalte, Venn-Diagramm im Verlauf</small></span></label></li><li><label><input type="checkbox" data-feat="subdue"><span><b>⚑ Fristen für Unteraufgaben</b><small>Datum je Unteraufgabe, rote Karte bei überfälliger Unteraufgabe</small></span></label></li><li><label><input type="checkbox" data-feat="wins"><span><b>🏆 Beitrag & Impact</b><small>Felder im Ticket und „Erfolge als CSV“ im Menü</small></span></label></li><li><label><input type="checkbox" data-feat="flow"><span><b>📈 Verlauf</b><small>Button im Ticket und auf den Ziel-Karten</small></span></label></li><li><label><input type="checkbox" data-feat="goals"><span><b>🎯 Ziele</b><small>Menüpunkt und Seitenleiste, Ziel-Feld, Filter, Listenspalte, Ziel auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="meet"><span><b>🗣 Meetings & Agenda</b><small>Menüpunkt, Feld „Auf Agenda für“, Filter, Listenspalte, Agenda-Chip auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="labels"><span><b>🏷 Labels</b><small>Feld im Ticket, Filter, Listenspalte, Labels auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="src"><span><b>📍 Quelle</b><small>Quelle/Datum/Link im Ticket und in „Liste einfügen“, Listenspalte, Zeile auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="recur"><span><b>🔁 Wiederholungen</b><small>Feld im Ticket, Listenspalte, 🔁 auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="target"><span><b>◎ Ziel-Datum (soft)</b><small>Feld im Ticket und Listenspalte (die Deadline bleibt)</small></span></label></li><li><label><input type="checkbox" data-feat="kw"><span><b>KW-Eingabe</b><small>Feld „Deadline per KW“ und Listenspalte KW</small></span></label></li><li><label><input type="checkbox" data-feat="type"><span><b>Typ (Aufgabe/Problem/Idee)</b><small>Feld im Ticket, Filter, Listenspalte, Symbol auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="cal"><span><b>📅 Kalender</b><small>Ansicht „Kalender“ bei Meine Aufgaben</small></span></label></li><li><label><input type="checkbox" data-feat="review"><span><b>📋 Wochenrückblick</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="notes"><span><b>📝 Notizen</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="prompts"><span><b>✨ Prompts</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="obs"><span><b>⇄ Obsidian-Abgleich</b><small>Menüpunkte im ⋯-Menü (automatischer Abgleich läuft weiter, solange ein Ordner gewählt ist)</small></span></label></li></ul><div class="fl-muted">Nur die Anzeige wird umgeschaltet. Eingetragene Daten bleiben gespeichert und sind beim Wieder-Einschalten sofort wieder da.</div></div>
+    <div class="modal-head"><b style="color:var(--text);font-size:15px">⚙ Einstellungen & Funktionen</b><span class="grow"></span><button class="icon-btn" data-close="featModal" title="Esc">✕</button></div>
+    <div class="fl-body"><b style="font-size:13px">Fristen</b>
+      <label class="set-row"><span><b>⚑ Deadline (hard) wird rot</b><small>so viele Tage vorher (0 = erst wenn überfällig)</small></span><input type="number" min="0" max="365" id="setWarnHard" class="inline-input"></label>
+      <label class="set-row"><span><b>◎ Ziel-Datum (soft) wird orange</b><small>so viele Tage vorher (0 = erst wenn überschritten)</small></span><input type="number" min="0" max="365" id="setWarnSoft" class="inline-input"></label>
+      <b style="font-size:13px;margin-top:8px">Funktionen</b>
+      <ul class="feat-list" id="featList"><li><label><input type="checkbox" data-feat="stake"><span><b>👥 Stakeholder</b><small>Feld im Ticket, Zeile auf der Karte, Listenspalte, Venn-Diagramm im Verlauf</small></span></label></li><li><label><input type="checkbox" data-feat="subdue"><span><b>⚑ Fristen für Unteraufgaben</b><small>Datum je Unteraufgabe, rote Karte bei überfälliger Unteraufgabe</small></span></label></li><li><label><input type="checkbox" data-feat="wins"><span><b>📄 Ergebnis & Rolle</b><small>Eingeklappter Bereich im Ticket und „Erledigte mit Ergebnis (CSV)“ im Menü – beides nur im Privat-Modus</small></span></label></li><li><label><input type="checkbox" data-feat="flow"><span><b>📈 Verlauf</b><small>Button im Ticket und auf den Ziel-Karten</small></span></label></li><li><label><input type="checkbox" data-feat="goals"><span><b>🎯 Ziele</b><small>Menüpunkt und Seitenleiste, Ziel-Feld, Filter, Listenspalte, Ziel auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="meet"><span><b>🗣 Meetings & Agenda</b><small>Menüpunkt, Feld „Auf Agenda für“, Filter, Listenspalte, Agenda-Chip auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="labels"><span><b>🏷 Labels</b><small>Feld im Ticket, Filter, Listenspalte, Labels auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="src"><span><b>📍 Quelle</b><small>Quelle/Datum/Link im Ticket und in „Liste einfügen“, Listenspalte, Zeile auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="recur"><span><b>🔁 Wiederholungen</b><small>Feld im Ticket, Listenspalte, 🔁 auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="target"><span><b>◎ Ziel-Datum (soft)</b><small>Feld im Ticket und Listenspalte (die Deadline bleibt)</small></span></label></li><li><label><input type="checkbox" data-feat="kw"><span><b>KW-Eingabe</b><small>Feld „Deadline per KW“ und Listenspalte KW</small></span></label></li><li><label><input type="checkbox" data-feat="type"><span><b>Typ (Aufgabe/Problem/Idee)</b><small>Feld im Ticket, Filter, Listenspalte, Symbol auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="cal"><span><b>📅 Kalender</b><small>Ansicht „Kalender“ bei Meine Aufgaben</small></span></label></li><li><label><input type="checkbox" data-feat="review"><span><b>📋 Rückblick</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="notes"><span><b>📝 Notizen</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="prompts"><span><b>✨ Prompts</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="obs"><span><b>⇄ Obsidian-Abgleich</b><small>Menüpunkte im ⋯-Menü (automatischer Abgleich läuft weiter, solange ein Ordner gewählt ist)</small></span></label></li></ul><div class="fl-muted">Nur die Anzeige wird umgeschaltet. Eingetragene Daten bleiben gespeichert und sind beim Wieder-Einschalten sofort wieder da.</div></div>
   </div>
 </div>
 
@@ -773,12 +800,14 @@ input.bad{outline:2px solid var(--danger)!important}
         <ul class="checklist" id="mChecklist"></ul>
         <input class="check-new" id="mCheckNew" placeholder="+ Unteraufgabe hinzufügen (Enter)">
 
-        <div class="sec-label f-wins">🏆 Beitrag & Impact <small>für Review, Gehaltsgespräch, Lebenslauf</small></div>
-        <div class="wins-grid f-wins">
+        <details class="wins-box f-wins priv-only" id="mWinsBox">
+        <summary>Ergebnis & Rolle <small>· nur im Privat-Modus sichtbar</small></summary>
+        <div class="wins-grid">
           <textarea id="mDid" placeholder="Was habe ich konkret gemacht?"></textarea>
           <select id="mRole" class="inline-input" title="Rolle"><option value="">— Rolle —</option><option value="lead">Lead</option><option value="contrib">Mitarbeit</option><option value="support">Support</option></select>
           <textarea id="mImpact" placeholder="Was hat es bewirkt? (Zahlen, Feedback, Entscheidung)"></textarea>
         </div>
+        </details>
 
         <div class="priv-only">
           <div class="sec-label">Updates <small>Verlauf / Notizen zu diesem Ticket</small></div>
@@ -1143,6 +1172,7 @@ function normalize(d) {
   d.recurrences = Array.isArray(d.recurrences) ? d.recurrences : [];
   d.meetings = Array.isArray(d.meetings) ? d.meetings : [];
   d.features = { stake: true, subdue: true, wins: true, flow: true, ...(d.features && typeof d.features === 'object' ? d.features : {}) };
+  d.settings = { warnHard: 7, warnSoft: 0, ...(d.settings && typeof d.settings === 'object' ? d.settings : {}) };
   if (!Array.isArray(d.prompts)) d.prompts = DEFAULT_PROMPTS.map(p => ({ id: uid(), ...p }));
   d.issues.forEach(i => {
     // Migration v1 → v2
@@ -1412,7 +1442,29 @@ function generateRecurring() {
 
 /* ================= Board ================= */
 const boardEl = $('#board');
-const filters = { q: '', type: '', imp: '', label: '', goal: '', meet: '' };
+const filters = { q: '', type: '', imp: '', label: '', goal: '', meet: '', range: '', dateKind: '', from: '', to: '' };
+const weekMon = iso => addDays(iso, -((parseISO(iso).getDay() + 6) % 7));
+// Zeitraum-Filter: [von, bis] als ISO; null = kein Bereich
+function rangeBounds(r) {
+  const t = today();
+  if (r === 'today') return [t, t];
+  if (r === 'week') return [weekMon(t), addDays(weekMon(t), 6)];
+  if (r === 'next') return [addDays(weekMon(t), 7), addDays(weekMon(t), 13)];
+  if (/^d\d+$/.test(r)) return [t, addDays(t, +r.slice(1) - 1)];
+  if (r === 'late') return ['', addDays(t, -1)];
+  if (r.startsWith('kw:')) { const [y, w] = r.slice(3).split('-').map(Number); return [kwDay(w, y, 0), kwDay(w, y, 6)]; }
+  if (r === 'custom') return [filters.from || '', filters.to || '9999-12-31'];
+  return null;
+}
+function issueDates(i) { const k = filters.dateKind; return [k !== 'hard' && F('target') ? i.target : '', k !== 'soft' ? i.deadline : ''].filter(Boolean); }
+function matchRange(i) {
+  const r = filters.range; if (!r) return true;
+  const ds = issueDates(i);
+  if (r === 'none') return !ds.length;
+  if (r === 'late' && !isActive(i)) return false;
+  const [a, b] = rangeBounds(r);
+  return ds.some(d => d >= a && d <= b);
+}
 let showArchive = safeGet('jiratype.archive') === '1';
 const expanded = new Set(); // aufgeklappte Unteraufgaben auf Karten
 function matches(i) {
@@ -1422,6 +1474,7 @@ function matches(i) {
   if (filters.label && !i.labels.includes(filters.label)) return false;
   if (filters.goal && (filters.goal === '__none' ? i.goalId : i.goalId !== filters.goal)) return false;
   if (filters.meet && i.meetingId !== filters.meet) return false;
+  if (!matchRange(i)) return false;
   if (filters.q) {
     const q = filters.q.toLowerCase();
     const parts = [i.key, i.title, i.desc, i.labels.join(' '), getGoal(i.goalId)?.name || '', i.waitingFor, i.source, i.cancelReason, ...i.checklist.map(c => c.text)];
@@ -1450,10 +1503,13 @@ function stateHTML(i) {
 }
 function goalChip(g) { return g ? `<span class="goal-chip" style="--g:${esc(g.color)}" title="Ziel">${esc(g.name)}</span>` : ''; }
 function impChip(imp) { return imp ? `<span class="imp imp-${imp}">${IMPS[imp].n}</span>` : ''; }
+// Vorwarnung: Deadline rot / Ziel orange ab X Tagen vorher (Einstellungen)
+function hardCls(v) { const t = today(), w = state.settings?.warnHard || 0; return v < t || (w > 0 && v <= addDays(t, w)) ? 'late' : v === t ? 'soft' : ''; }
+function softCls(v) { const t = today(), w = state.settings?.warnSoft || 0; return v < t || (w > 0 && v <= addDays(t, w)) ? 'soft' : ''; }
 function dateHTML(i) {
   const t = today(), done = !isActive(i), out = [];
-  if (i.target) out.push(`<span class="date ${!done && i.target < t ? 'soft' : ''}" title="Ziel (soft): ${fmtDate(i.target)}">◎ ${fmtShort(i.target)}</span>`);
-  if (i.deadline) out.push(`<span class="date ${!done && i.deadline < t ? 'late' : (!done && i.deadline === t ? 'soft' : '')}" title="Deadline (hard): ${fmtDate(i.deadline)} · KW ${isoWeek(i.deadline)[0]}">⚑ ${fmtShort(i.deadline)}</span>`);
+  if (i.target) out.push(`<span class="date ${!done ? softCls(i.target) : ''}" title="Ziel (soft): ${fmtDate(i.target)}">◎ ${fmtShort(i.target)}</span>`);
+  if (i.deadline) out.push(`<span class="date ${!done ? hardCls(i.deadline) : ''}" title="Deadline (hard): ${fmtDate(i.deadline)} · KW ${isoWeek(i.deadline)[0]}">⚑ ${fmtShort(i.deadline)}</span>`);
   return out.join('');
 }
 const goalAv = (g, cls = '') => `<span class="goal-av ${cls}" style="--g:${esc(g.color)}">${esc((g.name.trim()[0] || '•').toUpperCase())}</span>`;
@@ -1497,7 +1553,7 @@ function cardHTML(i) {
   </div>`;
 }
 function renderBoard() {
-  const active = Object.values(filters).some(Boolean);
+  const active = Object.entries(filters).some(([k, v]) => v && k !== 'dateKind' && !(filters.range !== 'custom' && (k === 'from' || k === 'to')));
   $('#fReset').hidden = !active;
   $('#fArchive').checked = showArchive;
   boardEl.innerHTML = COLS.filter(c => !c.archive || showArchive).map(c => {
@@ -1516,7 +1572,30 @@ function setOptions(el, opts, first) {
   el.innerHTML = (first ? `<option value="">${first}</option>` : '') + opts.map(([k, n]) => `<option value="${esc(k)}">${esc(n)}</option>`).join('');
   el.value = opts.some(o => o[0] === v) ? v : (first ? '' : opts[0]?.[0] ?? '');
 }
+function renderRangeOptions() {
+  const el = $('#fRange'), t = today(), cw = isoWeek(t), nw = isoWeek(addDays(t, 7));
+  // KW-Liste aus den vorhandenen Terminen offener Tickets
+  const weeks = new Map();
+  visIssues().filter(i => !isClosed(i)).forEach(i => [F('target') ? i.target : '', i.deadline].filter(Boolean).forEach(d => {
+    const [w, y] = isoWeek(d), k = `${y}-${String(w).padStart(2, '0')}`;
+    weeks.set(k, (weeks.get(k) || new Set()).add(i.id));
+  }));
+  if (filters.range.startsWith('kw:') && !weeks.has(filters.range.slice(3))) weeks.set(filters.range.slice(3), new Set());
+  const kwOpts = [...weeks.keys()].sort().map(k => { const [y, w] = k.split('-').map(Number), n = weeks.get(k).size;
+    return `<option value="kw:${k}">KW ${w}${y !== cw[1] ? ' ' + y : ''} · ${fmtShort(kwDay(w, y, 0))}–${fmtShort(kwDay(w, y, 6))}${n ? ` (${n})` : ''}</option>`; }).join('');
+  el.innerHTML = `<option value="">📅 Jeder Zeitraum</option><option value="late">⚠ Überfällig</option><option value="today">Heute</option>`
+    + `<option value="week">Diese Woche · KW ${cw[0]}</option><option value="next">Nächste Woche · KW ${nw[0]}</option>`
+    + `<option value="d7">Nächste 7 Tage</option><option value="d14">Nächste 14 Tage</option><option value="d30">Nächste 30 Tage</option>`
+    + (kwOpts ? `<optgroup label="Kalenderwochen mit Terminen">${kwOpts}</optgroup>` : '')
+    + `<option value="none">Ohne Datum</option><option value="custom">Eigener Zeitraum (von–bis)…</option>`;
+  el.value = filters.range;
+  const custom = filters.range === 'custom';
+  $('#fFrom').hidden = $('#fTo').hidden = !custom; $('#fFrom').value = filters.from; $('#fTo').value = filters.to;
+  $('#fDateKind').hidden = !filters.range; $('#fDateKind').value = filters.dateKind;
+  if (!F('target')) $('#fDateKind').hidden = true;
+}
 function renderFilterOptions() {
+  renderRangeOptions();
   setOptions($('#fType'), Object.entries(TYPES).map(([k, t]) => [k, t.n]), 'Alle Typen');
   setOptions($('#fImp'), Object.entries(IMPS).map(([k, p]) => [k, p.n]), 'Jede Wichtigkeit');
   setOptions($('#fGoal'), [...state.goals.map(g => [g.id, g.name]), ['__none', '— ohne Ziel —']], 'Alle Ziele');
@@ -1552,7 +1631,18 @@ $('#sideGoals').addEventListener('click', e => {
   showView(currentView === 'list' || currentView === 'cal' ? 'board' : TASK_VIEWS.includes(currentView) ? currentView : 'board');
 });
 $('#sideAddGoal').onclick = () => { showView('goals'); $('#newGoalBtn').click(); };
-$('#hamburger').onclick = () => document.body.classList.add('side-open');
+const isNarrow = () => matchMedia('(max-width:860px)').matches;
+document.body.classList.toggle('side-collapsed', safeGet('jiratype.sideCollapsed') === '1');
+document.body.classList.toggle('goals-folded', safeGet('jiratype.goalsFolded') === '1');
+$('#hamburger').onclick = () => {
+  if (isNarrow()) document.body.classList.add('side-open');
+  else { document.body.classList.remove('side-collapsed'); safeSet('jiratype.sideCollapsed', '0'); }
+};
+$('#sideCollapse').onclick = () => {
+  if (isNarrow()) document.body.classList.remove('side-open');
+  else { document.body.classList.add('side-collapsed'); safeSet('jiratype.sideCollapsed', '1'); }
+};
+$('#sideGoalsToggle').onclick = () => safeSet('jiratype.goalsFolded', document.body.classList.toggle('goals-folded') ? '1' : '0');
 $('#scrim').onclick = () => document.body.classList.remove('side-open');
 
 function renderAll() {
@@ -1696,7 +1786,14 @@ function setStatus(issue, status, opts = {}) {
 $('#q').addEventListener('input', e => { filters.q = e.target.value.trim(); renderBoard(); });
 $('#fArchive').addEventListener('change', e => { showArchive = e.target.checked; safeSet('jiratype.archive', showArchive ? '1' : '0'); renderBoard(); });
 [['#fType', 'type'], ['#fImp', 'imp'], ['#fLabel', 'label'], ['#fGoal', 'goal'], ['#fMeet', 'meet']].forEach(([s, k]) => $(s).addEventListener('change', e => { filters[k] = e.target.value; renderBoard(); renderSidebar(); }));
-$('#fReset').onclick = () => { Object.keys(filters).forEach(k => filters[k] = ''); $('#q').value = ''; ['#fType', '#fImp', '#fLabel', '#fGoal', '#fMeet'].forEach(s => $(s).value = ''); renderBoard(); renderSidebar(); };
+$('#fRange').addEventListener('change', e => {
+  filters.range = e.target.value;
+  if (filters.range === 'custom' && !filters.from && !filters.to) { filters.from = today(); filters.to = addDays(today(), 13); }
+  renderRangeOptions(); renderBoard();
+});
+$('#fDateKind').addEventListener('change', e => { filters.dateKind = e.target.value; renderBoard(); });
+[['#fFrom', 'from'], ['#fTo', 'to']].forEach(([sel, k]) => $(sel).addEventListener('change', e => { filters[k] = e.target.value; renderBoard(); }));
+$('#fReset').onclick = () => { Object.keys(filters).forEach(k => filters[k] = ''); $('#q').value = ''; ['#fType', '#fImp', '#fLabel', '#fGoal', '#fMeet'].forEach(s => $(s).value = ''); renderRangeOptions(); renderBoard(); renderSidebar(); };
 
 /* ================= Kalender ================= */
 let calY = new Date().getFullYear(), calM = new Date().getMonth();
@@ -1869,6 +1966,7 @@ $('#mImp').innerHTML = `<option value="">—</option>` + Object.entries(IMPS).ma
 
 function openIssue(id, focusTitle) {
   curId = id; fillModal(); modal.hidden = false;
+  const ib = cur(); $('#mWinsBox').open = !!(ib && (ib.did || ib.impact || ib.role));
   (focusTitle ? $('#mTitle') : $('#mClose')).focus();
 }
 function fillModal() {
@@ -2113,7 +2211,11 @@ $('#newIssueBtn').onclick = () => {
 /* ================= Verlauf (Flow) ================= */
 const FL = {"lt1h": "< 1 Std", "h": "Std", "d": "T", "created": "Erstellt", "sofar": "bisher", "total": "Dauer gesamt", "nowSt": "Status", "subs": "Unteraufgaben", "people": "Beteiligte", "phases": "Statuswechsel", "where": "Wo ging die Zeit hin?", "timeline": "Zeitstrahl", "flow": "Ablauf", "rowStatus": "Status", "rowSubs": "Unteraufgaben", "rowUpd": "Updates", "noChanges": "Keine Statuswechsel aufgezeichnet – Ablauf nur grob (Erstellt → jetzt).", "today": "heute", "deadline": "Deadline", "target": "Ziel-Datum", "subDone": "erledigt", "subDue": "Frist", "venn": "Überschneidung der Stakeholder", "vennHint": "Zahl = Tickets in dieser Schnittmenge (Maus drüber zeigt welche)", "noPeople": "Keine Stakeholder eingetragen.", "tickets": "Tickets", "done": "erledigt", "span": "Zeitraum", "goalEmpty": "Diesem Ziel sind noch keine Tickets zugeordnet.", "impactBox": "Beitrag & Impact", "waitFor": "wartet auf", "openTicket": "Klick öffnet das Ticket", "title": "📈 Verlauf"};
 const flowModal = $('#flowModal');
-function openFeat() { $$('#featList [data-feat]').forEach(cb => cb.checked = F(cb.dataset.feat)); $('#featModal').hidden = false; }
+function openFeat() { $$('#featList [data-feat]').forEach(cb => cb.checked = F(cb.dataset.feat)); $('#setWarnHard').value = state.settings.warnHard; $('#setWarnSoft').value = state.settings.warnSoft; $('#featModal').hidden = false; }
+[['#setWarnHard', 'warnHard'], ['#setWarnSoft', 'warnSoft']].forEach(([sel, k]) => $(sel).addEventListener('change', e => {
+  const v = Math.max(0, Math.min(365, parseInt(e.target.value, 10) || 0)); e.target.value = v;
+  state.settings[k] = v; save(); renderAll();
+}));
 $('#featList').addEventListener('change', e => {
   const k = e.target.dataset.feat; if (!k) return;
   state.features[k] = e.target.checked; save();
@@ -2234,7 +2336,7 @@ function openFlow({ issue, goal }) {
       <h4>${FL.where}</h4>${splitHTML([phases])}
       <h4>${FL.timeline}</h4>${ganttSVG(rows, lines)}
       <h4>${FL.people}</h4>${peopleHTML([i])}
-      ${F('wins') && (i.did || i.impact) ? `<h4>${FL.impactBox}</h4><div class="fl-impact">${esc([i.did, i.impact].filter(Boolean).join('\n\n'))}</div>` : ''}`;
+      ${F('wins') && !showMode && (i.did || i.impact) ? `<h4>${FL.impactBox}</h4><div class="fl-impact">${esc([i.did, i.impact].filter(Boolean).join('\n\n'))}</div>` : ''}`;
   } else {
     const g = goal, items = visIssues().filter(i => i.goalId === g.id).sort((a, b) => a.created - b.created);
     $('#flowTitle').textContent = `${FL.title} · ${g.name}`;
@@ -2272,7 +2374,7 @@ const dateText = s => s ? parseISO(s).toLocaleDateString('de-DE', { day: '2-digi
 const opts = (list, val) => list.map(([k, n]) => `<option value="${esc(k)}" ${k === val ? 'selected' : ''}>${esc(n)}</option>`).join('');
 function dateCell(i, f) {
   const v = i[f], t = today(), done = !isActive(i) && f !== 'followUp';
-  const cls = !v || done ? '' : (f === 'deadline' ? (v < t ? 'late' : v === t ? 'soft' : '') : (v < t ? 'soft' : ''));
+  const cls = !v || done ? '' : (f === 'deadline' ? hardCls(v) : f === 'target' ? softCls(v) : (v < t ? 'soft' : ''));
   return `<input type="date" class="cell-in ${cls} ${v ? '' : 'empty'}" data-f="${f}" value="${esc(v)}">`;
 }
 const LCOLS = [
@@ -2388,7 +2490,7 @@ $('#lCsv').onclick = () => {
   const csv = [cols.map(c => cell(c.n)).join(';'), ...rows.map(i => cols.map(c => cell(c.text(i))).join(';'))].join('\r\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
-  a.download = `tickets-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  a.download = `tickets-${stamp()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 };
 
 /* Popup (Spaltenfilter + Spaltenauswahl) */
@@ -2625,6 +2727,8 @@ async function copyText(text, msgEl, msg = '✓ Kopiert') {
   }
   if (msgEl) { msgEl.className = 'ok-msg'; msgEl.textContent = msg; setTimeout(() => { msgEl.textContent = ''; }, 3500); }
 }
+// Datum + Uhrzeit für Dateinamen, z. B. 2026-10-26_1430
+const stamp = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); return `${today()}_${p(d.getHours())}${p(d.getMinutes())}`; };
 function downloadText(text, name) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob(['﻿' + text.replace(/\n/g, '\r\n')], { type: 'text/plain;charset=utf-8' }));
@@ -2781,31 +2885,52 @@ function renderPrep() {
 }
 ['#prepKeys', '#prepSubs', '#prepSince'].forEach(sel => $(sel).addEventListener('change', renderPrep));
 $('#prepCopy').onclick = () => copyText($('#prepOut').value, $('#prepMsg'));
-$('#prepDownload').onclick = () => downloadText($('#prepOut').value, `sync-vorbereitung-${(prepMeet?.name || 'meeting').toLowerCase().replace(/[^a-z0-9äöüß]+/gi, '-')}-${today()}.txt`);
+$('#prepDownload').onclick = () => downloadText($('#prepOut').value, `sync-vorbereitung-${(prepMeet?.name || 'meeting').toLowerCase().replace(/[^a-z0-9äöüß]+/gi, '-')}-${stamp()}.txt`);
 
 /* ================= Wochenrückblick ================= */
 const REV_KEY = 'jiratype.review';
 const rev = (() => { try { return JSON.parse(safeGet(REV_KEY)) || {}; } catch { return {}; } })();
 rev.sec ??= { done: true, doing: true, waiting: true, late: true, next: true, cancelled: false, paused: false };
 rev.opt ??= { keys: false, goals: true, subs: false, priv: false };
+rev.span ??= 'w';
 let revOffset = 0;
 $$('#view-review [data-sec]').forEach(cb => { cb.checked = !!rev.sec[cb.dataset.sec]; });
 $$('#view-review [data-opt]').forEach(cb => { cb.checked = !!rev.opt[cb.dataset.opt]; });
+function revPeriod() {
+  const t = today(), base = parseISO(t), o = revOffset, sp = rev.span;
+  if (sp === 'm' || sp === 'q') {
+    const n = sp === 'm' ? 1 : 3, m0 = sp === 'm' ? base.getMonth() : Math.floor(base.getMonth() / 3) * 3;
+    const from = isoOf(new Date(base.getFullYear(), m0 + o * n, 1)), to = isoOf(new Date(base.getFullYear(), m0 + (o + 1) * n, 0));
+    const nFrom = addDays(to, 1), nTo = isoOf(new Date(base.getFullYear(), m0 + (o + 2) * n, 0));
+    const d = parseISO(from);
+    const label = sp === 'm' ? d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' }) : `Q${Math.floor(d.getMonth() / 3) + 1} ${d.getFullYear()}`;
+    return { from, to, nFrom, nTo, label };
+  }
+  if (sp === 'c') {
+    let from = rev.from || addDays(t, -13), to = rev.to || t; if (to < from) [from, to] = [to, from];
+    const len = Math.round((parseISO(to) - parseISO(from)) / 86400000) + 1;
+    return { from, to, nFrom: addDays(to, 1), nTo: addDays(to, len), label: `${short(from)}–${short(to)}` };
+  }
+  const days = sp === '2w' ? 14 : 7, from = addDays(weekMon(t), (sp === '2w' ? -7 : 0) + o * days), to = addDays(from, days - 1);
+  const w1 = isoWeek(from)[0], w2 = isoWeek(to)[0], kwl = w1 === w2 ? `KW ${w1}` : `KW ${w1}–${w2}`;
+  return { from, to, nFrom: addDays(to, 1), nTo: addDays(to, days), label: `${kwl} · ${short(from)}–${short(to)}`, kwl };
+}
 function renderReview() {
-  const base = parseISO(today());
-  const mon = isoOf(new Date(base.getFullYear(), base.getMonth(), base.getDate() - ((base.getDay() + 6) % 7) + revOffset * 7));
-  const sun = addDays(mon, 6), nMon = addDays(mon, 7), nSun = addDays(mon, 13), t = today();
-  const [kw] = isoWeek(mon);
-  $('#revTitle').textContent = `KW ${kw} · ${short(mon)}–${short(sun)}`;
+  const { from, to, nFrom, nTo, label, kwl } = revPeriod(), t = today();
+  $('#revSpan').value = rev.span;
+  $('#revFrom').hidden = $('#revTo').hidden = rev.span !== 'c';
+  $('#revFrom').value = from; $('#revTo').value = to;
+  $('#revTitle').textContent = label;
   const o = rev.opt, sec = rev.sec;
   const pool = state.issues.filter(i => !i.private || (o.priv && !showMode));
-  let out = `Wochenrückblick KW ${kw} (${dateText(mon)} – ${dateText(sun)})\n\n`;
-  if (sec.done) out += section('✅ Erledigt', pool.filter(i => i.status === 'done' && tsIn(i.doneAt, mon, sun)), i => exportLine(i, { ...o, subs: false }));
+  let out = rev.span === 'w' ? `Wochenrückblick ${kwl} (${dateText(from)} – ${dateText(to)})\n\n` : `Rückblick ${rev.span === 'm' || rev.span === 'q' ? label + ' ' : ''}(${dateText(from)} – ${dateText(to)})\n\n`;
+  const nextLabel = rev.span === 'w' ? `📅 Nächste Woche · KW ${isoWeek(nFrom)[0]}` : `📅 Als Nächstes · ${short(nFrom)}–${short(nTo)}`;
+  if (sec.done) out += section('✅ Erledigt', pool.filter(i => i.status === 'done' && tsIn(i.doneAt, from, to)), i => exportLine(i, { ...o, subs: false }));
   if (sec.doing) out += section('🔄 In Arbeit', pool.filter(i => i.status === 'doing'), i => exportLine(i, o, doingExtra(i)));
   if (sec.waiting) out += section('⏳ Warten auf', pool.filter(i => i.status === 'waiting'), i => exportLine(i, o, waitExtra(i)));
   if (sec.late) out += section('⚠ Überfällig', pool.filter(i => isActive(i) && i.status !== 'waiting' && i.deadline && i.deadline < t), i => exportLine(i, o, `Deadline war ${short(i.deadline)}`));
-  if (sec.next) out += section(`📅 Nächste Woche · KW ${isoWeek(nMon)[0]}`, pool.filter(i => isActive(i) && ((i.target >= nMon && i.target <= nSun) || (i.deadline >= nMon && i.deadline <= nSun))), i => exportLine(i, o, dateExtra(i)));
-  if (sec.cancelled) out += section('✖ Gestrichen', pool.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), mon, sun)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'Grund: ' + i.cancelReason : ''));
+  if (sec.next) out += section(nextLabel, pool.filter(i => isActive(i) && ((i.target >= nFrom && i.target <= nTo) || (i.deadline >= nFrom && i.deadline <= nTo))), i => exportLine(i, o, dateExtra(i)));
+  if (sec.cancelled) out += section('✖ Gestrichen', pool.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), from, to)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'Grund: ' + i.cancelReason : ''));
   if (sec.paused) out += section('⏸ Pausiert', pool.filter(i => i.status === 'paused'), i => exportLine(i, { ...o, subs: false }, i.followUp ? 'wieder ab ' + short(i.followUp) : ''));
   $('#revOut').value = out.trim() + '\n';
 }
@@ -2816,9 +2941,25 @@ $('#view-review').addEventListener('change', e => {
   else return;
   safeSet(REV_KEY, JSON.stringify(rev)); renderReview();
 });
-$('#revPrev').onclick = () => { revOffset--; renderReview(); };
-$('#revNext').onclick = () => { revOffset++; renderReview(); };
-$('#revNow').onclick = () => { revOffset = 0; renderReview(); };
+const saveRev = () => safeSet(REV_KEY, JSON.stringify(rev));
+// Eigener Zeitraum: Pfeile verschieben um die Länge des Zeitraums
+function shiftRev(dir) {
+  if (rev.span !== 'c') { revOffset += dir; renderReview(); return; }
+  const { from, to } = revPeriod(), len = Math.round((parseISO(to) - parseISO(from)) / 86400000) + 1;
+  rev.from = addDays(from, dir * len); rev.to = addDays(to, dir * len); saveRev(); renderReview();
+}
+$('#revPrev').onclick = () => shiftRev(-1);
+$('#revNext').onclick = () => shiftRev(1);
+$('#revNow').onclick = () => {
+  revOffset = 0;
+  if (rev.span === 'c') { const { from, to } = revPeriod(), len = Math.round((parseISO(to) - parseISO(from)) / 86400000); rev.to = today(); rev.from = addDays(rev.to, -len); saveRev(); }
+  renderReview();
+};
+$('#revSpan').addEventListener('change', e => {
+  if (e.target.value === 'c') { const p = revPeriod(); rev.from = p.from; rev.to = p.to; }
+  rev.span = e.target.value; revOffset = 0; saveRev(); renderReview();
+});
+[['#revFrom', 'from'], ['#revTo', 'to']].forEach(([sel, k]) => $(sel).addEventListener('change', e => { if (e.target.value) { rev[k] = e.target.value; saveRev(); renderReview(); } }));
 $('#revCopy').onclick = () => copyText($('#revOut').value, $('#revMsg'));
 
 /* ================= Liste einfügen (Aktionspunkte → Tickets) ================= */
@@ -3000,7 +3141,7 @@ const TASK_VIEWS = ['board', 'list', 'cal'];
 const PAGE = {
   tasks:   ['Meine Aufgaben', 'Alle deine Tickets – als Board, Liste oder im Kalender.'],
   meetings: ['Meetings', 'Agenda pro Meeting: offene Punkte tauchen beim passenden Termin auf.'],
-  review:  ['Wochenrückblick', 'Was diese Woche passiert ist – fertig zum Kopieren fürs Status-Update.'],
+  review:  ['Rückblick', 'Was im gewählten Zeitraum passiert ist – Woche, Monat oder frei wählbar, fertig zum Kopieren fürs Status-Update.'],
   goals:   ['Ziele', 'Größere Ziele mit Fortschritt und deine wiederkehrenden Aufgaben.'],
   notes:   ['Notizen', 'Freie Notizen – werden automatisch gespeichert.'],
   prompts: ['Prompts', 'KI-Vorlagen: Notizen verarbeiten lassen und als Tickets übernehmen.'],
@@ -3123,7 +3264,7 @@ function zipBlob(files) {
   return new Blob([...parts, ...cdir, new Uint8Array(end.buffer)], { type: 'application/zip' });
 }
 function obsZip() {
-  const folder = `Tickets-${today()}`;
+  const folder = `Tickets-${stamp()}`;
   const files = state.issues.filter(i => i.key).map(i => ({ name: `${folder}/${`${i.key} ${obsFile(i.title)}`.slice(0, 120).trim()}.md`, text: obsMarkdown(i, '') }));
   if (!files.length) return alert(MSG_EMPTY);
   const a = document.createElement('a'); a.href = URL.createObjectURL(zipBlob(files));
@@ -3363,7 +3504,7 @@ async function menuAction(act) {
     else if (act === 'export') {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `board-backup-${today()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      a.download = `board-backup-${stamp()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
       safeSet('jiratype.lastBackup', String(now())); checkBackupBanner();
     } else if (act === 'features') {
       openFeat();
@@ -3377,7 +3518,7 @@ async function menuAction(act) {
       const csv = [["Datum", "Projekt / Ziel", "Ticket", "Was ich gemacht habe", "Rolle", "Wichtigkeit", "Impact", "Stakeholder", "Quelle"], ...rows].map(r => r.map(cell).join(';')).join('\r\n');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
-      a.download = `erfolge-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      a.download = `erledigt-ergebnis-${stamp()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     } else if (act === 'csv-all') {
       const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
       const head = ['Key', 'Titel', 'Beschreibung', 'Status', 'Wartet auf', 'Wiedervorlage', 'Grund (gestrichen)', 'Wichtigkeit', 'Typ', 'Ziel', 'Agenda', 'Quelle', 'Quelle am', 'Link', 'Labels', 'Ziel-Datum (soft)', 'Deadline (hard)', 'KW', 'Wiederholung', 'Privat', 'Unteraufgaben', 'Updates', 'Erstellt', 'Aktualisiert', 'Stakeholder', 'Was ich gemacht habe', 'Rolle', 'Impact', 'Erledigt am'];
@@ -3393,7 +3534,7 @@ async function menuAction(act) {
       const csv = [head, ...rows].map(r => r.map(cell).join(';')).join('\r\n');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
-      a.download = `alle-tickets-${today()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      a.download = `alle-tickets-${stamp()}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     } else if (act === 'import') {
       $('#importInput').click();
     } else if (act === 'file-new') {
