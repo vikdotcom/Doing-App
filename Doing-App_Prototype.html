@@ -334,7 +334,7 @@ textarea.desc{width:100%;min-height:90px;border:1px solid var(--border);border-r
 .checklist li .sub-due.late{color:var(--danger);font-weight:600}
 .checklist li .sub-due.soft{color:var(--warn);font-weight:600}
 .sub-list label .date{margin-left:auto;font-size:11px;padding-left:6px}
-body.no-f-stake .f-stake,body.no-f-subdue .f-subdue,body.no-f-wins .f-wins,body.no-f-flow .f-flow,body.no-f-goals .f-goals,body.no-f-meet .f-meet,body.no-f-labels .f-labels,body.no-f-src .f-src,body.no-f-recur .f-recur,body.no-f-target .f-target,body.no-f-kw .f-kw,body.no-f-type .f-type,body.no-f-cal .f-cal,body.no-f-review .f-review,body.no-f-notes .f-notes,body.no-f-prompts .f-prompts,body.no-f-obs .f-obs{display:none!important}
+body.no-f-stake .f-stake,body.no-f-subdue .f-subdue,body.no-f-wins .f-wins,body.no-f-flow .f-flow,body.no-f-goals .f-goals,body.no-f-meet .f-meet,body.no-f-labels .f-labels,body.no-f-src .f-src,body.no-f-recur .f-recur,body.no-f-target .f-target,body.no-f-kw .f-kw,body.no-f-type .f-type,body.no-f-cal .f-cal,body.no-f-review .f-review,body.no-f-notes .f-notes,body.no-f-prompts .f-prompts,body.no-f-obs .f-obs,body.no-f-plan .f-plan,body.no-f-focus .f-focus{display:none!important}
 .feat-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .feat-list label{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
 .feat-list label:hover{background:var(--surface)}
@@ -470,7 +470,87 @@ input.bad{outline:2px solid var(--danger)!important}
 .check-row .btn{margin-top:8px}
 .check-row code{font-family:ui-monospace,Consolas,monospace;background:var(--chip);padding:1px 5px;border-radius:4px;color:var(--text);user-select:all}
 
+/* 1.3: Tagesfokus, Bearbeiten am, Einstellungen, Notizen → Obsidian */
+.focus-bar{display:flex;flex-direction:column;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);margin-bottom:10px}
+#view-focus{padding-top:4px}
+.fw-top{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.fw-grid{display:grid;grid-template-columns:repeat(7,minmax(130px,1fr));gap:6px;overflow-x:auto}
+.fw-grid.one{grid-template-columns:1fr}
+.fw-grid.one .fw-day{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.fw-grid.one .fw-h{margin:0 4px 0 0}
+.fw-day{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fw-day.past{opacity:.75}
+.fw-h{font-size:12px;color:var(--muted);display:flex;gap:4px;align-items:center;margin-bottom:1px}
+.fw-day.today .fw-h b{color:var(--accent)}
+.fw-n{margin-left:auto;font-weight:600}
+.fw-n.ok{color:var(--ok)}
+.fw-n.miss{color:var(--danger)}
+.fw-day .focus-slot{flex:none;max-width:none;height:30px;font-size:12.5px}
+.fw-grid.one .focus-slot{flex:1 1 170px;max-width:320px;height:32px}
+.focus-bar .fb-h{font-weight:600;font-size:13px;white-space:nowrap}
+.focus-slot{display:flex;align-items:center;gap:6px;min-width:0;flex:1 1 170px;max-width:320px;height:34px;padding:0 8px;border:1px solid var(--border);border-radius:8px;background:var(--bg);font-size:13px}
+.focus-slot.empty{border-style:dashed;color:var(--subtle);cursor:pointer;background:transparent;font:inherit;font-size:13px}
+.focus-slot.empty:hover{color:var(--text);border-color:var(--accent)}
+.focus-slot input{margin:0;width:16px;height:16px;flex:none}
+.focus-slot .ft{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.focus-slot .ft[data-open]{cursor:pointer}
+.focus-slot.done{background:var(--ok-soft);border-color:transparent}
+.focus-slot.done .ft{text-decoration:line-through;color:var(--muted)}
+.focus-slot .fx{border:0;background:none;color:var(--subtle);cursor:pointer;padding:0 2px;font-size:12px}
+.focus-hist{display:flex;gap:3px;align-items:center;font-size:12px;color:var(--muted);margin-left:auto;white-space:nowrap}
+.focus-hist i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--dot);display:inline-block;box-sizing:border-box}
+.focus-hist i.full{background:var(--ok);border-color:var(--ok)}
+.focus-hist i.part{background:var(--warn);border-color:var(--warn)}
+.focus-hist i.zero{background:var(--danger);border-color:var(--danger)}
+.focus-hist b{color:var(--text);margin-left:4px}
+.focus-carry{font-size:12px}
+.pop .pop-list button{all:unset;display:flex;gap:6px;align-items:center;padding:6px;border-radius:5px;cursor:pointer;font-size:13px}
+.pop .pop-list button:hover{background:var(--surface)}
+.pop .pop-list button small{margin-left:auto;color:var(--subtle);white-space:nowrap}
+.pop .pop-list button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.date.plan-today{color:var(--accent);font-weight:600}
+.date.push{color:var(--muted)}
+.date.push.soft{color:var(--warn)}
+.cal-chip.plan{--k:var(--accent)}
+.plan-quick{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.plan-quick button{border:1px solid var(--border);background:var(--bg);border-radius:6px;padding:2px 8px;font-size:12px;cursor:pointer;color:var(--muted)}
+.plan-quick button:hover{color:var(--text);border-color:var(--accent)}
+.card-upd{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-upd small{color:var(--subtle)}
+.more-f{display:contents}
+.more-f[hidden]{display:none!important}
+.set-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.set-row.compact{font-size:13px;padding:8px 10px;gap:6px}
+.set-row.compact input{width:56px}
+.feat-box{border:1px solid var(--border);border-radius:8px;padding:0 12px}
+.feat-box summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:13px}
+.feat-box summary small{font-weight:400;color:var(--subtle)}
+.feat-grp{font-size:12px;color:var(--muted);margin:2px 0 6px}
+.feat-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.feat-chip{display:inline-flex;gap:6px;align-items:center;padding:4px 10px;border:1px solid var(--border);border-radius:999px;font-size:12.5px;cursor:pointer;user-select:none}
+.feat-chip:has(input:not(:checked)){color:var(--subtle);border-style:dashed}
+.feat-chip input{margin:0}
+.note-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.note-meta .inline-input{height:32px;font-size:13px}
+.note-meta #noteTopic,.note-meta #notePeople{flex:1;min-width:150px}
+.note-tags,.note-sugg{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;margin-bottom:6px;min-height:22px}
+.ntag{background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:999px;display:inline-flex;gap:4px;align-items:center}
+.ntag.auto{background:var(--chip);color:var(--muted)}
+.ntag button{border:0;background:none;color:inherit;cursor:pointer;padding:0;font-size:11px}
+.note-tags input{border:0;background:transparent;font-size:12px;width:110px;padding:2px;color:var(--text)}
+.note-tags input:focus{outline:none}
+.sugg{border:1px dashed var(--border);background:none;border-radius:999px;padding:2px 8px;font-size:12px;color:var(--muted);cursor:pointer}
+.sugg:hover{border-color:var(--accent);color:var(--accent)}
+.sugg.fresh{font-style:italic}
+.note-sugg>span{color:var(--subtle)}
+.note-preview{flex:1;min-height:300px;margin:0;white-space:pre-wrap;font:12.5px/1.55 ui-monospace,Consolas,monospace;background:var(--surface);border-radius:8px;padding:12px;overflow:auto}
+.note-foot{gap:6px;flex-wrap:wrap}
+.note-hint{font-size:12px;color:var(--subtle);margin:0 0 6px}
+.note-hint code{background:var(--chip);padding:0 4px;border-radius:4px;color:var(--muted)}
+
 @media (max-width:860px){
+  .set-grid{grid-template-columns:1fr}
+  .focus-hist{margin-left:0}
   .review-wrap,.bulk-grid{grid-template-columns:1fr}
   .sidebar{position:fixed;inset:0 auto 0 0;transform:translateX(-100%);visibility:hidden;transition:transform .2s,visibility .2s;box-shadow:var(--shadow-lg)}
   body.side-open .sidebar{visibility:visible}
@@ -520,7 +600,7 @@ input.bad{outline:2px solid var(--danger)!important}
       <div class="menu-wrap">
         <button class="icon-btn" id="menuBtn" title="Daten &amp; Einstellungen"><svg class="ico" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
         <div class="menu" id="menu" hidden>
-          <div class="hint">Alles wird automatisch im Browser gespeichert.<br><small>Version 1.2.0 · 26.10.2026</small></div>
+          <div class="hint">Alles wird automatisch im Browser gespeichert.<br><small>Version 1.3.0 · 19.11.2026</small></div>
           <button data-act="safety">🛡 Datensicherheit prüfen</button>
           <hr>
           <button data-act="file-new" class="fs-only">💾 Auto-Sync in neue Datei…</button>
@@ -532,6 +612,7 @@ input.bad{outline:2px solid var(--danger)!important}
           <button data-act="csv-all">📊 Alle Tickets als CSV (Excel)</button>
           <button data-act="obs-sync" class="f-obs">⇄ Mit Obsidian abgleichen</button>
           <button data-act="obs-pick" class="f-obs">📁 Obsidian-Ordner wählen…</button>
+          <button data-act="notes-obs" class="f-obs f-notes priv-only">📝 Geänderte Notizen → Obsidian</button>
           <button data-act="csv-wins" class="f-wins priv-only">📄 Erledigte mit Ergebnis (CSV)</button>
           <hr>
           <button data-act="features">⚙ Einstellungen & Funktionen</button>
@@ -575,6 +656,7 @@ input.bad{outline:2px solid var(--danger)!important}
       <button class="seg tab" data-view="board">Board</button>
       <button class="seg tab" data-view="list">Liste</button>
       <button class="seg tab f-cal" data-view="cal">Kalender</button>
+      <button class="seg tab f-focus priv-only" data-view="focus">Fokus</button>
     </div>
     <div class="sep"></div>
   </div>
@@ -583,19 +665,27 @@ input.bad{outline:2px solid var(--danger)!important}
 <section class="view" id="view-board">
   <div class="toolbar">
     <label class="search"><input id="q" placeholder="Suchen…  ( / )" aria-label="Suchen"></label>
+    <select id="fRange" aria-label="Zeitraum" title="Nach Bearbeiten am, Ziel-Datum und Deadline filtern"></select>
+    <select id="fDateKind" aria-label="Welches Datum" title="Welches Datum zählt" hidden><option value="">Alle Termine</option><option value="plan">▶ nur Bearbeiten am</option><option value="hard">⚑ nur Deadline</option><option value="soft">◎ nur Ziel-Datum</option></select>
+    <button class="btn" id="fMore" title="Weitere Filter: Ziel, Wichtigkeit, Typ, Label, Meeting">Filter ▾</button>
+    <span class="more-f" id="moreF" hidden>
     <select id="fGoal" class="f-goals" aria-label="Ziel"></select>
     <select id="fImp" aria-label="Wichtigkeit"></select>
     <select id="fType" class="f-type" aria-label="Typ"></select>
     <select id="fLabel" class="f-labels" aria-label="Label"></select>
     <select id="fMeet" class="f-meet" aria-label="Meeting"></select>
-    <select id="fRange" aria-label="Zeitraum" title="Nach Ziel-Datum (soft) und Deadline (hard) filtern"></select>
-    <select id="fDateKind" aria-label="Welche Frist" title="Welche Frist zählt" hidden><option value="">◎ + ⚑ Soft & Hard</option><option value="hard">⚑ nur Deadline</option><option value="soft">◎ nur Ziel-Datum</option></select>
+    </span>
     <input type="date" id="fFrom" class="date-in" title="von" hidden><input type="date" id="fTo" class="date-in" title="bis" hidden>
     <label class="check-field" title="Spalten „Pausiert“ und „Gestrichen“ einblenden"><input type="checkbox" id="fArchive"> Pausiert & Gestrichen</label>
     <button class="btn ghost" id="fReset" hidden>Filter zurücksetzen</button>
   </div>
   <div class="sep"></div>
   <div class="board" id="board"></div>
+</section>
+
+<!-- Fokus -->
+<section class="view" id="view-focus" hidden>
+  <div class="focus-bar" id="focusBar"></div>
 </section>
 
 <!-- Liste / Tabelle -->
@@ -663,6 +753,7 @@ input.bad{outline:2px solid var(--danger)!important}
     </div>
     <div class="spacer"></div>
     <div class="cal-legend">
+      <span class="f-plan"><span class="cal-chip plan" style="display:inline-block">▶ Bearbeiten</span></span>
       <span><span class="cal-chip soft" style="display:inline-block">◎ Ziel (soft)</span></span>
       <span><span class="cal-chip hard" style="display:inline-block">⚑ Deadline (hard)</span></span>
       <span><span class="cal-chip ghost" style="display:inline-block">🔁 geplant</span></span>
@@ -764,11 +855,18 @@ input.bad{outline:2px solid var(--danger)!important}
 <div class="backdrop" id="featModal" hidden style="z-index:110">
   <div class="modal" role="dialog" aria-modal="true" style="max-width:560px">
     <div class="modal-head"><b style="color:var(--text);font-size:15px">⚙ Einstellungen & Funktionen</b><span class="grow"></span><button class="icon-btn" data-close="featModal" title="Esc">✕</button></div>
-    <div class="fl-body"><b style="font-size:13px">Fristen</b>
-      <label class="set-row"><span><b>⚑ Deadline (hard) wird rot</b><small>so viele Tage vorher (0 = erst wenn überfällig)</small></span><input type="number" min="0" max="365" id="setWarnHard" class="inline-input"></label>
-      <label class="set-row"><span><b>◎ Ziel-Datum (soft) wird orange</b><small>so viele Tage vorher (0 = erst wenn überschritten)</small></span><input type="number" min="0" max="365" id="setWarnSoft" class="inline-input"></label>
-      <b style="font-size:13px;margin-top:8px">Funktionen</b>
-      <ul class="feat-list" id="featList"><li><label><input type="checkbox" data-feat="stake"><span><b>👥 Stakeholder</b><small>Feld im Ticket, Zeile auf der Karte, Listenspalte, Venn-Diagramm im Verlauf</small></span></label></li><li><label><input type="checkbox" data-feat="subdue"><span><b>⚑ Fristen für Unteraufgaben</b><small>Datum je Unteraufgabe, rote Karte bei überfälliger Unteraufgabe</small></span></label></li><li><label><input type="checkbox" data-feat="wins"><span><b>📄 Ergebnis & Rolle</b><small>Eingeklappter Bereich im Ticket und „Erledigte mit Ergebnis (CSV)“ im Menü – beides nur im Privat-Modus</small></span></label></li><li><label><input type="checkbox" data-feat="flow"><span><b>📈 Verlauf</b><small>Button im Ticket und auf den Ziel-Karten</small></span></label></li><li><label><input type="checkbox" data-feat="goals"><span><b>🎯 Ziele</b><small>Menüpunkt und Seitenleiste, Ziel-Feld, Filter, Listenspalte, Ziel auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="meet"><span><b>🗣 Meetings & Agenda</b><small>Menüpunkt, Feld „Auf Agenda für“, Filter, Listenspalte, Agenda-Chip auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="labels"><span><b>🏷 Labels</b><small>Feld im Ticket, Filter, Listenspalte, Labels auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="src"><span><b>📍 Quelle</b><small>Quelle/Datum/Link im Ticket und in „Liste einfügen“, Listenspalte, Zeile auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="recur"><span><b>🔁 Wiederholungen</b><small>Feld im Ticket, Listenspalte, 🔁 auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="target"><span><b>◎ Ziel-Datum (soft)</b><small>Feld im Ticket und Listenspalte (die Deadline bleibt)</small></span></label></li><li><label><input type="checkbox" data-feat="kw"><span><b>KW-Eingabe</b><small>Feld „Deadline per KW“ und Listenspalte KW</small></span></label></li><li><label><input type="checkbox" data-feat="type"><span><b>Typ (Aufgabe/Problem/Idee)</b><small>Feld im Ticket, Filter, Listenspalte, Symbol auf der Karte</small></span></label></li><li><label><input type="checkbox" data-feat="cal"><span><b>📅 Kalender</b><small>Ansicht „Kalender“ bei Meine Aufgaben</small></span></label></li><li><label><input type="checkbox" data-feat="review"><span><b>📋 Rückblick</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="notes"><span><b>📝 Notizen</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="prompts"><span><b>✨ Prompts</b><small>Menüpunkt in der Seitenleiste</small></span></label></li><li><label><input type="checkbox" data-feat="obs"><span><b>⇄ Obsidian-Abgleich</b><small>Menüpunkte im ⋯-Menü (automatischer Abgleich läuft weiter, solange ein Ordner gewählt ist)</small></span></label></li></ul><div class="fl-muted">Nur die Anzeige wird umgeschaltet. Eingetragene Daten bleiben gespeichert und sind beim Wieder-Einschalten sofort wieder da.</div></div>
+    <div class="fl-body">
+      <b style="font-size:13px">Fristen</b>
+      <div class="set-grid">
+        <label class="set-row compact" title="0 = erst wenn überfällig"><span>⚑ Deadline rot ab</span><input type="number" min="0" max="365" id="setWarnHard" class="inline-input"><span>Tg. vorher</span></label>
+        <label class="set-row compact" title="0 = erst wenn überschritten"><span>◎ Ziel orange ab</span><input type="number" min="0" max="365" id="setWarnSoft" class="inline-input"><span>Tg. vorher</span></label>
+      </div>
+      <div class="set-row f-obs f-notes" style="cursor:default"><span><b>📝 Obsidian-Vault für Notizen</b><small id="setVaultName">Hauptordner des Vaults (mit 00 Inbox, 01 Themen …)</small></span><button class="btn small" id="setVaultBtn" type="button">Wählen…</button></div>
+      <details class="feat-box" id="featBox"><summary>Funktionen ein-/ausblenden <small id="featCount"></small></summary>
+        <div id="featList"></div>
+        <div class="fl-muted" style="margin-bottom:10px">Nur die Anzeige wird umgeschaltet. Eingetragene Daten bleiben gespeichert. Maus über einen Eintrag zeigt, was er umfasst.</div>
+      </details>
+    </div>
   </div>
 </div>
 
@@ -796,6 +894,15 @@ input.bad{outline:2px solid var(--danger)!important}
         <div class="sec-label">Beschreibung</div>
         <textarea class="desc" id="mDesc" placeholder="Details, Links, Gedanken…"></textarea>
 
+        <div class="priv-only">
+          <div class="sec-label">Aktueller Stand <small>Updates & Notizen – das neueste steht auf der Karte</small></div>
+          <div class="comment-new">
+            <textarea id="mComment" placeholder="Wo stehst du gerade? (Strg + Enter)"></textarea>
+            <button class="btn primary" id="mCommentBtn">Speichern</button>
+          </div>
+          <ul class="comments" id="mComments"></ul>
+        </div>
+
         <div class="sec-label">Unteraufgaben <small id="mCheckCount"></small><div class="progress" id="mProgress"><div></div></div></div>
         <ul class="checklist" id="mChecklist"></ul>
         <input class="check-new" id="mCheckNew" placeholder="+ Unteraufgabe hinzufügen (Enter)">
@@ -809,14 +916,6 @@ input.bad{outline:2px solid var(--danger)!important}
         </div>
         </details>
 
-        <div class="priv-only">
-          <div class="sec-label">Updates <small>Verlauf / Notizen zu diesem Ticket</small></div>
-          <div class="comment-new">
-            <textarea id="mComment" placeholder="Update hinzufügen… (Strg + Enter)"></textarea>
-            <button class="btn primary" id="mCommentBtn">Speichern</button>
-          </div>
-          <ul class="comments" id="mComments"></ul>
-        </div>
       </div>
       <aside class="side">
         <label class="field"><span>Status</span><select id="mStatus" class="status-select"></select></label>
@@ -831,6 +930,10 @@ input.bad{outline:2px solid var(--danger)!important}
         <div class="field-row">
           <label class="field"><span>Wichtigkeit</span><select id="mImp"></select></label>
           <label class="f-type field"><span>Typ</span><select id="mType"></select></label>
+        </div>
+        <div class="f-plan field"><span>▶ Bearbeiten am <small class="hint" id="mPushes">wann du es angehst</small></span>
+          <input type="date" id="mPlan">
+          <div class="plan-quick" id="mPlanQuick"><button type="button" data-plan="0">Heute</button><button type="button" data-plan="1">Morgen</button><button type="button" data-plan="mon">Nächster Mo</button><button type="button" data-plan="7">+1 Woche</button><button type="button" data-plan="focus" title="In den Tagesfokus von heute aufnehmen">⭐ Fokus heute</button><button type="button" data-plan="" title="Leeren">✕</button></div>
         </div>
         <div class="field-row">
           <label class="f-target field"><span>◎ Ziel (soft)</span><input type="date" id="mTarget"></label>
@@ -955,6 +1058,14 @@ const TYPES = {
   task: { n: 'Aufgabe', c: '#4bade8', i: '✓' },
   bug:  { n: 'Problem', c: '#e5493a', i: '!' },
   idea: { n: 'Idee',    c: '#63ba3c', i: '★' },
+};
+const NOTE_KINDS = {
+  notiz:   { n: 'Notiz', dir: '00 Inbox', typ: 'notiz', tag: 'notiz' },
+  thema:   { n: 'Thema', dir: '01 Themen', typ: 'thema', tag: 'thema' },
+  wissen:  { n: 'Wissen', dir: '03 Wissen', typ: 'wissen', tag: 'wissen' },
+  person:  { n: 'Person', dir: '04 Personen', typ: 'person', tag: 'person' },
+  daily:   { n: 'Tagesnotiz', dir: '05 Daily', typ: 'tagesnotiz', tag: 'daily' },
+  analyse: { n: 'Analyse', dir: '00 Inbox', typ: 'analyse', tag: 'analyse' },
 };
 const IMPS = {
   must:  { n: 'Pflicht' },
@@ -1131,7 +1242,7 @@ function seed() {
   const m2 = { id: uid(), name: 'Projekt-Weekly Kundenportal', freq: 'weekly', next: nextDow(3), created: t };
   const mk = (n, title, status, extra = {}) => ({
     id: uid(), key: 'TASK-' + n, title, desc: '', status, type: 'task', importance: '', goalId: null, recurId: null, meetingId: null,
-    private: false, labels: [], target: '', deadline: '', waitingFor: '', followUp: '', source: '', sourceDate: '', sourceLink: '', cancelReason: '',
+    private: false, labels: [], plan: '', target: '', deadline: '', waitingFor: '', followUp: '', source: '', sourceDate: '', sourceLink: '', cancelReason: '',
     checklist: [], comments: [], order: n, created: t, updated: t, statusAt: t, ...extra,
   });
   const sub = (text, done = false) => ({ id: uid(), text, done });
@@ -1168,6 +1279,13 @@ function normalize(d) {
   if (!d || typeof d !== 'object' || !Array.isArray(d.issues)) throw new Error('Ungültiges Format');
   d.name ??= 'Mein Board'; d.prefix ??= 'TASK';
   d.notes = Array.isArray(d.notes) ? d.notes : [];
+  d.notes.forEach(n => {
+    n.title ??= ''; n.body ??= ''; n.kind = NOTE_KINDS[n.kind] ? n.kind : 'notiz';
+    n.date ||= isoOf(new Date(n.created || Date.now())); n.topic ??= '';
+    n.people = Array.isArray(n.people) ? n.people : []; n.tags = Array.isArray(n.tags) ? n.tags : [];
+    n.obsPath ??= ''; n.obsSig ??= ''; n.obsAt ??= 0;
+  });
+  d.focus = d.focus && typeof d.focus === 'object' && !Array.isArray(d.focus) ? d.focus : {};
   d.goals = Array.isArray(d.goals) ? d.goals : [];
   d.recurrences = Array.isArray(d.recurrences) ? d.recurrences : [];
   d.meetings = Array.isArray(d.meetings) ? d.meetings : [];
@@ -1179,7 +1297,7 @@ function normalize(d) {
     if (i.importance === undefined) i.importance = { highest: 'must', high: 'must', low: 'nice' }[i.priority] || '';
     if (i.deadline === undefined) i.deadline = i.due || '';
     delete i.priority; delete i.due;
-    i.labels ??= []; i.checklist ??= []; i.comments ??= []; i.desc ??= ''; i.target ??= '';
+    i.labels ??= []; i.checklist ??= []; i.comments ??= []; i.desc ??= ''; i.target ??= ''; i.plan ??= ''; i.pushes ??= 0;
     i.goalId ??= null; i.recurId ??= null; i.meetingId ??= null; i.private = !!i.private;
     i.waitingFor ??= ''; i.followUp ??= ''; i.source ??= ''; i.sourceDate ??= ''; i.sourceLink ??= ''; i.cancelReason ??= '';
     i.statusAt ??= i.updated;
@@ -1217,7 +1335,7 @@ $('#modeBtn').onclick = () => {
   showMode = !showMode; safeSet(MODE_KEY, showMode ? 'show' : 'private'); applyMode();
   if (showMode) {
     if (curId && cur()?.private) closeModal(true);
-    if (currentView === 'notes' || currentView === 'prompts') showView('board');
+    if (currentView === 'notes' || currentView === 'prompts' || currentView === 'focus') showView('board');
   }
   renderAll(); if (curId) fillModal();
 };
@@ -1311,14 +1429,136 @@ $('#fileResumeBtn').onclick = async () => {
 };
 $('#fileBannerClose').onclick = () => { $('#fileBanner').hidden = true; };
 
+/* ================= Bearbeiten am + Wochenfokus (3 Aufgaben pro Tag) ================= */
+// Verschieben mitzählen: "Bearbeiten am" oder Ziel-Datum nach hinten -> i.pushes + 1
+function setDate(i, f, v) {
+  const old = i[f];
+  if ((f === 'plan' || f === 'target') && old && v && v > old && isActive(i)) i.pushes = (i.pushes || 0) + 1;
+  i[f] = v;
+}
+const FOCUS_MAX = 3;
+let focusStart = 0; // Versatz in Tagen ab heute (Pfeile ◀ ▶)
+let focusOpen = safeGet('jiratype.focusOpen') !== '0';
+const focusList = d => (state.focus[d] || []).filter(f => { const i = f.issueId && getIssue(f.issueId); return f.issueId ? i && visible(i) : !showMode; });
+const focusText = f => { const i = f.issueId && getIssue(f.issueId); return i ? (i.title || i.key) : f.text; };
+function focusAdd(f, d = today()) {
+  const l = (state.focus[d] ||= []);
+  if (l.length >= FOCUS_MAX || (f.issueId && l.some(x => x.issueId === f.issueId))) return false;
+  l.push({ id: uid(), issueId: f.issueId || null, text: f.text || '', done: false, doneAt: null, carried: !!f.carried });
+  const i = f.issueId && getIssue(f.issueId);
+  if (i && i.plan !== d) setDate(i, 'plan', d);
+  save(); return true;
+}
+// Quote: abgeschlossene Tage vor heute
+function focusRate(days) {
+  let n = 0, done = 0;
+  for (let k = 1; k <= days; k++) { const l = focusList(addDays(today(), -k)); n += l.length; done += l.filter(f => f.done).length; }
+  return { n, done, pct: n ? Math.round(done / n * 100) : null };
+}
+// Offene Punkte vom letzten Tag mit Fokus (max. 14 Tage zurück)
+function focusCarry() {
+  for (let k = 1; k <= 14; k++) {
+    const d = addDays(today(), -k), l = focusList(d).filter(f => !f.done && !(f.issueId && isClosed(getIssue(f.issueId))));
+    if (focusList(d).length) return { d, l };
+  }
+  return { d: '', l: [] };
+}
+function focusDay(d) {
+  const t = today(), l = focusList(d), dt = parseISO(d), wd = WD[(dt.getDay() + 6) % 7];
+  const slots = l.map(f => `<div class="focus-slot ${f.done ? 'done' : ''}" data-fid="${f.id}" data-d="${d}">
+      <input type="checkbox" ${f.done ? 'checked' : ''} title="Erledigt">
+      <span class="ft" ${f.issueId ? 'data-open' : ''} title="${esc(focusText(f))}${f.carried ? ' · übernommen' : ''}">${f.carried ? '↻ ' : ''}${esc(focusText(f))}</span>
+      <button class="fx" title="Aus dem Fokus nehmen">✕</button></div>`);
+  for (let k = l.length; k < FOCUS_MAX; k++) slots.push(`<button class="focus-slot empty" data-add="${d}">+ ${d < t ? 'nachtragen' : 'Fokus wählen'}</button>`);
+  const n = l.filter(f => f.done).length;
+  return `<div class="fw-day ${d === t ? 'today' : ''} ${d < t ? 'past' : ''}">
+    <div class="fw-h"><b>${d === t ? 'Heute' : wd}</b> ${fmtShort(d)}${l.length ? `<span class="fw-n ${n === l.length ? 'ok' : d < t ? 'miss' : ''}">${n}/${l.length}</span>` : ''}</div>
+    ${slots.join('')}</div>`;
+}
+function renderFocus() {
+  const el = $('#focusBar'); if (!el) return;
+  if (!F('focus') || showMode) { el.innerHTML = ''; return; }
+  const t = today(), r = focusRate(7), c = focusCarry(), free = FOCUS_MAX - focusList(t).length;
+  let dots = '';
+  for (let k = 14; k >= 1; k--) {
+    const d = addDays(t, -k), l = focusList(d), n = l.filter(f => f.done).length;
+    if (!l.length && parseISO(d).getDay() % 6 === 0) continue; // leere Wochenenden weglassen
+    dots += `<i class="${!l.length ? '' : n === l.length ? 'full' : n ? 'part' : 'zero'}" title="${WD[(parseISO(d).getDay() + 6) % 7]} ${fmtShort(d)}: ${l.length ? `${n}/${l.length} geschafft` : 'nichts vorgenommen'}"></i>`;
+  }
+  const start = addDays(t, focusStart);
+  const days = focusOpen ? Array.from({ length: 7 }, (_, k) => addDays(start, k)) : [t];
+  el.innerHTML = `<div class="fw-top">
+      <span class="fb-h">⭐ Fokus <small class="muted" style="font-weight:400">· 3 pro Tag</small></span>
+      ${focusOpen ? `<button class="icon-btn" data-fnav="-7" title="7 Tage zurück">‹</button><button class="btn small" data-fnav="0" ${focusStart ? '' : 'disabled'}>ab heute</button><button class="icon-btn" data-fnav="7" title="7 Tage vor">›</button>` : ''}
+      ${c.l.length && free > 0 ? `<button class="btn small focus-carry" data-carry title="Offene Punkte von ${fmtShort(c.d)} in den heutigen Fokus übernehmen">↻ ${c.l.length} offen von ${fmtShort(c.d)} übernehmen</button>` : ''}
+      <span class="focus-hist" title="Letzte 14 Tage (ohne heute)">${dots}${r.pct !== null ? `<b>${r.pct} %</b>&nbsp;<span>geschafft (7 Tage: ${r.done}/${r.n})</span>` : '<span>noch keine Quote</span>'}</span>
+      <button class="btn ghost small" data-ftoggle>${focusOpen ? 'Nur heute ▴' : 'Woche ▾'}</button>
+    </div>
+    <div class="fw-grid ${focusOpen ? '' : 'one'}">${days.map(focusDay).join('')}</div>`;
+}
+function openFocusPop(anchor, d) {
+  closePop();
+  const el = document.createElement('div'); el.className = 'pop'; el.style.width = '320px';
+  const taken = new Set(focusList(d).map(f => f.issueId));
+  const score = i => (i.plan === d ? 0 : i.plan && i.plan < d ? 1 : i.status === 'doing' ? 2 : i.deadline && i.deadline <= addDays(d, 3) ? 3 : i.target && i.target <= addDays(d, 3) ? 4 : 5);
+  const pool = visIssues().filter(i => isActive(i) && i.status !== 'waiting' && !taken.has(i.id)).sort((a, b) => score(a) - score(b) || (a.deadline || '9').localeCompare(b.deadline || '9'));
+  const why = i => ({ 0: '▶ geplant', 1: '▶ liegt', 2: 'in Arbeit', 3: '⚑ ' + fmtShort(i.deadline || ''), 4: '◎ ' + fmtShort(i.target || '') })[score(i)] || '';
+  el.innerHTML = `<b style="font-size:12px">${d === today() ? 'Fokus für heute' : `Fokus für ${WD[(parseISO(d).getDay() + 6) % 7]} ${fmtShort(d)}`}</b>
+    <input type="text" placeholder="Ticket suchen oder eigenen Punkt tippen + Enter">
+    <div class="pop-list"></div>`;
+  const inp = $('input', el), list = $('.pop-list', el);
+  const draw = () => {
+    const q = inp.value.trim().toLowerCase();
+    const hits = pool.filter(i => !q || (i.key + ' ' + i.title).toLowerCase().includes(q)).slice(0, 9);
+    list.innerHTML = hits.map(i => `<button data-iid="${i.id}"><span>${esc(i.title || i.key)}</span><small>${why(i)}</small></button>`).join('')
+      + (q ? `<button data-free><span>＋ „${esc(inp.value.trim())}“ als eigenen Punkt</span></button>` : '')
+      || '<div class="fl-muted" style="padding:6px">Keine offenen Tickets – tipp einen eigenen Punkt.</div>';
+  };
+  const pick = f => { focusAdd(f, d); closePop(); renderAll(); };
+  list.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.iid) pick({ issueId: b.dataset.iid }); else pick({ text: inp.value.trim() });
+  });
+  inp.addEventListener('input', draw);
+  inp.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || !inp.value.trim()) return;
+    const q = inp.value.trim().toLowerCase(), m = pool.filter(i => (i.key + ' ' + i.title).toLowerCase().includes(q));
+    pick(m.length === 1 ? { issueId: m[0].id } : { text: inp.value.trim() });
+  });
+  draw(); placePop(el, anchor); inp.focus();
+}
+$('#focusBar').addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('[data-ftoggle]')) { focusOpen = !focusOpen; focusStart = 0; safeSet('jiratype.focusOpen', focusOpen ? '1' : '0'); return renderFocus(); }
+  const nav = t.closest('[data-fnav]'); if (nav) { focusStart = +nav.dataset.fnav ? focusStart + +nav.dataset.fnav : 0; return renderFocus(); }
+  if (t.closest('[data-carry]')) { const c = focusCarry(); c.l.forEach(f => focusAdd({ issueId: f.issueId, text: f.text, carried: true })); return renderAll(); }
+  const add = t.closest('[data-add]'); if (add) return openFocusPop(add, add.dataset.add);
+  const slot = t.closest('.focus-slot[data-fid]'); if (!slot) return;
+  const l = state.focus[slot.dataset.d] || [], f = l.find(x => x.id === slot.dataset.fid); if (!f) return;
+  if (t.closest('.fx')) { state.focus[slot.dataset.d] = l.filter(x => x !== f); save(); return renderAll(); }
+  if (t.matches('input[type=checkbox]')) {
+    f.done = t.checked; f.doneAt = f.done ? now() : null;
+    const i = f.issueId && getIssue(f.issueId);
+    if (i && f.done) { i.comments.unshift({ id: uid(), text: `⭐ Tagesfokus ${fmtShort(slot.dataset.d)} geschafft`, at: now(), system: true }); i.updated = now(); }
+    save(); return renderAll();
+  }
+  if (t.closest('[data-open]')) openIssue(f.issueId);
+});
+
 /* ================= Ziele & Wiederholungen: Logik ================= */
 const getIssue = id => state.issues.find(i => i.id === id);
 const getGoal = id => state.goals.find(g => g.id === id);
 const getRule = id => state.recurrences.find(r => r.id === id);
 const getMeet = id => state.meetings.find(m => m.id === id);
-const F = k => state.features?.[k] !== false;
-const FEATS = ['stake', 'subdue', 'wins', 'flow', 'goals', 'meet', 'labels', 'src', 'recur', 'target', 'kw', 'type', 'cal', 'review', 'notes', 'prompts', 'obs'];
-const VIEW_FEAT = { meetings: 'meet', goals: 'goals', review: 'review', notes: 'notes', prompts: 'prompts', cal: 'cal' };
+const F = k => k !== 'meet' && state.features?.[k] !== false;
+const FEAT_GROUPS = [
+  ['Im Ticket', [['plan', '▶ Bearbeiten am', 'Feld im Ticket, Datum auf der Karte, Listenspalte, Kalender, Zeitraum-Filter'], ['target', '◎ Ziel-Datum (soft)', 'Feld im Ticket und Listenspalte (die Deadline bleibt)'], ['kw', 'KW-Eingabe', 'Feld „Deadline per KW“ und Listenspalte KW'], ['type', 'Typ', 'Aufgabe/Problem/Idee: Feld im Ticket, Filter, Listenspalte, Symbol auf der Karte'], ['labels', '🏷 Labels', 'Feld im Ticket, Filter, Listenspalte, Labels auf der Karte'], ['stake', '👥 Stakeholder', 'Feld im Ticket, Zeile auf der Karte, Listenspalte, Venn-Diagramm im Verlauf'], ['src', '📍 Quelle', 'Quelle/Datum/Link im Ticket und in „Liste einfügen“, Listenspalte, Zeile auf der Karte'], ['subdue', '⚑ Fristen für Unteraufgaben', 'Datum je Unteraufgabe, rote Karte bei überfälliger Unteraufgabe'], ['recur', '🔁 Wiederholungen', 'Feld im Ticket, Listenspalte, 🔁 auf der Karte'], ['wins', '📄 Ergebnis & Rolle', 'Eingeklappter Bereich im Ticket und „Erledigte mit Ergebnis (CSV)“ – nur im Privat-Modus'], ['flow', '📈 Verlauf', 'Button im Ticket und auf den Ziel-Karten']]],
+  ['Bereiche', [['focus', '⭐ Tagesfokus', 'Ansicht „Fokus“ bei Meine Aufgaben: 3 Aufgaben pro Tag + Quote'], ['goals', '🎯 Ziele', 'Menüpunkt und Seitenleiste, Ziel-Feld, Filter, Listenspalte'], ['cal', '📅 Kalender', 'Ansicht „Kalender“ bei Meine Aufgaben'], ['review', '📋 Rückblick', 'Menüpunkt in der Seitenleiste'], ['notes', '📝 Notizen', 'Menüpunkt in der Seitenleiste'], ['prompts', '✨ Prompts', 'Menüpunkt in der Seitenleiste'], ['obs', '⇄ Obsidian', 'Abgleich der Tickets und Notizen-Export (automatischer Abgleich läuft weiter, solange ein Ordner gewählt ist)']]],
+];
+const FEAT_CHIPS = FEAT_GROUPS.flatMap(g => g[1].map(f => f[0]));
+// Meetings laufen in Obsidian: Bereich dauerhaft aus (Daten bleiben erhalten)
+const FEATS = [...FEAT_CHIPS, 'meet'];
+const VIEW_FEAT = { focus: 'focus', meetings: 'meet', goals: 'goals', review: 'review', notes: 'notes', prompts: 'prompts', cal: 'cal' };
 function applyFeatures() {
   FEATS.forEach(k => document.body.classList.toggle('no-f-' + k, !F(k)));
   // Ausgeblendete Filter zurücksetzen, sonst filtern sie unsichtbar weiter
@@ -1443,6 +1683,11 @@ function generateRecurring() {
 /* ================= Board ================= */
 const boardEl = $('#board');
 const filters = { q: '', type: '', imp: '', label: '', goal: '', meet: '', range: '', dateKind: '', from: '', to: '' };
+// Zeitraum-Auswahl bleibt über Neuladen erhalten
+const RANGE_KEY = 'jiratype.range';
+try { const r = JSON.parse(safeGet(RANGE_KEY)); if (r) ['range', 'dateKind', 'from', 'to'].forEach(k => { if (typeof r[k] === 'string') filters[k] = r[k]; }); } catch { }
+const saveRange = () => safeSet(RANGE_KEY, JSON.stringify({ range: filters.range, dateKind: filters.dateKind, from: filters.from, to: filters.to }));
+let moreOpen = safeGet('jiratype.moreFilters') === '1';
 const weekMon = iso => addDays(iso, -((parseISO(iso).getDay() + 6) % 7));
 // Zeitraum-Filter: [von, bis] als ISO; null = kein Bereich
 function rangeBounds(r) {
@@ -1456,13 +1701,15 @@ function rangeBounds(r) {
   if (r === 'custom') return [filters.from || '', filters.to || '9999-12-31'];
   return null;
 }
-function issueDates(i) { const k = filters.dateKind; return [k !== 'hard' && F('target') ? i.target : '', k !== 'soft' ? i.deadline : ''].filter(Boolean); }
+function issueDates(i) { const k = filters.dateKind; return [(!k || k === 'plan') && F('plan') ? i.plan : '', (!k || k === 'soft') && F('target') ? i.target : '', !k || k === 'hard' ? i.deadline : ''].filter(Boolean); }
 function matchRange(i) {
   const r = filters.range; if (!r) return true;
   const ds = issueDates(i);
   if (r === 'none') return !ds.length;
   if (r === 'late' && !isActive(i)) return false;
   const [a, b] = rangeBounds(r);
+  // "Nächste X Tage" zeigt Liegengebliebenes mit an
+  if (/^d\d+$/.test(r) && isActive(i) && ds.some(d => d < a)) return true;
   return ds.some(d => d >= a && d <= b);
 }
 let showArchive = safeGet('jiratype.archive') === '1';
@@ -1506,8 +1753,12 @@ function impChip(imp) { return imp ? `<span class="imp imp-${imp}">${IMPS[imp].n
 // Vorwarnung: Deadline rot / Ziel orange ab X Tagen vorher (Einstellungen)
 function hardCls(v) { const t = today(), w = state.settings?.warnHard || 0; return v < t || (w > 0 && v <= addDays(t, w)) ? 'late' : v === t ? 'soft' : ''; }
 function softCls(v) { const t = today(), w = state.settings?.warnSoft || 0; return v < t || (w > 0 && v <= addDays(t, w)) ? 'soft' : ''; }
+function planCls(v) { const t = today(); return v < t ? 'soft' : v === t ? 'plan-today' : ''; }
+function pushHTML(i) { return i.pushes >= 2 && isActive(i) ? `<span class="date push ${i.pushes >= 3 ? 'soft' : ''}" title="${i.pushes}× nach hinten geschoben (Bearbeiten am / Ziel-Datum)">↻${i.pushes}</span>` : ''; }
 function dateHTML(i) {
   const t = today(), done = !isActive(i), out = [];
+  if (i.plan && F('plan')) out.push(`<span class="date ${!done ? planCls(i.plan) : ''}" title="Bearbeiten am ${fmtDate(i.plan)}">▶ ${i.plan === t ? 'heute' : fmtShort(i.plan)}</span>`);
+  out.push(pushHTML(i));
   if (i.target) out.push(`<span class="date ${!done ? softCls(i.target) : ''}" title="Ziel (soft): ${fmtDate(i.target)}">◎ ${fmtShort(i.target)}</span>`);
   if (i.deadline) out.push(`<span class="date ${!done ? hardCls(i.deadline) : ''}" title="Deadline (hard): ${fmtDate(i.deadline)} · KW ${isoWeek(i.deadline)[0]}">⚑ ${fmtShort(i.deadline)}</span>`);
   return out.join('');
@@ -1529,13 +1780,14 @@ function cardHTML(i) {
   const ds = dueState(i);
   const g = getGoal(i.goalId);
   const m = getMeet(i.meetingId);
+  const lastUpd = showMode ? null : i.comments.filter(c => !c.system && String(c.text).trim()).sort((a, b) => b.at - a.at)[0];
   const tags = [impChip(i.importance), m ? `<span class="meet-chip f-meet" title="Auf der Agenda">🗣 ${esc(m.name)}</span>` : '', ...i.labels.map(l => `<span class="label f-labels">${esc(l)}</span>`)].join('');
   return `<div class="card ${ds ? 'due-' + ds : ''}" draggable="true" data-id="${i.id}">
     <div class="card-title">${esc(i.title) || '<i style="color:var(--subtle)">(ohne Titel)</i>'}</div>
     ${tags ? `<div class="card-tags">${tags}</div>` : ''}
     ${stateHTML(i)}
-    ${i.source ? `<div class="card-src f-src" title="Quelle">📍 ${esc(i.source)}${i.sourceDate ? ' · ' + fmtShort(i.sourceDate) : ''}</div>` : ''}
-    ${i.stakeholders?.length ? `<div class="card-src f-stake">👥 ${esc(i.stakeholders.join(', '))}</div>` : ''}
+    ${i.source || i.stakeholders?.length ? `<div class="card-src">${i.source ? `<span class="f-src" title="Quelle">📍 ${esc(i.source)}${i.sourceDate ? ' · ' + fmtShort(i.sourceDate) : ''}</span>` : ''}${i.source && i.stakeholders?.length ? '<span class="f-src f-stake"> · </span>' : ''}${i.stakeholders?.length ? `<span class="f-stake">👥 ${esc(i.stakeholders.join(', '))}</span>` : ''}</div>` : ''}
+    ${lastUpd ? `<div class="card-upd" title="Aktueller Stand · ${fmtDateTime(lastUpd.at)}">💬 ${esc(lastUpd.text.trim().split(/\n/)[0])} <small>· ${relTime(lastUpd.at)}</small></div>` : ''}
     <div class="sep"></div>
     <div class="card-foot">
       <span class="type-icon f-type" style="background:${t.c}" title="${t.n}">${t.i}</span>
@@ -1556,6 +1808,9 @@ function renderBoard() {
   const active = Object.entries(filters).some(([k, v]) => v && k !== 'dateKind' && !(filters.range !== 'custom' && (k === 'from' || k === 'to')));
   $('#fReset').hidden = !active;
   $('#fArchive').checked = showArchive;
+  const nMore = ['goal', 'imp', 'type', 'label', 'meet'].filter(k => filters[k]).length;
+  $('#moreF').hidden = !(moreOpen || nMore);
+  $('#fMore').textContent = `Filter${nMore ? ' · ' + nMore : ''} ${$('#moreF').hidden ? '▾' : '▴'}`;
   boardEl.innerHTML = COLS.filter(c => !c.archive || showArchive).map(c => {
     const items = state.issues.filter(i => i.status === c.id && visible(i)).sort((a, b) => a.order - b.order);
     const shown = items.filter(matches);
@@ -1576,17 +1831,16 @@ function renderRangeOptions() {
   const el = $('#fRange'), t = today(), cw = isoWeek(t), nw = isoWeek(addDays(t, 7));
   // KW-Liste aus den vorhandenen Terminen offener Tickets
   const weeks = new Map();
-  visIssues().filter(i => !isClosed(i)).forEach(i => [F('target') ? i.target : '', i.deadline].filter(Boolean).forEach(d => {
+  visIssues().filter(i => !isClosed(i)).forEach(i => [F('plan') ? i.plan : '', F('target') ? i.target : '', i.deadline].filter(Boolean).forEach(d => {
     const [w, y] = isoWeek(d), k = `${y}-${String(w).padStart(2, '0')}`;
     weeks.set(k, (weeks.get(k) || new Set()).add(i.id));
   }));
   if (filters.range.startsWith('kw:') && !weeks.has(filters.range.slice(3))) weeks.set(filters.range.slice(3), new Set());
   const kwOpts = [...weeks.keys()].sort().map(k => { const [y, w] = k.split('-').map(Number), n = weeks.get(k).size;
     return `<option value="kw:${k}">KW ${w}${y !== cw[1] ? ' ' + y : ''} · ${fmtShort(kwDay(w, y, 0))}–${fmtShort(kwDay(w, y, 6))}${n ? ` (${n})` : ''}</option>`; }).join('');
-  el.innerHTML = `<option value="">📅 Jeder Zeitraum</option><option value="late">⚠ Überfällig</option><option value="today">Heute</option>`
-    + `<option value="week">Diese Woche · KW ${cw[0]}</option><option value="next">Nächste Woche · KW ${nw[0]}</option>`
-    + `<option value="d7">Nächste 7 Tage</option><option value="d14">Nächste 14 Tage</option><option value="d30">Nächste 30 Tage</option>`
-    + (kwOpts ? `<optgroup label="Kalenderwochen mit Terminen">${kwOpts}</optgroup>` : '')
+  el.innerHTML = `<option value="">📅 Jeder Zeitraum</option><option value="today">Heute</option>`
+    + `<option value="d7">Nächste 7 Tage + Liegengebliebenes</option><option value="d14">Nächste 14 Tage + Liegengebliebenes</option><option value="d30">Nächste 30 Tage + Liegengebliebenes</option><option value="late">⚠ Überfällig</option>`
+    + `<optgroup label="Kalenderwochen"><option value="week">Diese Woche · KW ${cw[0]} (Mo–So)</option><option value="next">Nächste Woche · KW ${nw[0]}</option>${kwOpts}</optgroup>`
     + `<option value="none">Ohne Datum</option><option value="custom">Eigener Zeitraum (von–bis)…</option>`;
   el.value = filters.range;
   const custom = filters.range === 'custom';
@@ -1628,7 +1882,7 @@ $('#sideGoals').addEventListener('click', e => {
   }
   filters.goal = filters.goal === id && TASK_VIEWS.includes(currentView) ? '' : id;
   $('#fGoal').value = filters.goal;
-  showView(currentView === 'list' || currentView === 'cal' ? 'board' : TASK_VIEWS.includes(currentView) ? currentView : 'board');
+  showView(currentView === 'list' || currentView === 'cal' || currentView === 'focus' ? 'board' : TASK_VIEWS.includes(currentView) ? currentView : 'board');
 });
 $('#sideAddGoal').onclick = () => { showView('goals'); $('#newGoalBtn').click(); };
 const isNarrow = () => matchMedia('(max-width:860px)').matches;
@@ -1650,7 +1904,7 @@ function renderAll() {
   $('#boardName').textContent = state.name;
   renderSidebar();
   document.title = state.name;
-  renderFilterOptions(); renderBoard();
+  renderFilterOptions(); renderBoard(); renderFocus();
   if (currentView === 'cal') renderCal();
   if (currentView === 'goals') renderGoals();
   if (currentView === 'notes') renderNotes();
@@ -1703,7 +1957,7 @@ function createIssue(fields) {
   const t = now();
   const issue = {
     id: uid(), key: `${state.prefix}-${state.nextNum++}`, title: '', desc: '', status, type: 'task', importance: '',
-    goalId: null, recurId: null, meetingId: null, private: false, labels: [], target: '', deadline: '',
+    goalId: null, recurId: null, meetingId: null, private: false, labels: [], plan: '', pushes: 0, target: '', deadline: '',
     waitingFor: '', followUp: '', source: '', sourceDate: '', sourceLink: '', cancelReason: '', checklist: [], comments: [],
     stakeholders: [], role: '', did: '', impact: '',
     order: maxOrder + 1, created: t, updated: t, statusAt: t, ...fields,
@@ -1789,11 +2043,11 @@ $('#fArchive').addEventListener('change', e => { showArchive = e.target.checked;
 $('#fRange').addEventListener('change', e => {
   filters.range = e.target.value;
   if (filters.range === 'custom' && !filters.from && !filters.to) { filters.from = today(); filters.to = addDays(today(), 13); }
-  renderRangeOptions(); renderBoard();
+  saveRange(); renderRangeOptions(); renderBoard();
 });
 $('#fDateKind').addEventListener('change', e => { filters.dateKind = e.target.value; renderBoard(); });
 [['#fFrom', 'from'], ['#fTo', 'to']].forEach(([sel, k]) => $(sel).addEventListener('change', e => { filters[k] = e.target.value; renderBoard(); }));
-$('#fReset').onclick = () => { Object.keys(filters).forEach(k => filters[k] = ''); $('#q').value = ''; ['#fType', '#fImp', '#fLabel', '#fGoal', '#fMeet'].forEach(s => $(s).value = ''); renderRangeOptions(); renderBoard(); renderSidebar(); };
+$('#fReset').onclick = () => { Object.keys(filters).forEach(k => filters[k] = ''); saveRange(); $('#q').value = ''; ['#fType', '#fImp', '#fLabel', '#fGoal', '#fMeet'].forEach(s => $(s).value = ''); renderRangeOptions(); renderBoard(); renderSidebar(); };
 
 /* ================= Kalender ================= */
 let calY = new Date().getFullYear(), calM = new Date().getMonth();
@@ -1806,6 +2060,7 @@ function renderCal() {
   const byDay = {};
   const push = (d, item) => { if (d >= startISO && d <= endISO) (byDay[d] ||= []).push(item); };
   visIssues().forEach(i => {
+    if (i.plan && F('plan') && isActive(i)) push(i.plan, { kind: 'plan', i });
     if (i.target && i.target !== i.deadline) push(i.target, { kind: 'soft', i });
     if (i.deadline) push(i.deadline, { kind: 'hard', i });
     if (i.followUp && (i.status === 'waiting' || i.status === 'paused')) push(i.followUp, { kind: 'follow', i });
@@ -1821,7 +2076,7 @@ function renderCal() {
   let html = '';
   for (let k = 0; k < 42; k++) {
     const d = addDays(startISO, k), dt = parseISO(d);
-    const rank = { meet: 0, hard: 1, follow: 2, soft: 3, ghost: 4 };
+    const rank = { meet: 0, hard: 1, follow: 2, plan: 3, soft: 4, ghost: 5 };
     const items = (byDay[d] || []).sort((a, b) => rank[a.kind] - rank[b.kind]);
     html += `<div class="cal-cell ${dt.getMonth() !== calM ? 'other' : ''} ${d === t ? 'today' : ''}">
       ${k % 7 === 0 ? `<span class="cal-kw">KW ${isoWeek(d)[0]}</span>` : ''}<span class="cal-day">${dt.getDate()}</span>
@@ -1830,7 +2085,7 @@ function renderCal() {
         if (it.kind === 'meet') { const n = agendaItems(it.m).length; return `<div class="cal-chip meet" data-meet="${it.m.id}" title="Meeting${n ? ` – ${n} offene Agenda-Punkte` : ''}">🗣 ${esc(it.m.name)}${n ? ` · ${n}` : ''}</div>`; }
         if (it.kind === 'follow') { const i = it.i; return `<div class="cal-chip follow" data-id="${i.id}" title="${i.status === 'waiting' ? 'Nachfassen' : 'Wieder aufnehmen'}: ${esc(i.key)} ${esc(i.title)}">${i.status === 'waiting' ? '⏳' : '⏸'} ${esc(i.title || i.key)}</div>`; }
         const i = it.i, g = getGoal(i.goalId);
-        return `<div class="cal-chip ${it.kind} ${isClosed(i) ? 'done' : ''}" data-id="${i.id}" ${g ? `style="--g:${esc(g.color)}"` : ''} title="${it.kind === 'hard' ? 'Deadline' : 'Ziel'}: ${esc(i.key)} ${esc(i.title)}">${it.kind === 'hard' ? '⚑' : '◎'} ${esc(i.title || i.key)}</div>`;
+        return `<div class="cal-chip ${it.kind} ${isClosed(i) ? 'done' : ''}" data-id="${i.id}" ${g ? `style="--g:${esc(g.color)}"` : ''} title="${{ hard: 'Deadline', plan: 'Bearbeiten am', soft: 'Ziel' }[it.kind]}: ${esc(i.key)} ${esc(i.title)}">${{ hard: '⚑', plan: '▶', soft: '◎' }[it.kind]} ${esc(i.title || i.key)}</div>`;
       }).join('')}</div></div>`;
   }
   $('#calGrid').innerHTML = html;
@@ -1982,6 +2237,8 @@ function fillModal() {
   $('#mGoal').innerHTML = `<option value="">— kein Ziel —</option>` + state.goals.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('') + `<option value="__new">+ Neues Ziel…</option>`;
   $('#mGoal').value = i.goalId || '';
   $('#mTarget').value = i.target || ''; $('#mDeadline').value = i.deadline || '';
+  $('#mPlan').value = i.plan || '';
+  $('#mPushes').textContent = i.pushes ? `↻ ${i.pushes}× verschoben` : 'wann du es angehst';
   if (act !== $('#mLabels')) $('#mLabels').value = i.labels.join(', ');
   $('#mPrivate').checked = i.private;
   fillState(i);
@@ -2098,7 +2355,15 @@ $('#mGoal').addEventListener('change', e => {
   }
   cur().goalId = v || null; touch(); fillModal(); renderBoard();
 });
-$('#mTarget').addEventListener('change', e => { cur().target = e.target.value; touch(); renderBoard(); });
+$('#mTarget').addEventListener('change', e => { setDate(cur(), 'target', e.target.value); touch(); fillModal(); renderBoard(); });
+$('#mPlan').addEventListener('change', e => { setDate(cur(), 'plan', e.target.value); touch(); fillModal(); renderAll(); });
+$('#mPlanQuick').addEventListener('click', e => {
+  const b = e.target.closest('[data-plan]'); if (!b) return;
+  const i = cur(), v = b.dataset.plan, t = today();
+  if (v === 'focus') { if (!focusAdd({ issueId: i.id })) alert('Der Tagesfokus von heute ist schon voll (3).'); }
+  else setDate(i, 'plan', v === '' ? '' : v === 'mon' ? addDays(weekMon(t), 7) : addDays(t, +v));
+  touch(); fillModal(); renderAll();
+});
 $('#mDeadline').addEventListener('change', e => { cur().deadline = e.target.value; touch(); renderBoard(); });
 $('#mLabels').addEventListener('input', e => {
   cur().labels = [...new Set(e.target.value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean))]; touch();
@@ -2211,14 +2476,21 @@ $('#newIssueBtn').onclick = () => {
 /* ================= Verlauf (Flow) ================= */
 const FL = {"lt1h": "< 1 Std", "h": "Std", "d": "T", "created": "Erstellt", "sofar": "bisher", "total": "Dauer gesamt", "nowSt": "Status", "subs": "Unteraufgaben", "people": "Beteiligte", "phases": "Statuswechsel", "where": "Wo ging die Zeit hin?", "timeline": "Zeitstrahl", "flow": "Ablauf", "rowStatus": "Status", "rowSubs": "Unteraufgaben", "rowUpd": "Updates", "noChanges": "Keine Statuswechsel aufgezeichnet – Ablauf nur grob (Erstellt → jetzt).", "today": "heute", "deadline": "Deadline", "target": "Ziel-Datum", "subDone": "erledigt", "subDue": "Frist", "venn": "Überschneidung der Stakeholder", "vennHint": "Zahl = Tickets in dieser Schnittmenge (Maus drüber zeigt welche)", "noPeople": "Keine Stakeholder eingetragen.", "tickets": "Tickets", "done": "erledigt", "span": "Zeitraum", "goalEmpty": "Diesem Ziel sind noch keine Tickets zugeordnet.", "impactBox": "Beitrag & Impact", "waitFor": "wartet auf", "openTicket": "Klick öffnet das Ticket", "title": "📈 Verlauf"};
 const flowModal = $('#flowModal');
-function openFeat() { $$('#featList [data-feat]').forEach(cb => cb.checked = F(cb.dataset.feat)); $('#setWarnHard').value = state.settings.warnHard; $('#setWarnSoft').value = state.settings.warnSoft; $('#featModal').hidden = false; }
+function featCount() { $('#featCount').textContent = `· ${FEAT_CHIPS.filter(F).length} von ${FEAT_CHIPS.length} an`; }
+function openFeat() {
+  $('#featList').innerHTML = FEAT_GROUPS.map(([g, list]) => `<div class="feat-grp">${g}</div><div class="feat-chips">${list.map(([k, n, d]) => `<label class="feat-chip" title="${esc(d)}"><input type="checkbox" data-feat="${k}" ${F(k) ? 'checked' : ''}>${n}</label>`).join('')}</div>`).join('');
+  featCount();
+  $('#setWarnHard').value = state.settings.warnHard; $('#setWarnSoft').value = state.settings.warnSoft;
+  $('#setVaultName').textContent = vaultHandle ? `Gewählt: ${vaultHandle.name}` : 'Hauptordner des Vaults (mit 00 Inbox, 01 Themen …)';
+  $('#featModal').hidden = false;
+}
 [['#setWarnHard', 'warnHard'], ['#setWarnSoft', 'warnSoft']].forEach(([sel, k]) => $(sel).addEventListener('change', e => {
   const v = Math.max(0, Math.min(365, parseInt(e.target.value, 10) || 0)); e.target.value = v;
   state.settings[k] = v; save(); renderAll();
 }));
 $('#featList').addEventListener('change', e => {
   const k = e.target.dataset.feat; if (!k) return;
-  state.features[k] = e.target.checked; save();
+  state.features[k] = e.target.checked; save(); featCount();
   if (VIEW_FEAT[currentView] && !F(VIEW_FEAT[currentView])) showView('board');
   renderAll();
   if (!modal.hidden) fillModal();
@@ -2374,7 +2646,7 @@ const dateText = s => s ? parseISO(s).toLocaleDateString('de-DE', { day: '2-digi
 const opts = (list, val) => list.map(([k, n]) => `<option value="${esc(k)}" ${k === val ? 'selected' : ''}>${esc(n)}</option>`).join('');
 function dateCell(i, f) {
   const v = i[f], t = today(), done = !isActive(i) && f !== 'followUp';
-  const cls = !v || done ? '' : (f === 'deadline' ? hardCls(v) : f === 'target' ? softCls(v) : (v < t ? 'soft' : ''));
+  const cls = !v || done ? '' : (f === 'deadline' ? hardCls(v) : f === 'target' ? softCls(v) : f === 'plan' ? planCls(v) : (v < t ? 'soft' : ''));
   return `<input type="date" class="cell-in ${cls} ${v ? '' : 'empty'}" data-f="${f}" value="${esc(v)}">`;
 }
 const LCOLS = [
@@ -2393,6 +2665,7 @@ const LCOLS = [
     cell: i => `<td><select class="cell-in" data-f="goalId">${opts([['', '—'], ...state.goals.map(g => [g.id, g.name])], i.goalId || '')}</select></td>` },
   { id: 'labels', feat: 'labels', n: 'Labels', text: i => i.labels.join(', '), vals: i => i.labels.length ? i.labels : ['(leer)'], sortv: i => i.labels.join(','),
     cell: i => `<td>${i.labels.map(l => `<span class="label">${esc(l)}</span>`).join(' ')}</td>` },
+  { id: 'plan', feat: 'plan', n: '▶ Bearbeiten am', text: i => dateText(i.plan), sortv: i => i.plan, cell: i => `<td>${dateCell(i, 'plan')}</td>` },
   { id: 'target', feat: 'target', n: '◎ Ziel-Datum', text: i => dateText(i.target), sortv: i => i.target, cell: i => `<td>${dateCell(i, 'target')}</td>` },
   { id: 'deadline', n: '⚑ Deadline', text: i => dateText(i.deadline), sortv: i => i.deadline, cell: i => `<td>${dateCell(i, 'deadline')}</td>` },
   { id: 'kw', feat: 'kw', n: 'KW', text: i => i.deadline ? 'KW ' + String(isoWeek(i.deadline)[0]).padStart(2, '0') : '', sortv: i => i.deadline, cell: function (i) { return `<td>${this.text(i)}</td>`; } },
@@ -2477,6 +2750,7 @@ lTable.addEventListener('change', e => {
     i.order = maxOrder + 1;
   } else if (f === 'private') i.private = e.target.checked;
   else if (f === 'goalId' || f === 'meetingId') i[f] = e.target.value || null;
+  else if (f === 'plan' || f === 'target') setDate(i, f, e.target.value);
   else i[f] = e.target.value;
   i.updated = now(); syncRuleTemplate(i); save(); renderList();
 });
@@ -2929,7 +3203,7 @@ function renderReview() {
   if (sec.doing) out += section('🔄 In Arbeit', pool.filter(i => i.status === 'doing'), i => exportLine(i, o, doingExtra(i)));
   if (sec.waiting) out += section('⏳ Warten auf', pool.filter(i => i.status === 'waiting'), i => exportLine(i, o, waitExtra(i)));
   if (sec.late) out += section('⚠ Überfällig', pool.filter(i => isActive(i) && i.status !== 'waiting' && i.deadline && i.deadline < t), i => exportLine(i, o, `Deadline war ${short(i.deadline)}`));
-  if (sec.next) out += section(nextLabel, pool.filter(i => isActive(i) && ((i.target >= nFrom && i.target <= nTo) || (i.deadline >= nFrom && i.deadline <= nTo))), i => exportLine(i, o, dateExtra(i)));
+  if (sec.next) out += section(nextLabel, pool.filter(i => isActive(i) && [i.plan, i.target, i.deadline].some(d => d && d >= nFrom && d <= nTo)), i => exportLine(i, o, dateExtra(i)));
   if (sec.cancelled) out += section('✖ Gestrichen', pool.filter(i => i.status === 'cancelled' && tsIn(cancelledAtOf(i), from, to)), i => exportLine(i, { ...o, subs: false }, i.cancelReason ? 'Grund: ' + i.cancelReason : ''));
   if (sec.paused) out += section('⏸ Pausiert', pool.filter(i => i.status === 'paused'), i => exportLine(i, { ...o, subs: false }, i.followUp ? 'wieder ab ' + short(i.followUp) : ''));
   $('#revOut').value = out.trim() + '\n';
@@ -3093,53 +3367,285 @@ $$('#bulkModal, #safeModal, #prepModal').forEach(m => m.addEventListener('moused
 /* ================= Notizen ================= */
 let curNoteId = null;
 const nq = $('#nq');
+/* ================= Notizen (mit Obsidian-Export) ================= */
+// Schreib-Kürzel: "- [ ]", "TODO:", "->" = Aufgabe · "!" / "Entscheidung:" = Entscheidung · "Frage:" oder "?" am Ende = offene Frage · #tag · @Name
+const tagSlug = s => String(s || '').trim().replace(/^#/, '').toLowerCase().replace(/\s+/g, '-').replace(/[^\p{L}\p{N}_\-/]/gu, '').replace(/-{2,}/g, '-').replace(/^-+|-+$/g, '');
+const tagOk = t => !!t && !/^\d+$/.test(t);
+const PERSON_RE = /(^|[\s(])@([\p{Lu}][\p{L}\-]*(?:\s[\p{Lu}][\p{L}\-]*)?)/gu;
+function noteParse(body) {
+  const r = { notes: [], tasks: [], decisions: [], questions: [], sections: [], tags: new Set(), people: new Set(), links: [] };
+  let sec = null;
+  String(body || '').replace(/\r\n/g, '\n').split('\n').forEach(raw => {
+    const line = raw.replace(/\s+$/, '');
+    const h = line.match(/^#{1,3}\s+(.+)$/);
+    if (h) { sec = { title: h[1].trim(), lines: [] }; r.sections.push(sec); return; }
+    for (const m of line.matchAll(/(^|\s)#([\p{L}\p{N}_\-/]+)/gu)) { const t = tagSlug(m[2]); if (tagOk(t)) r.tags.add(t); }
+    for (const m of line.matchAll(PERSON_RE)) r.people.add(m[2]);
+    for (const m of line.matchAll(/https?:\/\/[^\s)>\]]+/g)) r.links.push(m[0]);
+    const t = line.trim(); if (!t) return;
+    const ind = /^(\t|\s{2,})/.test(line);
+    const bare = t.replace(/^[-*•–]\s+/, '');
+    let m;
+    if ((m = bare.match(/^\[( |x|X)\]\s*(.+)$/))) r.tasks.push({ text: m[2], done: m[1] !== ' ' });
+    else if ((m = bare.match(/^(?:todo|to-do|ap|aufgabe)\s*:\s*(.+)$/i)) || (m = bare.match(/^(?:->|→)\s*(.+)$/))) r.tasks.push({ text: m[1], done: false });
+    else if ((m = bare.match(/^(?:entscheidung|entschieden|beschluss)\s*:\s*(.+)$/i)) || (m = bare.match(/^!\s+(.+)$/))) r.decisions.push(m[1]);
+    else if ((m = bare.match(/^(?:frage|offen)\s*:\s*(.+)$/i)) || (m = bare.match(/^\?\s*(.+)$/))) r.questions.push(m[1]);
+    else if (/\?$/.test(bare) && !ind) r.questions.push(bare);
+    else (sec ? sec.lines : r.notes).push((ind ? '  ' : '') + (/^\d+[.)]\s/.test(bare) || /^>/.test(bare) || /^\|/.test(bare) ? bare : '- ' + bare));
+  });
+  return r;
+}
+const mdInline = s => String(s).replace(PERSON_RE, (m, a, p) => `${a}[[${p}]]`);
+function noteStem(n) {
+  const t = obsFile(n.title);
+  if (n.kind === 'daily') return n.date || today();
+  return t || `Notiz ${n.date || today()}`;
+}
+function notePeople(n) { return [...new Set([...n.people.map(x => x.trim()).filter(Boolean), ...noteParse(n.body).people])]; }
+function noteTags(n) { const k = NOTE_KINDS[n.kind]; return [...new Set([k.tag, ...n.tags.map(tagSlug).filter(tagOk), ...noteParse(n.body).tags])]; }
+function noteMd(n) {
+  const K = NOTE_KINDS[n.kind], p = noteParse(n.body), d = n.date || today(), L = [];
+  const link = x => `[[${obsLink(x)}]]`, people = notePeople(n), topic = n.topic.trim() ? link(n.topic) : '';
+  const yl = a => a.length ? a.map(x => `\n  - ${obsQ(x)}`).join('') : '[]';
+  // Datum (bis 25.11. / KW 48) wird zu "– **bis:**", @Name bleibt als [[Name]] im Satz
+  const taskTitle = x => { const b = parseBulkLine(x.replace(/@(?=\p{Lu})/gu, '\u0001')); return { ...b, title: b.title.replace(/\u0001/g, '@') }; };
+  const task = (x, done) => { const b = taskTitle(x); return `- [${done ? 'x' : ' '}] ${mdInline(b.title)}${b.deadline ? ` – **bis:** ${b.deadline}` : ''}${topic ? ' – ' + topic : ''}${b.labels.map(l => ' #' + l).join('')}`; };
+  const sec = (title, lines) => { if (lines.length) L.push('', `## ${title}`, ...lines); };
+  const own = () => p.sections.forEach(x => { const ls = x.lines.map(mdInline); if (ls.length) L.push('', `## ${x.title}`, ...ls); });
+  const notes = p.notes.map(mdInline), tasks = p.tasks.map(x => task(x.text, x.done)), qs = p.questions.map(x => `- [ ] ${mdInline(x)}`);
+  const first = (p.notes[0] || '').replace(/^\s*-\s*/, '');
+  // Eigenschaften
+  L.push('---', `typ: ${K.typ}`);
+  if (n.kind === 'wissen') L.push(`bereich: ${obsQ(topic)}`, `aktualisiert: ${isoOf(new Date(n.updated || Date.now()))}`);
+  else if (n.kind === 'thema') L.push('status: aktiv', `erstellt: ${d}`);
+  else if (n.kind === 'analyse') L.push(`thema: ${obsQ(topic)}`, 'status: entwurf', `erstellt: ${d}`);
+  else if (n.kind !== 'person') L.push(`datum: ${d}`);
+  if (topic && !['wissen', 'analyse'].includes(n.kind)) L.push(`thema: ${obsQ(topic)}`);
+  if (people.length && n.kind !== 'person') L.push(`personen: ${yl(people.map(link))}`);
+  L.push(`tags: [${noteTags(n).join(', ')}]`, '---');
+  // Inhalt je Typ (Aufbau wie die Vorlagen, leere Abschnitte fallen weg)
+  if (n.kind === 'daily') {
+    L.push(`# ${WD_LONG[(parseISO(d).getDay() + 6) % 7]}, ${dateText(d)}`);
+    sec('Fokus heute (max. 3)', (state.focus[d] || []).map(f => `- [${f.done ? 'x' : ' '}] ${focusText(f)}${f.issueId && getIssue(f.issueId) ? ` (${getIssue(f.issueId).key})` : ''}`));
+    sec('Aufgaben', tasks); sec('Notizen', notes); own();
+    sec('Entscheidungen', p.decisions.map(x => `- ${mdInline(x)}`)); sec('Offene Fragen', qs);
+  } else if (n.kind === 'thema') {
+    L.push(`# ${obsOne(n.title)}`, '', '> [!abstract] Kurzfassung', `> **Worum geht's:** ${mdInline(first)}`, `> **Nächster Schritt:** ${p.tasks.find(x => !x.done) ? mdInline(taskTitle(p.tasks.find(x => !x.done).text).title) : ''}`);
+    sec('Erkenntnisse', notes.slice(first ? 1 : 0)); own();
+    sec('Offene Aufgaben', tasks); sec('Offene Fragen', qs);
+    sec('Entscheidungen (Verlauf)', p.decisions.length ? ['| Datum | Entscheidung |', '|---|---|', ...p.decisions.map(x => `| ${d} | ${mdInline(x).replace(/\|/g, '/')} |`)] : []);
+    sec('Tickets zu diesem Thema (Doing-App)', ['```query', `path:"06 Tickets" "[[${noteStem(n)}]]"`, '```']);
+  } else if (n.kind === 'wissen') {
+    L.push(`# ${obsOne(n.title)}`, '', '> [!info] In einem Satz', `> ${mdInline(first)}`);
+    sec('Inhalt', notes.slice(first ? 1 : 0)); own();
+    sec('Typische Fehler / Stolpersteine', p.decisions.length ? ['> [!warning]- Stolpersteine anzeigen', ...p.decisions.map(x => `> - ${mdInline(x)}`)] : []);
+    sec('Offene Fragen', qs); sec('Aufgaben', tasks);
+    sec('Quellen', [...new Set(p.links)].map(x => `- ${x}`));
+  } else if (n.kind === 'person') {
+    L.push(`# ${obsOne(n.title)}`);
+    sec('Notizen', notes); own(); sec('Aufgaben', tasks); sec('Offene Fragen', qs);
+    sec('Tickets mit dieser Person (Doing-App)', ['```query', `path:"06 Tickets" "[[${noteStem(n)}]]"`, '```']);
+  } else if (n.kind === 'analyse') {
+    L.push(`# ${obsOne(n.title)}`, '', '> [!abstract] Kurzfassung', `> **Frage:** ${mdInline(p.questions[0] || '')}`, `> **Kernergebnis:** ${mdInline(first)}`);
+    sec('Notizen', notes.slice(first ? 1 : 0)); own();
+    sec('Hebel & Empfehlungen', p.decisions.map(x => `- ${mdInline(x)}`)); sec('Nächste Schritte', tasks); sec('Offene Fragen', qs);
+  } else {
+    L.push(`# ${obsOne(n.title) || noteStem(n)}`);
+    sec('Notizen', notes); own();
+    sec('Entscheidungen', p.decisions.length ? ['> [!success] Entschieden', ...p.decisions.map(x => `> - ${mdInline(x)}`)] : []);
+    sec('Aufgaben', tasks); sec('Offene Fragen', qs);
+  }
+  const rel = [...(topic && n.kind !== 'thema' ? [`- Thema: ${topic}`] : []), ...(people.length && n.kind !== 'person' ? [`- Personen: ${people.map(link).join(', ')}`] : [])];
+  sec('Verwandt', rel);
+  return L.join('\n') + '\n';
+}
+/* --- Vorschläge: Tags, Personen, Thema --- */
+const STOP = new Set('aber alle allem allen auch dann dass denn diese dieser dieses doch einem einen einer eines etwas haben hatte hatten hier immer jetzt kann kein keine keinen machen mehr meine meinen nach nicht noch oder ohne schon sein sich sind soll sollte sollten über unter viel weil wenn werden wird wurde wurden zwischen damit dazu wegen beim bitte danke heute morgen woche gestern sowie also eventuell gerade wieder schon weiter einfach noch, wäre würde könnte müssen muss nächste nächsten erste ersten zweite vielleicht ganz genau dafür davon darauf gegen bevor nachdem während deshalb trotzdem welche welcher welches their there about which would could should these those'.split(/[\s,]+/));
+const uniq = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
+function knownPeople() { return uniq([...state.issues.flatMap(i => [i.waitingFor, ...(i.stakeholders || [])]), ...state.notes.flatMap(n => n.people), ...state.notes.filter(n => n.kind === 'person').map(n => n.title)].map(x => String(x || '').trim()).filter(x => x.length > 1)); }
+function knownTopics() { return uniq([...(F('goals') ? state.goals.map(g => g.name) : []), ...state.notes.map(n => n.topic), ...state.notes.filter(n => n.kind === 'thema').map(n => n.title)].map(x => String(x || '').trim()).filter(Boolean)); }
+function noteSuggest(n) {
+  const raw = n.title + '\n' + n.body, text = raw.toLowerCase(), have = new Set(noteTags(n)), out = [];
+  const pool = new Map();
+  const addP = (t, src) => { const k = tagSlug(t); if (tagOk(k) && !pool.has(k)) pool.set(k, src); };
+  state.notes.forEach(x => x.tags.forEach(t => addP(t, 'Tag')));
+  state.issues.forEach(i => i.labels.forEach(l => addP(l, 'Label')));
+  knownTopics().forEach(t => addP(t, 'Thema'));
+  const self = tagSlug(n.title);
+  const near = t => { const words = t.split(/[-/]/); return text.includes(t) || text.includes(t.replace(/-/g, ' ')) || words.some(w => w.length >= 6 && text.includes(w)); };
+  for (const [t, src] of pool) {
+    if (have.has(t) || t === self) continue;
+    if (near(t)) out.push({ kind: 'tag', v: t, src });
+  }
+  if (n.topic.trim()) { const k = tagSlug(n.topic); if (tagOk(k) && !have.has(k) && !out.some(o => o.v === k)) out.unshift({ kind: 'tag', v: k, src: 'Thema' }); }
+  const cnt = new Map();
+  for (const w of text.match(/[\p{L}][\p{L}\-]{4,}/gu) || []) if (!STOP.has(w)) cnt.set(w, (cnt.get(w) || 0) + 1);
+  [...cnt].filter(([w, c]) => c >= 2 && !have.has(w) && !pool.has(w) && !out.some(o => o.v === w)).sort((a, b) => b[1] - a[1]).slice(0, 4).forEach(([w]) => out.push({ kind: 'tag', v: w, src: 'neu', fresh: true }));
+  const ppl = new Set(notePeople(n).map(x => x.toLowerCase()));
+  const esc2 = x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  knownPeople().forEach(p => { if (!ppl.has(p.toLowerCase()) && p.toLowerCase() !== n.title.trim().toLowerCase() && new RegExp(`(^|[^\\p{L}])${esc2(p)}(?![\\p{L}])`, 'iu').test(raw)) out.push({ kind: 'person', v: p }); });
+  if (!n.topic.trim()) knownTopics().forEach(t => { if (tagSlug(t) !== self && near(tagSlug(t))) out.unshift({ kind: 'topic', v: t }); });
+  return out.slice(0, 12);
+}
+/* --- Liste + Editor --- */
+function noteState(n) { return !n.obsAt ? '' : n.updated > n.obsAt ? ' · ● geändert' : ' · ✓ Obsidian'; }
+function noteItemHTML(n) { return `<b>${esc(n.title) || (n.kind === 'daily' ? dateText(n.date) : 'Ohne Titel')}</b><small>${NOTE_KINDS[n.kind].n} · ${relTime(n.updated)}${noteState(n)} · ${esc(n.body.slice(0, 50)) || '…'}</small>`; }
 function renderNotes() {
   const q = nq.value.trim().toLowerCase();
   const notes = [...state.notes].sort((a, b) => b.updated - a.updated)
-    .filter(n => !q || (n.title + ' ' + n.body).toLowerCase().includes(q));
+    .filter(n => !q || (n.title + ' ' + n.body + ' ' + n.tags.join(' ') + ' ' + n.topic).toLowerCase().includes(q));
   if (!curNoteId || !state.notes.some(n => n.id === curNoteId)) curNoteId = notes[0]?.id || null;
-  $('#notesList').innerHTML = notes.length ? notes.map(n => `<div class="note-item ${n.id === curNoteId ? 'active' : ''}" data-nid="${n.id}">
-      <b>${esc(n.title) || 'Ohne Titel'}</b><small>${relTime(n.updated)} · ${esc(n.body.slice(0, 60)) || '…'}</small></div>`).join('')
+  $('#notesList').innerHTML = notes.length ? notes.map(n => `<div class="note-item ${n.id === curNoteId ? 'active' : ''}" data-nid="${n.id}">${noteItemHTML(n)}</div>`).join('')
     : `<div class="empty">${q ? 'Nichts gefunden' : 'Noch keine Notizen'}</div>`;
   renderNoteEditor();
+}
+let notePrev = false, suggT = 0;
+function renderNoteTags(n) {
+  const fromText = [...noteParse(n.body).tags].filter(t => !n.tags.includes(t));
+  $('#noteTags').innerHTML = `<span class="ntag auto" title="Kommt automatisch aus dem Notiz-Typ">#${NOTE_KINDS[n.kind].tag}</span>`
+    + n.tags.map(t => `<span class="ntag">#${esc(t)}<button data-rmtag="${esc(t)}" title="Entfernen">✕</button></span>`).join('')
+    + fromText.map(t => `<span class="ntag auto" title="Steht als #tag im Text">#${esc(t)}</span>`).join('')
+    + `<input id="noteTagIn" placeholder="+ Tag (Enter)">`;
+  const s = noteSuggest(n);
+  $('#noteSugg').innerHTML = s.length ? '<span>Vorschläge:</span>' + s.map(o => o.kind === 'tag'
+    ? `<button class="sugg ${o.fresh ? 'fresh' : ''}" data-sg="tag" data-v="${esc(o.v)}" title="${o.fresh ? 'Kommt im Text mehrfach vor' : 'Bekannt als ' + o.src}">+ #${esc(o.v)}</button>`
+    : o.kind === 'person' ? `<button class="sugg" data-sg="person" data-v="${esc(o.v)}" title="Als Person verlinken">+ 👤 ${esc(o.v)}</button>`
+    : `<button class="sugg" data-sg="topic" data-v="${esc(o.v)}" title="Als Thema setzen">+ Thema: ${esc(o.v)}</button>`).join('') : '';
 }
 function renderNoteEditor() {
   const ed = $('#noteEditor');
   const n = state.notes.find(x => x.id === curNoteId);
   if (!n) { ed.innerHTML = `<div class="empty">Wähle links eine Notiz oder erstelle eine neue mit <b>+</b>.</div>`; delete ed.dataset.nid; return; }
-  if (ed.dataset.nid === n.id && ed.contains(document.activeElement)) { $('#noteMeta').textContent = `Zuletzt bearbeitet: ${fmtDateTime(n.updated)}`; return; }
+  if (ed.dataset.nid === n.id && ed.contains(document.activeElement)) { $('#noteMeta').textContent = `Zuletzt bearbeitet: ${fmtDateTime(n.updated)}${noteState(n)}`; return; }
   ed.dataset.nid = n.id;
-  ed.innerHTML = `<input class="title-input" id="noteTitle" placeholder="Titel" value="${esc(n.title)}">
-    <textarea id="noteBody" placeholder="Schreib los…">${esc(n.body)}</textarea>
-    <div class="note-foot"><span id="noteMeta">Zuletzt bearbeitet: ${fmtDateTime(n.updated)}</span><button class="btn danger" id="noteDel">Löschen</button></div>`;
+  $('#topicList') || document.body.insertAdjacentHTML('beforeend', '<datalist id="topicList"></datalist>');
+  $('#topicList').innerHTML = knownTopics().map(v => `<option value="${esc(v)}">`).join('');
+  $('#notePersonList') || document.body.insertAdjacentHTML('beforeend', '<datalist id="notePersonList"></datalist>');
+  $('#notePersonList').innerHTML = knownPeople().map(v => `<option value="${esc(v)}">`).join('');
+  ed.innerHTML = `<input class="title-input" id="noteTitle" placeholder="${n.kind === 'daily' ? 'Titel (optional – Datei heißt nach dem Datum)' : 'Titel'}" value="${esc(n.title)}">
+    <div class="note-meta">
+      <select id="noteKind" class="inline-input" title="Typ → bestimmt Ordner und Aufbau in Obsidian">${Object.entries(NOTE_KINDS).map(([k, v]) => `<option value="${k}" ${k === n.kind ? 'selected' : ''}>${v.n} → ${v.dir}</option>`).join('')}</select>
+      <input type="date" id="noteDate" class="inline-input" value="${esc(n.date)}" title="Datum">
+      <input id="noteTopic" class="inline-input" list="topicList" placeholder="Thema → [[Link]]" value="${esc(n.topic)}">
+      <input id="notePeople" class="inline-input" list="notePersonList" placeholder="Personen, Komma-getrennt" value="${esc(n.people.join(', '))}">
+    </div>
+    <div class="note-tags" id="noteTags"></div>
+    <div class="note-sugg" id="noteSugg"></div>
+    <p class="note-hint">Kürzel: <code>- [ ]</code> <code>TODO:</code> <code>-></code> Aufgabe · <code>!</code> <code>Entscheidung:</code> · <code>Frage:</code> oder <code>?</code> am Ende · <code>#tag</code> · <code>@Name</code> · <code>## Abschnitt</code></p>
+    <textarea id="noteBody" placeholder="Schreib los…" ${notePrev ? 'hidden' : ''}>${esc(n.body)}</textarea>
+    <pre class="note-preview" id="notePrev" ${notePrev ? '' : 'hidden'}></pre>
+    <div class="note-foot"><span id="noteMeta">Zuletzt bearbeitet: ${fmtDateTime(n.updated)}${noteState(n)}</span><span class="spacer"></span>
+      <button class="btn small" id="noteTasks" title="Aufgaben aus der Notiz als Tickets anlegen">→ Tickets</button>
+      <button class="btn small f-obs" id="notePrevBtn">${notePrev ? '✎ Bearbeiten' : '👁 Vorschau .md'}</button>
+      <button class="btn small primary f-obs" id="noteObs" title="Als formatierte Notiz in den Vault schreiben">→ Obsidian</button>
+      <button class="btn danger small" id="noteDel">Löschen</button></div>`;
+  renderNoteTags(n);
+  if (notePrev) $('#notePrev').textContent = noteMd(n);
   const upd = () => { n.updated = now(); save(); refreshNoteItem(n); };
-  $('#noteTitle').addEventListener('input', e => { n.title = e.target.value; upd(); });
-  $('#noteBody').addEventListener('input', e => { n.body = e.target.value; upd(); });
+  const later = () => { clearTimeout(suggT); suggT = setTimeout(() => renderNoteTags(n), 400); };
+  $('#noteTitle').addEventListener('input', e => { n.title = e.target.value; upd(); later(); });
+  $('#noteBody').addEventListener('input', e => { n.body = e.target.value; upd(); later(); });
+  $('#noteKind').addEventListener('change', e => { n.kind = e.target.value; upd(); delete ed.dataset.nid; renderNoteEditor(); });
+  $('#noteDate').addEventListener('change', e => { n.date = e.target.value || today(); upd(); });
+  $('#noteTopic').addEventListener('input', e => { n.topic = e.target.value; upd(); later(); });
+  $('#notePeople').addEventListener('input', e => { n.people = e.target.value.split(',').map(x => x.trim()).filter(Boolean); upd(); later(); });
+  const addTag = v => { const t = tagSlug(v); if (tagOk(t) && !n.tags.includes(t)) { n.tags.push(t); upd(); } renderNoteTags(n); };
+  $('#noteTags').addEventListener('keydown', e => {
+    if (e.target.id !== 'noteTagIn' || !['Enter', ','].includes(e.key)) return;
+    e.preventDefault(); const v = e.target.value; addTag(v); $('#noteTagIn').focus();
+  });
+  $('#noteTags').addEventListener('click', e => { const b = e.target.closest('[data-rmtag]'); if (b) { n.tags = n.tags.filter(t => t !== b.dataset.rmtag); upd(); renderNoteTags(n); } });
+  $('#noteSugg').addEventListener('click', e => {
+    const b = e.target.closest('[data-sg]'); if (!b) return;
+    const v = b.dataset.v;
+    if (b.dataset.sg === 'tag') return addTag(v);
+    if (b.dataset.sg === 'person') { n.people.push(v); $('#notePeople').value = n.people.join(', '); }
+    else { n.topic = v; $('#noteTopic').value = v; }
+    upd(); renderNoteTags(n);
+  });
+  $('#notePrevBtn').onclick = () => { notePrev = !notePrev; delete ed.dataset.nid; renderNoteEditor(); };
+  $('#noteObs').onclick = async () => { try { await noteExport([n]); } catch (err) { alert('Fehler: ' + err.message); } };
+  $('#noteTasks').onclick = () => {
+    const open = noteParse(n.body).tasks.filter(x => !x.done);
+    if (!open.length) return alert('Keine offenen Aufgaben in der Notiz gefunden.\n\nAufgaben schreiben als „- [ ] …“, „TODO: …“ oder „-> …“.');
+    openBulk();
+    $('#bulkText').value = open.map(x => '- ' + x.text).join('\n');
+    $('#bulkSource').value = noteStem(n); $('#bulkSourceDate').value = n.date || today();
+    renderBulk();
+  };
   $('#noteDel').onclick = () => {
-    if (!confirm(`Notiz „${n.title || 'Ohne Titel'}“ löschen?`)) return;
+    if (!confirm(`Notiz „${n.title || 'Ohne Titel'}“ löschen?${n.obsPath ? `\n\nDie Datei in Obsidian (${n.obsPath}) bleibt erhalten.` : ''}`)) return;
     state.notes = state.notes.filter(x => x.id !== n.id); curNoteId = null; delete ed.dataset.nid; save(); renderNotes();
   };
 }
 function refreshNoteItem(n) {
   const el = $(`.note-item[data-nid="${n.id}"]`);
-  if (el) el.innerHTML = `<b>${esc(n.title) || 'Ohne Titel'}</b><small>gerade eben · ${esc(n.body.slice(0, 60)) || '…'}</small>`;
-  $('#noteMeta').textContent = `Zuletzt bearbeitet: ${fmtDateTime(n.updated)}`;
+  if (el) el.innerHTML = noteItemHTML(n);
+  if ($('#noteMeta')) $('#noteMeta').textContent = `Zuletzt bearbeitet: ${fmtDateTime(n.updated)}${noteState(n)}`;
 }
+/* --- Export in den Vault (Hauptordner; Unterordner je Typ wie in den Vorlagen) --- */
+let vaultHandle = null;
+async function initVault() { if (!obsSupported) return; try { vaultHandle = (await idbGet('obsVault')) || null; } catch { } }
+async function pickVault() {
+  const h = await window.showDirectoryPicker({ id: 'obsidian-vault', mode: 'readwrite' });
+  if (/tickets$/i.test(h.name) && !confirm(`„${h.name}“ sieht nach dem Ticket-Ordner aus.\n\nFür Notizen bitte den Hauptordner des Vaults wählen (der mit 00 Inbox, 01 Themen …).\n\nTrotzdem „${h.name}“ verwenden?`)) return null;
+  vaultHandle = h; await idbSet('obsVault', h); return h;
+}
+async function vaultDir() {
+  if (!obsSupported) return null;
+  try {
+    if (vaultHandle && (await vaultHandle.queryPermission({ mode: 'readwrite' }) === 'granted' || await vaultHandle.requestPermission({ mode: 'readwrite' }) === 'granted')) return vaultHandle;
+    if (!confirm('Einmalig den Hauptordner deines Obsidian-Vaults wählen (der Ordner mit 00 Inbox, 01 Themen, 05 Daily …).\n\nDie Notizen landen dann je nach Typ im passenden Unterordner.')) return null;
+    return await pickVault();
+  } catch (err) { if (err.name !== 'AbortError') console.warn(err); return null; }
+}
+async function readText(dir, name) { try { return obsNorm(await (await (await dir.getFileHandle(name)).getFile()).text()); } catch { return null; } }
+function noteDownload(list) {
+  const files = list.map(n => ({ name: `${NOTE_KINDS[n.kind].dir}/${noteStem(n)}.md`, text: noteMd(n) }));
+  const a = document.createElement('a');
+  if (files.length === 1) { a.href = URL.createObjectURL(new Blob([files[0].text], { type: 'text/markdown;charset=utf-8' })); a.download = noteStem(list[0]) + '.md'; }
+  else { a.href = URL.createObjectURL(zipBlob(files)); a.download = `Notizen-${stamp()}.zip`; }
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  alert(files.length === 1 ? `„${a.download}“ liegt in Downloads → in den Ordner „${NOTE_KINDS[list[0].kind].dir}“ im Vault verschieben.` : `${files.length} Notizen als ZIP in Downloads (mit Unterordnern wie im Vault). Entpacken und in den Vault kopieren.`);
+}
+async function noteExport(list) {
+  const dir = await vaultDir();
+  if (!dir) { if (confirm('Kein Vault-Ordner gewählt.\n\nStattdessen als Datei in „Downloads“ speichern?')) noteDownload(list); return; }
+  let ok = 0, skip = 0;
+  for (const n of list) {
+    const folder = NOTE_KINDS[n.kind].dir, file = noteStem(n).slice(0, 120).trim() + '.md', path = `${folder}/${file}`;
+    const sub = await dir.getDirectoryHandle(folder, { create: true });
+    const text = noteMd(n), old = await readText(sub, file);
+    if (old !== null && old !== text && obsHash(old) !== n.obsSig && !confirm(`„${path}“ gibt es schon und wurde in Obsidian geändert.\n\nMit der Fassung aus der App überschreiben?`)) { skip++; continue; }
+    await obsWrite(sub, file, text);
+    // Umbenannt oder Typ gewechselt: alte Datei entfernen, wenn sie seit dem Export unverändert ist
+    if (n.obsPath && n.obsPath !== path) {
+      try { const [of, on] = n.obsPath.split('/'), od = await dir.getDirectoryHandle(of), ot = await readText(od, on); if (ot !== null && obsHash(ot) === n.obsSig) await od.removeEntry(on); } catch { }
+    }
+    n.obsPath = path; n.obsSig = obsHash(text); n.obsAt = now(); ok++;
+  }
+  save(); if (currentView === 'notes') { delete $('#noteEditor').dataset.nid; renderNotes(); }
+  saveEl.textContent = `📝 ${ok} Notiz(en) → Obsidian${skip ? ` · ${skip} übersprungen` : ''}`;
+  if (list.length > 1 || skip) alert(`Fertig: ${ok} Notiz(en) in „${dir.name}“ geschrieben${skip ? `, ${skip} übersprungen` : ''}.`);
+}
+$('#setVaultBtn').onclick = async () => {
+  try { const h = await pickVault(); if (h) $('#setVaultName').textContent = `Gewählt: ${h.name}`; } catch (err) { if (err.name !== 'AbortError') alert(err.message); }
+};
 $('#notesList').addEventListener('click', e => {
   const it = e.target.closest('.note-item'); if (!it) return;
   curNoteId = it.dataset.nid; delete $('#noteEditor').dataset.nid; renderNotes();
 });
 nq.addEventListener('input', renderNotes);
 $('#newNoteBtn').onclick = () => {
-  const t = now(); const n = { id: uid(), title: '', body: '', created: t, updated: t };
+  const t = now(); const n = { id: uid(), title: '', body: '', kind: 'notiz', date: today(), topic: '', people: [], tags: [], obsPath: '', obsSig: '', obsAt: 0, created: t, updated: t };
   state.notes.push(n); curNoteId = n.id; nq.value = ''; save(); renderNotes(); $('#noteTitle').focus();
 };
 
 /* ================= Ansichten ================= */
 let currentView = 'board';
-const TASK_VIEWS = ['board', 'list', 'cal'];
+const TASK_VIEWS = ['board', 'list', 'cal', 'focus'];
 const PAGE = {
-  tasks:   ['Meine Aufgaben', 'Alle deine Tickets – als Board, Liste oder im Kalender.'],
+  tasks:   ['Meine Aufgaben', 'Alle deine Tickets – als Board, Liste, im Kalender oder als Tagesfokus.'],
   meetings: ['Meetings', 'Agenda pro Meeting: offene Punkte tauchen beim passenden Termin auf.'],
   review:  ['Rückblick', 'Was im gewählten Zeitraum passiert ist – Woche, Monat oder frei wählbar, fertig zum Kopieren fürs Status-Update.'],
   goals:   ['Ziele', 'Größere Ziele mit Fortschritt und deine wiederkehrenden Aufgaben.'],
@@ -3149,7 +3655,8 @@ const PAGE = {
 let lastTaskView = safeGet('jiratype.taskView') || 'board';
 function showView(v) {
   if (v === 'tasks') v = TASK_VIEWS.includes(lastTaskView) ? lastTaskView : 'board';
-  if ((v === 'notes' || v === 'prompts') && showMode) v = 'board';
+  if ((v === 'notes' || v === 'prompts' || v === 'focus') && showMode) v = 'board';
+  if (VIEW_FEAT[v] && !F(VIEW_FEAT[v])) v = 'board';
   closePop();
   currentView = v;
   const isTask = TASK_VIEWS.includes(v);
@@ -3164,6 +3671,7 @@ function showView(v) {
   safeSet(VIEW_KEY, v);
   if (v === 'board') renderBoard();
   if (v === 'cal') renderCal();
+  if (v === 'focus') renderFocus();
   if (v === 'goals') renderGoals();
   if (v === 'notes') renderNotes();
   if (v === 'list') renderList();
@@ -3210,18 +3718,20 @@ const obsQ = s => { const t = obsOne(s); return t ? `"${t.replace(/\\/g, '\\\\')
 function obsMarkdown(i, alt) {
   const st = statusName(i.status), closed = isClosed(i), g = getGoal(i.goalId), imp = IMPS[i.importance]?.n || '', rule = getRule(i.recurId);
   const ziel = g ? `[[${obsLink(g.name)}]]` : '';
-  const quelle = i.source ? (i.sourceDate ? `[[${i.sourceDate} ${obsLink(i.source)}]]` : obsOne(i.source)) : '';
+  const fromNote = i.source && state.notes.some(n => n.obsPath && noteStem(n) === i.source);
+  const quelle = i.source ? (fromNote ? `[[${obsLink(i.source)}]]` : i.sourceDate ? `[[${i.sourceDate} ${obsLink(i.source)}]]` : obsOne(i.source)) : '';
   const tsIso = t => t ? isoOf(new Date(t)) : '';
   const yl = (a, link) => a.length ? a.map(x => `\n  - ${obsQ(link ? `[[${obsLink(x)}]]` : String(x).trim().replace(/ /g, '-'))}`).join('') : '[]';
   const role = { lead: 'Lead', contrib: ROLE_CONTRIB, support: 'Support' }[i.role] || '';
   const D = ' · ', L = [];
   L.push('---', 'typ: ticket', `key: ${obsQ(i.key)}`, `status: ${obsQ(st)}`, `wichtigkeit: ${obsQ(imp)}`, `ticket-typ: ${obsQ(TYPES[i.type]?.n)}`,
-    `thema: ${obsQ(ziel)}`, `quelle: ${obsQ(quelle)}`, `deadline: ${i.deadline || ''}`, `ziel-datum: ${i.target || ''}`,
+    `thema: ${obsQ(ziel)}`, `quelle: ${obsQ(quelle)}`, `deadline: ${i.deadline || ''}`, `ziel-datum: ${i.target || ''}`, `geplant: ${i.plan || ''}`,
     `wartet-auf: ${obsQ(i.waitingFor)}`, `wiedervorlage: ${i.followUp || ''}`, `stakeholder: ${yl(i.stakeholders, true)}`, `labels: ${yl(i.labels, false)}`,
     `privat: ${i.private ? 'true' : 'false'}`, `erstellt: ${tsIso(i.created)}`, `aktualisiert: ${tsIso(i.updated)}`, `erledigt: ${tsIso(i.doneAt)}`, 'tags: [ticket]', '---');
   L.push(`# ${obsOne(i.title)}`, '', '> [!abstract] Kurzfassung',
     `> **Status:** ${st}${D}**Wichtigkeit:** ${imp}${D}**Deadline:** ${dateText(i.deadline)}${i.deadline ? ` (KW ${isoWeek(i.deadline)[0]})` : ''}`,
     `> **Thema / Ziel:** ${ziel}`, `> **Quelle:** ${quelle}`);
+  if (i.plan) L.push(`> **Bearbeiten am:** ${dateText(i.plan)}`);
   if (i.waitingFor) L.push(`> **Wartet auf:** ${obsOne(i.waitingFor)}${D}**Nachfassen:** ${dateText(i.followUp)}`);
   if (i.cancelReason) L.push(`> **Grund (gestrichen):** ${obsOne(i.cancelReason)}`);
   if (rule) L.push(`> **Wiederholung:** ${freqText(rule)}`);
@@ -3315,7 +3825,7 @@ function obsParse(txt) {
   return {
     key: String(y.key || '').trim(), title: title === '{{title}}' ? '' : title,
     status: obsMapV('status', y.status), importance: obsMapV('imp', y.wichtigkeit), type: obsMapV('type', y['ticket-typ']),
-    goal: unLink(y.thema), deadline: isoOk(y.deadline), target: isoOk(y['ziel-datum']),
+    goal: unLink(y.thema), deadline: isoOk(y.deadline), target: isoOk(y['ziel-datum']), plan: isoOk(y.geplant),
     waitingFor: String(y['wartet-auf'] || '').trim(), followUp: isoOk(y.wiedervorlage),
     stakeholders: arr(y.stakeholder), labels: arr(y.labels), private: String(y.privat).toLowerCase() === 'true',
     desc: /^-?$/.test(desc) ? '' : desc,
@@ -3324,13 +3834,13 @@ function obsParse(txt) {
     did: fld('Was ich gemacht habe'), role: obsMapV('role', fld('Rolle')), impact: fld('Impact'),
   };
 }
-const obsSigP = p => obsHash(JSON.stringify(p));
+const obsSigP = p => { const { plan, ...r } = p; return obsHash(JSON.stringify(plan ? { ...r, plan } : r)); };
 const obsSigOf = i => obsSigP(obsParse(obsMarkdown(i, '')));
 const obsFname = i => `${i.key} ${obsFile(i.title)}`.slice(0, 120).trim() + '.md';
 function obsApply(i, p) {
   if (p.title) i.title = p.title;
   i.desc = p.desc; i.importance = p.importance; if (p.type) i.type = p.type;
-  i.deadline = p.deadline; i.target = p.target; i.waitingFor = p.waitingFor; i.followUp = p.followUp;
+  i.deadline = p.deadline; i.target = p.target; i.plan = p.plan || ''; i.waitingFor = p.waitingFor; i.followUp = p.followUp;
   i.stakeholders = [...p.stakeholders]; i.labels = [...p.labels]; i.private = p.private;
   i.did = p.did; i.impact = p.impact; i.role = p.role;
   if (p.goal) { const g = state.goals.find(g => obsLink(g.name).toLowerCase() === p.goal.toLowerCase()) || createGoal(p.goal); i.goalId = g.id; }
@@ -3490,7 +4000,7 @@ const OBS_T = {
   differs: 'Unterschied bei', keepApp: 'App behalten', keepObs: 'Obsidian übernehmen',
   paused: n => `Obsidian-Abgleich mit „${n}“ ist pausiert (Edge braucht nach einem Neustart einmal deine Erlaubnis).`,
   conflicts: n => `⚠ ${n} Ticket(s) wurden in App und Obsidian geändert.`, resume: 'Fortsetzen', show: 'Konflikte ansehen',
-  fields: { title: 'Titel', status: 'Status', importance: 'Wichtigkeit', type: 'Typ', goal: 'Thema/Ziel', deadline: 'Deadline', target: 'Ziel-Datum', waitingFor: 'Wartet auf', followUp: 'Wiedervorlage', stakeholders: 'Stakeholder', labels: 'Labels', private: 'Privat', desc: 'Beschreibung', checklist: 'Unteraufgaben', did: 'Was ich gemacht habe', role: 'Rolle', impact: 'Impact' },
+  fields: { title: 'Titel', status: 'Status', importance: 'Wichtigkeit', type: 'Typ', goal: 'Thema/Ziel', deadline: 'Deadline', target: 'Ziel-Datum', plan: 'Bearbeiten am', waitingFor: 'Wartet auf', followUp: 'Wiedervorlage', stakeholders: 'Stakeholder', labels: 'Labels', private: 'Privat', desc: 'Beschreibung', checklist: 'Unteraufgaben', did: 'Was ich gemacht habe', role: 'Rolle', impact: 'Impact' },
 };
 const MSG_ASKZIP = 'Kein Ordner gewählt.\n\nStattdessen eine ZIP-Datei mit allen Ticket-Notizen in „Downloads“ speichern?\n(Entpacken und den Inhalt nach „06 Tickets“ kopieren. Achtung: Beim Überschreiben gehen „Eigene Notizen“ in vorhandenen Dateien verloren.)';
 const MSG_FAIL = m => `Schreiben in den Ordner fehlgeschlagen:\n${m}\n\nStattdessen als ZIP in „Downloads“ speichern?`;
@@ -3501,6 +4011,11 @@ async function menuAction(act) {
   {
     if (act === 'safety') openSafety();
     else if (act === 'obs-sync' || act === 'obs-pick') await obsManual(act === 'obs-pick');
+    else if (act === 'notes-obs') {
+      const list = state.notes.filter(n => (n.title.trim() || n.body.trim()) && (!n.obsAt || n.updated > n.obsAt));
+      if (!list.length) return alert('Keine neuen oder geänderten Notizen seit dem letzten Export.');
+      await noteExport(list);
+    }
     else if (act === 'export') {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
@@ -3590,12 +4105,13 @@ document.addEventListener('keydown', e => {
 applyMode();
 if (!safeGet(STORE_KEY)) safeSet(STORE_KEY, JSON.stringify(state));
 const lastView = safeGet(VIEW_KEY);
-showView(['board', 'list', 'cal', 'goals', 'notes', 'prompts', 'meetings', 'review'].includes(lastView) ? lastView : 'board');
+showView(['board', 'list', 'cal', 'focus', 'goals', 'notes', 'prompts', 'meetings', 'review'].includes(lastView) ? lastView : 'board');
 advanceMeetings();
 renderAll();
 generateRecurring();
 initFileSync().then(checkBackupBanner);
 initObsSync();
+initVault();
 // Regelmäßig prüfen: neue Serientermine (z. B. über Nacht offen gelassen), relative Zeiten
 setInterval(() => { generateRecurring(); if (!modal.hidden) renderComments(); }, 10 * 60 * 1000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { generateRecurring(); if (modal.hidden) renderAll(); } });

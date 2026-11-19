@@ -23,8 +23,8 @@ Works in **Edge, Chrome and Firefox** (Firefox without auto-sync to file, see be
 3. Delete the example tickets, add your own with **+ New** (`C`) or **Paste list** (`L`).
 
 ## Features
-- **Board / List / Calendar:** Kanban with drag & drop and filters. Excel-like list with column filters, inline editing and CSV export. Month calendar with deadlines, follow-ups and meetings.
-- **Tickets:** sub-tasks (with own due dates), updates log, labels, importance (*Must / Worth it / Nice-to-have*), soft target + hard deadline (also as week number, `43` → Friday), *waiting for X* with follow-up, paused, cancelled (with reason), source meeting, stakeholders.
+- **Board / List / Calendar / Focus:** Kanban with drag & drop and filters. Excel-like list with column filters, inline editing and CSV export. Month calendar with work-on dates, deadlines and follow-ups. Focus view: 3 tasks per day, week grid, carry-over and completion rate.
+- **Tickets:** sub-tasks (with own due dates), updates log, labels, importance (*Must / Worth it / Nice-to-have*), *work on* date (counts how often it was pushed back), soft target + hard deadline (also as week number, `43` → Friday), latest update shown on the card, *waiting for X* with follow-up, paused, cancelled (with reason), source meeting, stakeholders.
 - **Recurring tasks:** weekly, every 2 weeks, specific weekdays, monthly (date, n-th weekday, last or n-th working day), quarterly.
 - **Paste list:** paste action items (e.g. from OneNote), each line becomes a ticket. Indent = sub-task, `#label`, `KW43` / `24.10.` = deadline, `!` = must, `@Name` = waiting for, `+Name` = stakeholder. Live preview first.
 - **Meetings:** rhythm, agenda from tickets, auto-generated sync prep text for your manager.
@@ -32,10 +32,10 @@ Works in **Edge, Chrome and Firefox** (Firefox without auto-sync to file, see be
 - **Goals:** group tickets, progress bar, overview of recurring tasks.
 - **Timeline:** status flow and durations per ticket, Gantt + stakeholder Venn per goal.
 - **Wins export:** *what I did / role / impact* per ticket → CSV brag sheet for reviews, salary talks, CV.
-- **Notes & AI prompts:** templates to turn notes into tickets; paste the AI's JSON answer back to import.
+- **Notes & AI prompts:** notes with type, topic, people and tag suggestions, exported as formatted Markdown into the matching vault subfolder (per [Obsidian-Templates](https://github.com/vikdotcom/Obsidian-Templates)); prompt templates to turn notes into tickets.
 - **Obsidian sync (both ways):** one Markdown note per ticket in a vault folder, auto-sync every 5 min, conflict dialog, ZIP fallback. Everything below `## Eigene Notizen` stays untouched.
 - **Show mode:** hides private tickets, notes and logs for screen sharing (visual only, no encryption).
-- **Features on/off:** hide 17 features you don't need. Data stays saved.
+- **Features on/off:** hide 18 features you don't need (compact chips in the settings). Data stays saved.
 
 ## Data safety
 | Layer | What it does |
@@ -58,6 +58,8 @@ Single user, single device. No notifications while closed (recurring tickets app
 Plain HTML, CSS and vanilla JS in one file. No build step, no dependencies. Data in `localStorage`, file sync via File System Access API (handle kept in IndexedDB).
 
 ## Changelog
+**1.3.0 – 2026-11-19:** daily focus as its own view next to Board/List/Calendar (3 tasks per day, week grid, carry over open items, 14-day history and rate), *work on* field with quick buttons and push-back counter (synced to Obsidian as `geplant:`), date range "next X days" now includes overdue items, latest update on the card, more filters folded away, settings as compact chips, notes with type/topic/people/tags and export into vault subfolders. Meetings area switched off permanently (data stays). Data stays compatible.
+
 **1.2.0 – 2026-10-26:** board filter by date range (soft target + hard deadline: today, this/next week, next 7/14/30 days, calendar weeks taken from your tickets, custom from–to), deadline turns red X days ahead (setting, default 7) and target orange X days ahead, collapsible sidebar and goal list, review with selectable period (week, 2 weeks, month, quarter, custom), "Outcome & role" section collapsed and only shown in private mode, export file names with time. Data stays compatible.
 
 **1.1.0 – 2026-10-22:** two-way Obsidian sync, 13 more feature toggles, *All tickets* filter in the sidebar. Fully compatible with 1.0 in both directions. To update, replace the HTML file *at the same path* (export a backup first to be safe).
